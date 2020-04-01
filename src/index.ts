@@ -1,0 +1,1 @@
+import {} from 'graphql-compose';
