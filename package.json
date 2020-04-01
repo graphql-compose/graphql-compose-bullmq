@@ -36,6 +36,7 @@
     "@types/node-fetch": "^2.5.5",
     "@typescript-eslint/eslint-plugin": "2.26.0",
     "@typescript-eslint/parser": "2.26.0",
+    "bullmq": "^1.8.4",
     "cross-env": "7.0.2",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.1.0",
