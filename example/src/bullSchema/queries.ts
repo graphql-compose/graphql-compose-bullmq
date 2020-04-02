@@ -1,5 +1,5 @@
 import { isObject } from './utils';
-import { QueriesDependencies, Queries } from '../declarations';
+import { QueriesDependencies, Queries, Context } from '../declarations';
 
 export default function ({
   schemaComposer,
@@ -9,7 +9,7 @@ export default function ({
   createJobNotFoundProblem,
   JobNotFoundProblemTC,
   QueueNotFoundProblemTC,
-}: QueriesDependencies): Queries {
+}: QueriesDependencies): Queries<any, Context> {
   schemaComposer.createUnionTC({
     name: 'QueueResultUnion',
     types: [QueueNotFoundProblemTC, QueueTC],

@@ -1,6 +1,8 @@
-import { ObjectTC } from './gqlCompose';
+export { FieldMapT as Mutations } from './gqlCompose';
 
-//пока так:
-export interface Mutations {
-  [key: string]: ObjectTC;
-}
+// import { ObjectTC } from './gqlCompose';
+
+// //пока так:
+// export interface Mutations {
+//   [key: string]: ObjectTC;
+// }

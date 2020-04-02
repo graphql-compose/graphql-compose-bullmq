@@ -1,4 +1,4 @@
-import { MutationsDependencies, Mutations } from '../declarations';
+import { MutationsDependencies, Mutations, Context } from '../declarations';
 
 export default function ({
   schemaComposer,
@@ -12,7 +12,7 @@ export default function ({
   UnknownJobNameProblemTC,
   createUnknownJobNameProblem,
   QueueNotFoundProblemTC,
-}: MutationsDependencies): Mutations {
+}: MutationsDependencies): Mutations<any, Context> {
   // Job#progress - необходимо ли это снаружи?
   // Job#getState - есть просто получение очереди, там есть state
   // Job#discard - допонять
