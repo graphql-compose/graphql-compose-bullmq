@@ -1,4 +1,4 @@
-import { isObject } from './utils';
+import { MutationsDependencies, Mutations } from '../declarations';
 
 export default function ({
   schemaComposer,
@@ -10,8 +10,9 @@ export default function ({
   runOnJob,
   JobNotFoundProblemTC,
   UnknownJobNameProblemTC,
+  createUnknownJobNameProblem,
   QueueNotFoundProblemTC,
-}) {
+}: MutationsDependencies): Mutations {
   // Job#progress - необходимо ли это снаружи?
   // Job#getState - есть просто получение очереди, там есть state
   // Job#discard - допонять
@@ -74,22 +75,20 @@ export default function ({
     return schemaComposer.createUnionTC({
       name: item.name + 'Union',
       types,
-      resolveType(result) {
-        if (isObject(result)) {
-          if (
-            result.hasOwnProperty('type') &&
-            types.some((tYpe) => tYpe.getTypeName() === result.type)
-          ) {
-            return result.type;
-          }
-          return (typeof item.test === 'function' && item.test(result)) || null;
+      resolveType(result: object) {
+        if (
+          result.hasOwnProperty('type') &&
+          types.some((tYpe) => tYpe.getTypeName() === result.type)
+        ) {
+          return result.type;
         }
+        return (typeof item.test === 'function' && item.test(result)) || null;
       },
     });
   }
 
-  function testJob(result) {
-    return isObject(result) && result.hasOwnProperty('id') && JobTC.getTypeName();
+  function testJob(result: object) {
+    return result.hasOwnProperty('id') && JobTC.getTypeName();
   }
 
   const Unions = [

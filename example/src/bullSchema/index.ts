@@ -1,6 +1,6 @@
 import { schemaComposer } from 'graphql-compose';
 import { AuthenticationError } from 'apollo-server';
-import createTypes from './types';
+import createTypes from './gqlTypes';
 import createQueries from './queries';
 import createMutations from './mutations';
 

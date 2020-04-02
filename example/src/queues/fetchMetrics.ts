@@ -58,9 +58,9 @@ metricsWorker.on('failed', (job, err) => {
 });
 
 export default {
-  name: queueSettings.name,
-  hostId: queueSettings.hostId,
-  prefix: queueSettings.prefix,
+  name: queueSettings.name as string,
+  hostId: queueSettings.hostId as string,
+  prefix: queueSettings.prefix as string,
   bullQueue: metricsQueue,
   jobNames: ['fetch_metrics_every_5m'],
 };
