@@ -1,3 +1,4 @@
+import { PayloadStatusEnum, ErrorCodeEnum, StatusEnum } from './gqlTypes/enums';
 import { MutationsDependencies, Mutations, Context } from '../declarations';
 
 export default function ({
@@ -5,14 +6,7 @@ export default function ({
   QueueTC,
   JobTC,
   JobOptionsInputTC,
-  StatusEnumTC,
-  runOnQueue,
-  runOnJob,
-  JobNotFoundProblemTC,
-  UnknownJobNameProblemTC,
-  createUnknownJobNameProblem,
-  QueueNotFoundProblemTC,
-}: MutationsDependencies): Mutations<any, Context> {
+}: MutationsDependencies) {
   // Job#progress - необходимо ли это снаружи?
   // Job#getState - есть просто получение очереди, там есть state
   // Job#discard - допонять
@@ -26,321 +20,309 @@ export default function ({
   // Job#moveToCompleted
   // Job#moveToFailed
 
-  const JobStateInfoTC = schemaComposer.createObjectTC({
-    name: 'JobStateInfo',
-    fields: {
-      queueName: 'String!',
-      jobId: 'String!',
-      state: 'String!',
-      message: 'String',
-    },
-  });
-
-  const CleanedJobsTC = schemaComposer.createObjectTC({
-    name: 'CleanedJobs',
-    fields: {
-      queueName: 'String!',
-      jobs: '[String!]!',
-      status: 'String!', //Из какого сотояния удалили
-      message: 'String',
-    },
-  });
-
-  const QueuePausedTC = schemaComposer.createObjectTC({
-    name: 'QueuePaused',
-    fields: {
-      name: 'String!',
-      message: 'String',
-    },
-  });
-
-  const QueueResumedTC = schemaComposer.createObjectTC({
-    name: 'QueueResumed',
-    fields: {
-      name: 'String!',
-      message: 'String',
-    },
-  });
-
-  const RemoveRepeatableSuccessTC = schemaComposer.createObjectTC({
-    name: 'RemoveRepeatableSuccess',
-    fields: {
-      //TODO:...
-      message: 'String',
-    },
-  });
-
-  function createUnion(item) {
-    const types = [...item.problems, item.success];
-    return schemaComposer.createUnionTC({
-      name: item.name + 'Union',
-      types,
-      resolveType(result: object) {
-        if (
-          result.hasOwnProperty('type') &&
-          types.some((tYpe) => tYpe.getTypeName() === result.type)
-        ) {
-          return result.type;
-        }
-        return (typeof item.test === 'function' && item.test(result)) || null;
-      },
-    });
+  function queueNotFound(name) {
+    return {
+      name,
+      status: PayloadStatusEnum.ERROR,
+      errorCode: ErrorCodeEnum.QUEUE_NOT_FOUND,
+      error: 'Queue not found!',
+    };
   }
 
-  function testJob(result: object) {
-    return result.hasOwnProperty('id') && JobTC.getTypeName();
+  function jobNotFound(name, id) {
+    return {
+      name,
+      id,
+      status: PayloadStatusEnum.ERROR,
+      errorCode: ErrorCodeEnum.JOB_NOT_FOUND,
+      error: 'Job by id not found!',
+    };
   }
 
-  const Unions = [
-    {
-      name: 'JobActionResult',
-      problems: [QueueNotFoundProblemTC, JobNotFoundProblemTC],
-      success: JobStateInfoTC,
+  const JobActionPayloadTC = schemaComposer.createObjectTC({
+    name: 'JobActionPayload',
+    fields: {
+      status: 'PayloadStatusEnum!',
+      error: 'String',
+      errorCode: 'ErrorCodeEnum',
+      name: 'String!',
+      id: 'String',
+      state: 'StatusEnum',
     },
-    {
-      name: 'JobAddResult',
-      problems: [QueueNotFoundProblemTC, UnknownJobNameProblemTC],
-      success: JobTC,
-      test: testJob,
-    },
-    {
-      name: 'JobUpdateResult',
-      problems: [QueueNotFoundProblemTC, JobNotFoundProblemTC],
-      success: JobTC,
-      test: testJob,
-    },
-    {
-      name: 'JobRemoveResult',
-      problems: [QueueNotFoundProblemTC, JobNotFoundProblemTC],
-      success: CleanedJobsTC,
-    },
-    {
-      name: 'QueueCleanResult',
-      problems: [QueueNotFoundProblemTC],
-      success: CleanedJobsTC,
-    },
-    {
-      name: 'QueuePausedResult',
-      problems: [QueueNotFoundProblemTC],
-      success: QueuePausedTC,
-    },
-    {
-      name: 'QueueResumedResult',
-      problems: [QueueNotFoundProblemTC],
-      success: QueueResumedTC,
-    },
-    {
-      name: 'RemoveRepeatableResult',
-      problems: [QueueNotFoundProblemTC],
-      success: RemoveRepeatableSuccessTC,
-    },
-  ].reduce((reducer, item) => {
-    reducer[item.name] = createUnion(item);
-    return reducer;
-  }, {});
+  });
 
   return {
     queueClean: {
-      type: Unions.QueueCleanResult,
+      type: schemaComposer.createObjectTC({
+        name: 'QueueCleanPayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+          jobs: '[String!]',
+        },
+      }),
       args: {
         name: 'String!',
-        grace: 'UInt!',
-        status: {
-          type: StatusEnumTC,
-          defaultValue: 'completed',
-        },
-        limit: {
-          //TODO: дочитать умолчания для скалярных типов
-          type: 'UInt',
-          defaultValue: 0,
-        },
+        filter: schemaComposer
+          .createInputTC({
+            name: 'QueueCleanFilter',
+            fields: {
+              grace: 'UInt!',
+              status: {
+                type: 'StatusEnum',
+                defaultValue: 'completed',
+              },
+              limit: {
+                //TODO: дочитать умолчания для скалярных типов
+                type: 'UInt',
+                defaultValue: 0,
+              },
+            },
+          })
+          .getTypeNonNull(),
       },
-      resolve: runOnQueue(async (_, { queue, grace, limit, status }) => {
-        const jobs = await queue.bullQueue.clean(grace, limit, status);
+      resolve: async (_, { name, filter: { grace, status, limit } }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const jobs = await Queues.get(name).clean(grace, limit, status);
         return {
-          type: CleanedJobsTC.getTypeName(),
-          queueName: queue.name,
+          name,
+          status: PayloadStatusEnum.OK,
           jobs,
-          status,
-          message: 'Queue is cleaned!',
         };
-      }),
+      },
     },
     queuePause: {
-      type: Unions.QueuePausedResult,
+      type: schemaComposer.createObjectTC({
+        name: 'QueuePausePayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+        },
+      }),
       args: {
         name: 'String!',
       },
-      resolve: runOnQueue(async (_, { queue }) => {
-        await queue.bullQueue.pause();
-        //TODO: как вытащить paused состояние, может быть вернуть количество остановленных заданий?
+      resolve: async (_, { name }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        await Queues.get(name).pause();
         return {
-          type: QueuePausedTC.getTypeName(),
-          name: queue.name,
-          message: 'Paused!',
+          name,
+          status: PayloadStatusEnum.OK,
         };
-      }),
+      },
     },
     queueResume: {
-      type: Unions.QueueResumedResult,
+      type: schemaComposer.createObjectTC({
+        name: 'QueueResumePayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+        },
+      }),
       args: {
         name: 'String!',
       },
-      resolve: runOnQueue(async (_, { queue }) => {
-        await queue.bullQueue.resume();
+      resolve: async (_, { name }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        await Queues.get(name).resume();
         return {
-          type: QueueResumedTC.getTypeName(),
-          name: queue.name,
-          message: 'Resumed!',
+          name,
+          status: PayloadStatusEnum.OK,
         };
-      }),
+      },
     },
-    jobMoveToCompleted: {},
-    jobMoveToFailed: {},
     jobRetry: {
-      type: Unions.JobActionResult,
+      type: JobActionPayloadTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job }) => {
-          await job.retry();
-          return {
-            type: JobStateInfoTC.getTypeName(),
-            queueName: queue.name,
-            jobId: job.id,
-            state: 'active',
-            message: 'Job move to active for retry!',
-          };
-        })
-      ),
+      resolve: async (_, { name, id }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        let job = await Queues.get(name).getJob(id);
+        if (!job) return jobNotFound(name, id);
+
+        await job.retry();
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          id,
+          state: StatusEnum.ACTIVE,
+        };
+      },
     },
     jobUpdate: {
-      type: Unions.JobUpdateResult,
+      type: schemaComposer.createObjectTC({
+        name: 'JobRetryPayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+          job: JobTC,
+        },
+      }),
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
         data: 'JSON!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job, data }) => {
-          await job.update(data); //Данные заменяются полностью
-          job = await queue.bullQueue.getJob(job.id); //TODO: может и не надо заново читать
-          return job;
-        })
-      ),
+      resolve: async (_, { name, id, data }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        let job = await Queue.getJob(id);
+        if (!job) return jobNotFound(name, id);
+
+        await job.update(data); //Данные заменяются полностью
+        job = await Queue.getJob(job.id); //TODO: может и не надо заново читать
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          job,
+        };
+      },
     },
     jobRemove: {
-      type: Unions.JobRemoveResult,
+      type: schemaComposer.createObjectTC({
+        name: 'JobRemovePayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+          id: 'String',
+        },
+      }),
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job }) => {
-          const status = job.getState();
-          await job.remove();
-          return {
-            type: CleanedJobsTC.getTypeName(),
-            queueName: queue.name,
-            jobs: [job.id],
-            status,
-            message: 'Job removed!',
-          };
-        })
-      ),
+      resolve: async (_, { name, id }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        let job = await Queue.getJob(id);
+        if (!job) return jobNotFound(name, id);
+
+        await job.remove();
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          id,
+        };
+      },
     },
     jobAdd: {
-      type: Unions.JobAddResult,
+      type: schemaComposer.createObjectTC({
+        name: 'JobAddPayload',
+        fields: {
+          status: 'PayloadStatusEnum!',
+          error: 'String',
+          errorCode: 'ErrorCodeEnum',
+          name: 'String!',
+          job: JobTC,
+        },
+      }),
       args: {
-        queueName: 'String!',
+        name: 'String!',
         jobName: 'String!',
         data: 'JSON!',
         options: JobOptionsInputTC,
-        status: StatusEnumTC,
       },
-      resolve: runOnQueue(async (_, { queue, jobName, data, options, status }) => {
-        if (!queue.jobNames.includes(jobName))
-          return createUnknownJobNameProblem(queue.name, jobName);
-        return await queue.bullQueue.add(jobName, data, options);
-      }),
+      resolve: async (_, { name, jobName, data, options }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        const job = await Queue.add(jobName, data, options);
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          job,
+        };
+      },
     },
     jobDiscard: {
       //TODO: дочитать док.
-      type: Unions.JobActionResult,
+      type: JobActionPayloadTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job }) => {
-          await job.discard();
-          return {
-            type: JobStateInfoTC.getTypeName(),
-            queueName: queue.name,
-            jobId: job.id,
-            state: await job.getState(),
-            message: 'Job is never ran again!',
-          };
-        })
-      ),
+      resolve: async (_, { name, id }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        let job = await Queue.getJob(id);
+        if (!job) return jobNotFound(name, id);
+        await job.discard();
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          id,
+          state: await job.getState(),
+        };
+      },
     },
     jobPromote: {
-      type: Unions.JobActionResult,
+      type: JobActionPayloadTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job }) => {
-          await job.promote();
-          return {
-            type: JobStateInfoTC.getTypeName(),
-            queueName: queue.name,
-            jobId: job.id,
-            state: await job.getState(),
-            message: 'Job promoted!',
-          };
-        })
-      ),
+      resolve: async (_, { name, id }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        let job = await Queue.getJob(id);
+        if (!job) return jobNotFound(name, id);
+        await job.promote();
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          id,
+          state: await job.getState(),
+        };
+      },
     },
     jobLog: {
-      type: Unions.JobActionResult,
+      type: JobActionPayloadTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
         row: 'String!',
       },
-      resolve: runOnQueue(
-        runOnJob(async (_, { queue, job, row }) => {
-          const logRes = await job.log(row);
-          //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
-          return {
-            type: JobStateInfoTC.getTypeName(),
-            queueName: queue.name,
-            jobId: job.id,
-            state: await job.getState(),
-            message: 'Job logged, count=' + logRes + '!',
-          };
-        })
-      ),
+      resolve: async (_, { name, id, row }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        const Queue = Queues.get(name);
+        let job = await Queue.getJob(id);
+        if (!job) return jobNotFound(name, id);
+        const logRes = await job.log(row);
+        //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
+        return {
+          status: PayloadStatusEnum.OK,
+          name,
+          id,
+          state: await job.getState(),
+        };
+      },
     },
+    //TODO: подумать что вернуть и как стандартизировать ответы, какая в точности схема снятия с повтора?...:
     removeRepeatableByKey: {
-      //TODO: подумать что вернуть и как стандартизировать ответы, какая в точности схема снятия с повтора?...:
-      type: Unions.RemoveRepeatableResult,
+      type: JobActionPayloadTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         key: 'String!',
       },
-      resolve: runOnQueue(async (_, { queue, key }) => {
-        await queue.bullQueue.removeRepeatableByKey(key);
+      resolve: async (_, { name, key }, { Queues }) => {
+        if (!Queues.has(name)) return queueNotFound(name);
+        await Queues.get(name).removeRepeatableByKey(key);
         //TODO: тут все благополучно, даже если нет ничего по ключу, надо проблему донести до юзера все-таки
         return {
-          type: RemoveRepeatableSuccessTC.getTypeName(),
-          message: `Repeatable job by key=${key} removed!`,
+          status: PayloadStatusEnum.OK,
         };
-      }),
+      },
     },
   };
 }

@@ -1,5 +1,4 @@
-import { SchemaComposer, ObjectTC, InputTC, EnumTC } from './gqlCompose';
-import { CreateUnknownJobNameProblem } from './problems';
+import { SchemaComposer, ObjectTC, InputTC } from './gqlCompose';
 import { Context } from './Context';
 
 export interface MutationsDependencies {
@@ -7,11 +6,4 @@ export interface MutationsDependencies {
   QueueTC: ObjectTC;
   JobTC: ObjectTC;
   JobOptionsInputTC: InputTC;
-  StatusEnumTC: EnumTC;
-  runOnQueue: Function;
-  runOnJob: Function;
-  JobNotFoundProblemTC: ObjectTC;
-  createUnknownJobNameProblem: CreateUnknownJobNameProblem;
-  UnknownJobNameProblemTC: ObjectTC;
-  QueueNotFoundProblemTC: ObjectTC;
 }

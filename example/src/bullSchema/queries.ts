@@ -1,76 +1,35 @@
-import { isObject } from './utils';
-import { QueriesDependencies, Queries, Context } from '../declarations';
+import { QueriesDependencies } from '../declarations';
 
-export default function ({
-  schemaComposer,
-  QueueTC,
-  JobTC,
-  runOnQueue,
-  createJobNotFoundProblem,
-  JobNotFoundProblemTC,
-  QueueNotFoundProblemTC,
-}: QueriesDependencies): Queries<any, Context> {
-  schemaComposer.createUnionTC({
-    name: 'QueueResultUnion',
-    types: [QueueNotFoundProblemTC, QueueTC],
-    resolveType(result) {
-      if (
-        isObject(result) &&
-        result.hasOwnProperty('type') &&
-        result.type === 'QueueNotFoundProblem'
-      ) {
-        return result.type;
-      }
-      if (isObject(result) && result.hasOwnProperty('name')) {
-        return 'Queue';
-      }
-      return null;
-    },
-  });
-
-  schemaComposer.createUnionTC({
-    name: 'JobResultUnion',
-    types: [JobNotFoundProblemTC, QueueNotFoundProblemTC, JobTC],
-    resolveType(result) {
-      if (
-        isObject(result) &&
-        result.hasOwnProperty('type') &&
-        (result.type === 'QueueNotFoundProblem' || result.type === 'JobNotFoundProblem')
-      ) {
-        return result.type;
-      }
-      if (isObject(result) && result.hasOwnProperty('id')) {
-        return 'Job';
-      }
-      return null;
-    },
-  });
-
+export default function ({ QueueTC, JobTC }: QueriesDependencies) {
   return {
     queues: {
-      type: QueueTC.getTypeNonNull().getTypePlural().getTypeNonNull(),
+      type: QueueTC.getTypeNonNull().getTypePlural(),
       resolve: (_, __, { Queues }) => {
-        return Queues;
+        return Queues.values();
       },
     },
     queue: {
-      type: 'QueueResultUnion!',
+      type: QueueTC,
       args: {
         name: 'String!',
       },
-      resolve: runOnQueue((_, { queue }) => queue),
+      resolve: async (_, { name }, { Queues }) => {
+        if (Queues.has(name)) return Queues.get(name);
+        return null;
+      },
     },
     job: {
-      type: 'JobResultUnion',
+      type: JobTC,
       args: {
-        queueName: 'String!',
+        name: 'String!',
         id: 'String!',
       },
-      resolve: runOnQueue(async (_, { queue, id }) => {
-        const job = await queue.bullQueue.getJob(id);
-        if (!job) return createJobNotFoundProblem(queue.name, id);
+      resolve: async (_, { name, id }, { Queues }) => {
+        if (!Queues.has(name)) return null;
+        let job = await Queues.get(name).getJob(id);
+        if (!job) return null;
         return job;
-      }),
+      },
     },
   };
 }

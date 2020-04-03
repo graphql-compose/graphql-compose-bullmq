@@ -1,4 +1,4 @@
-import { Queue } from './Queue';
+import { Queue } from 'bullmq';
 
 export interface Context {
   Queues: Map<string, Queue>;

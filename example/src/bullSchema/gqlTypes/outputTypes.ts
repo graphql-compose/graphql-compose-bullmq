@@ -1,25 +1,46 @@
 import { isObject } from '../utils';
 
 export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, BoolOrUIntTC }) {
-  const CronRepeatOptionsTC = schemaComposer.createObjectTC({
-    name: 'CronRepeatOptions',
+  const RepeatOptionsInterfaceTC = schemaComposer.createInterfaceTC({
+    name: 'RepeatOptionsInterface',
     fields: {
       tz: 'String',
       endDate: 'Date',
       limit: UIntTC,
-      cron: 'String!', //TODO: добавить скалярный тип с проверкой по рег. выражению
-      startDate: 'Date',
     },
   });
 
-  const EveryRepeatOptionsTC = schemaComposer.createObjectTC({
-    name: 'EveryRepeatOptions',
-    fields: {
-      tz: 'String',
-      endDate: 'Date',
-      limit: UIntTC,
-      every: 'String!',
-    },
+  const CronRepeatOptionsTC = schemaComposer
+    .createObjectTC({
+      name: 'CronRepeatOptions',
+      fields: {
+        tz: 'String',
+        endDate: 'Date',
+        limit: UIntTC,
+        cron: 'String!', //TODO: добавить скалярный тип с проверкой по рег. выражению
+        startDate: 'Date',
+      },
+    })
+    .setInterfaces([RepeatOptionsInterfaceTC]);
+
+  const EveryRepeatOptionsTC = schemaComposer
+    .createObjectTC({
+      name: 'EveryRepeatOptions',
+      fields: {
+        tz: 'String',
+        endDate: 'Date',
+        limit: UIntTC,
+        every: 'String!',
+      },
+    })
+    .setInterfaces([RepeatOptionsInterfaceTC]);
+
+  RepeatOptionsInterfaceTC.addTypeResolver(EveryRepeatOptionsTC, (value) => {
+    return isObject(value) && value.hasOwnProperty('every');
+  });
+
+  RepeatOptionsInterfaceTC.addTypeResolver(CronRepeatOptionsTC, (value) => {
+    return isObject(value) && value.hasOwnProperty('cron');
   });
 
   schemaComposer.createUnionTC({
@@ -138,16 +159,16 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
       jobNames: '[String!]!',
       jobCounts: {
         type: 'JobCounts',
-        resolve: async ({ bullQueue }) => {
-          const asd = await bullQueue.getJobCounts(...types);
+        resolve: async (Queue) => {
+          const asd = await Queue.getJobCounts(...types);
           console.log(asd);
-          return await bullQueue.getJobCounts(...types);
+          return await Queue.getJobCounts(...types);
         },
       },
       repeatables: {
         type: '[RepeatableJobInformation!]!',
-        resolve: async ({ bullQueue }) => {
-          return await bullQueue.getRepeatableJobs();
+        resolve: async (Queue) => {
+          return await Queue.getRepeatableJobs();
         },
       },
       jobs: {
@@ -157,8 +178,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { status, start, end }) => {
-          return await bullQueue.getJobs([status], start, end, false); //TODO: пагинацию
+        resolve: async (Queue, { status, start, end }) => {
+          return await Queue.getJobs([status], start, end, false); //TODO: пагинацию
         },
       },
       waitingJobs: {
@@ -167,8 +188,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { start, end }) => {
-          return await bullQueue.getWaiting(start, end); //TODO: пагинацию
+        resolve: async (Queue, { start, end }) => {
+          return await Queue.getWaiting(start, end); //TODO: пагинацию
         },
       },
       completedJobs: {
@@ -177,8 +198,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { start, end }) => {
-          return await bullQueue.getCompleted(start, end); //TODO: пагинацию
+        resolve: async (Queue, { start, end }) => {
+          return await Queue.getCompleted(start, end); //TODO: пагинацию
         },
       },
       activeJobs: {
@@ -187,8 +208,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { start, end }) => {
-          return await bullQueue.getActive(start, end); //TODO: пагинацию
+        resolve: async (Queue, { start, end }) => {
+          return await Queue.getActive(start, end); //TODO: пагинацию
         },
       },
       delayedJobs: {
@@ -197,8 +218,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { start, end }) => {
-          return await bullQueue.getDelayed(start, end); //TODO: пагинацию
+        resolve: async (Queue, { start, end }) => {
+          return await Queue.getDelayed(start, end); //TODO: пагинацию
         },
       },
       failedJobs: {
@@ -207,8 +228,8 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
           start: startInput,
           end: endInput,
         },
-        resolve: async ({ bullQueue }, { start, end }) => {
-          return await bullQueue.getFailed(start, end); //TODO: пагинацию
+        resolve: async (Queue, { start, end }) => {
+          return await Queue.getFailed(start, end); //TODO: пагинацию
         },
       },
     },

@@ -6,7 +6,7 @@ import createInputTypes from './inputTypes';
 export default function ({ schemaComposer }) {
   const { UIntTC, BoolOrUIntTC } = createScalarTypes({ schemaComposer });
   const UIntNonNullTC = UIntTC.getTypeNonNull();
-  const { StatusEnumTC } = createEnums({ schemaComposer });
+  const { StatusEnumTC, PayloadStatusEnumTC, ErrorCodeEnumTC } = createEnums({ schemaComposer });
 
   const { CronRepeatOptionsTC, JobOptionsTC, JobTC, QueueTC } = createOutputTypes({
     schemaComposer,
@@ -25,6 +25,8 @@ export default function ({ schemaComposer }) {
     UIntTC,
     BoolOrUIntTC,
     StatusEnumTC,
+    PayloadStatusEnumTC,
+    ErrorCodeEnumTC,
     CronRepeatOptionsTC,
     JobOptionsTC,
     JobTC,
