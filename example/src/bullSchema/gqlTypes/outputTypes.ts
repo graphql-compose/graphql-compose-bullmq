@@ -160,8 +160,6 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
       jobCounts: {
         type: 'JobCounts',
         resolve: async (Queue) => {
-          const asd = await Queue.getJobCounts(...types);
-          console.log(asd);
           return await Queue.getJobCounts(...types);
         },
       },

@@ -1,6 +1,10 @@
-import { QueriesDependencies } from '../declarations';
+import { QueriesDependencies, Context } from '../declarations';
+import { ObjectTypeComposerFieldConfigMapDefinition } from 'graphql-compose';
 
-export default function ({ QueueTC, JobTC }: QueriesDependencies) {
+export default function ({
+  QueueTC,
+  JobTC,
+}: QueriesDependencies): ObjectTypeComposerFieldConfigMapDefinition<any, Context> {
   return {
     queues: {
       type: QueueTC.getTypeNonNull().getTypePlural(),
