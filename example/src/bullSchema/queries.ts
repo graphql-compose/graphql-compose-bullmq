@@ -1,6 +1,10 @@
-import { QueriesDependencies } from '../declarations';
+import { QueriesDependencies, Context } from '../declarations';
+import { ObjectTypeComposerFieldConfigMapDefinition } from 'graphql-compose';
 
-export default function ({ QueueTC, JobTC }: QueriesDependencies) {
+export default function ({
+  QueueTC,
+  JobTC,
+}: QueriesDependencies): ObjectTypeComposerFieldConfigMapDefinition<any, Context> {
   return {
     queues: {
       type: QueueTC.getTypeNonNull().getTypePlural(),
@@ -14,8 +18,7 @@ export default function ({ QueueTC, JobTC }: QueriesDependencies) {
         name: 'String!',
       },
       resolve: async (_, { name }, { Queues }) => {
-        if (Queues.has(name)) return Queues.get(name);
-        return null;
+        return Queues.get(name);
       },
     },
     job: {
@@ -25,8 +28,9 @@ export default function ({ QueueTC, JobTC }: QueriesDependencies) {
         id: 'String!',
       },
       resolve: async (_, { name, id }, { Queues }) => {
-        if (!Queues.has(name)) return null;
-        let job = await Queues.get(name).getJob(id);
+        const Queue = Queues.get(name);
+        if (!Queue) return null;
+        let job = await Queue.getJob(id);
         if (!job) return null;
         return job;
       },

@@ -1,12 +1,13 @@
 import { PayloadStatusEnum, ErrorCodeEnum, StatusEnum } from './gqlTypes/enums';
-import { MutationsDependencies, Mutations, Context } from '../declarations';
+import { MutationsDependencies, Context } from '../declarations';
+import { ObjectTypeComposerFieldConfigMapDefinition } from 'graphql-compose';
 
 export default function ({
   schemaComposer,
   QueueTC,
   JobTC,
   JobOptionsInputTC,
-}: MutationsDependencies) {
+}: MutationsDependencies): ObjectTypeComposerFieldConfigMapDefinition<any, Context> {
   // Job#progress - необходимо ли это снаружи?
   // Job#getState - есть просто получение очереди, там есть state
   // Job#discard - допонять
@@ -20,7 +21,7 @@ export default function ({
   // Job#moveToCompleted
   // Job#moveToFailed
 
-  function queueNotFound(name) {
+  function queueNotFound(name: string) {
     return {
       name,
       status: PayloadStatusEnum.ERROR,
@@ -29,7 +30,7 @@ export default function ({
     };
   }
 
-  function jobNotFound(name, id) {
+  function jobNotFound(name: string, id: string) {
     return {
       name,
       id,
@@ -84,8 +85,9 @@ export default function ({
           .getTypeNonNull(),
       },
       resolve: async (_, { name, filter: { grace, status, limit } }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
-        const jobs = await Queues.get(name).clean(grace, limit, status);
+        const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
+        const jobs = await Queue.clean(grace, limit, status);
         return {
           name,
           status: PayloadStatusEnum.OK,
@@ -107,8 +109,9 @@ export default function ({
         name: 'String!',
       },
       resolve: async (_, { name }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
-        await Queues.get(name).pause();
+        const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
+        await Queue.pause();
         return {
           name,
           status: PayloadStatusEnum.OK,
@@ -129,8 +132,9 @@ export default function ({
         name: 'String!',
       },
       resolve: async (_, { name }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
-        await Queues.get(name).resume();
+        const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
+        await Queue.resume();
         return {
           name,
           status: PayloadStatusEnum.OK,
@@ -144,8 +148,9 @@ export default function ({
         id: 'String!',
       },
       resolve: async (_, { name, id }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
-        let job = await Queues.get(name).getJob(id);
+        const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
+        let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
 
         await job.retry();
@@ -174,13 +179,13 @@ export default function ({
         data: 'JSON!',
       },
       resolve: async (_, { name, id, data }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
 
         await job.update(data); //Данные заменяются полностью
-        job = await Queue.getJob(job.id); //TODO: может и не надо заново читать
+        job = await Queue.getJob(id); //TODO: может и не надо заново читать
         return {
           status: PayloadStatusEnum.OK,
           name,
@@ -204,8 +209,8 @@ export default function ({
         id: 'String!',
       },
       resolve: async (_, { name, id }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
 
@@ -235,8 +240,8 @@ export default function ({
         options: JobOptionsInputTC,
       },
       resolve: async (_, { name, jobName, data, options }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         const job = await Queue.add(jobName, data, options);
         return {
           status: PayloadStatusEnum.OK,
@@ -253,8 +258,8 @@ export default function ({
         id: 'String!',
       },
       resolve: async (_, { name, id }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
         await job.discard();
@@ -273,8 +278,8 @@ export default function ({
         id: 'String!',
       },
       resolve: async (_, { name, id }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
         await job.promote();
@@ -294,8 +299,8 @@ export default function ({
         row: 'String!',
       },
       resolve: async (_, { name, id, row }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
         const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
         let job = await Queue.getJob(id);
         if (!job) return jobNotFound(name, id);
         const logRes = await job.log(row);
@@ -316,8 +321,9 @@ export default function ({
         key: 'String!',
       },
       resolve: async (_, { name, key }, { Queues }) => {
-        if (!Queues.has(name)) return queueNotFound(name);
-        await Queues.get(name).removeRepeatableByKey(key);
+        const Queue = Queues.get(name);
+        if (!Queue) return queueNotFound(name);
+        await Queue.removeRepeatableByKey(key);
         //TODO: тут все благополучно, даже если нет ничего по ключу, надо проблему донести до юзера все-таки
         return {
           status: PayloadStatusEnum.OK,
