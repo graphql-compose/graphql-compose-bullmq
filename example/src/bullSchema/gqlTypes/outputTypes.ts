@@ -1,6 +1,6 @@
 import { isObject } from '../utils';
 
-export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, BoolOrUIntTC }) {
+export default function ({ schemaComposer, JobStatusEnumTC, UIntTC, UIntNonNullTC, BoolOrUIntTC }) {
   const RepeatOptionsInterfaceTC = schemaComposer.createInterfaceTC({
     name: 'RepeatOptionsInterface',
     fields: {
@@ -99,7 +99,7 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
       finishedOn: 'Date',
       processedOn: 'Date',
       state: {
-        type: StatusEnumTC,
+        type: JobStatusEnumTC,
         resolve: async (job) => {
           return await job.getState();
         },
@@ -172,7 +172,7 @@ export default function ({ schemaComposer, StatusEnumTC, UIntTC, UIntNonNullTC, 
       jobs: {
         type: '[Job!]!',
         args: {
-          status: StatusEnumTC.getTypeNonNull(),
+          status: JobStatusEnumTC.getTypeNonNull(),
           start: startInput,
           end: endInput,
         },

@@ -6,7 +6,6 @@ import createMutations from './mutations';
 const { JobTC, QueueTC, JobOptionsInputTC } = createTypes({ schemaComposer });
 
 const { queues, queue, job } = createQueries({
-  schemaComposer,
   QueueTC,
   JobTC,
 });
@@ -25,13 +24,12 @@ const {
   jobUpdate,
   jobRemove,
   jobAdd,
-  jobLog,
+  jobLogAdd,
   jobDiscard,
   jobPromote,
-  removeRepeatableByKey,
+  queueRemoveRepeatable,
 } = createMutations({
   schemaComposer,
-  QueueTC,
   JobTC,
   JobOptionsInputTC,
 });
@@ -44,10 +42,10 @@ schemaComposer.Mutation.addFields({
   jobUpdate,
   jobRemove,
   jobAdd,
-  jobLog,
+  jobLogAdd,
   jobDiscard,
   jobPromote,
-  removeRepeatableByKey,
+  queueRemoveRepeatable,
 });
 
 export default schemaComposer.buildSchema();

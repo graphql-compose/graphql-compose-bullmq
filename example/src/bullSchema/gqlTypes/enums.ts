@@ -1,4 +1,4 @@
-export enum StatusEnum {
+export enum JobStatusEnum {
   COMPLETED = 'completed',
   WAITING = 'waiting',
   ACTIVE = 'active',
@@ -19,15 +19,15 @@ export enum ErrorCodeEnum {
 }
 
 export default function ({ schemaComposer }) {
-  const StatusEnumTC = schemaComposer.createEnumTC({
-    name: 'StatusEnum',
+  const JobStatusEnumTC = schemaComposer.createEnumTC({
+    name: 'JobStatusEnum',
     values: {
-      COMPLETED: { value: StatusEnum.COMPLETED },
-      WAITING: { value: StatusEnum.WAITING },
-      ACTIVE: { value: StatusEnum.ACTIVE },
-      DELAYED: { value: StatusEnum.DELAYED },
-      FAILED: { value: StatusEnum.FAILED },
-      PAUSED: { value: StatusEnum.PAUSED }, //TODO: в bull написано что устарело, теперь все waiting
+      COMPLETED: { value: JobStatusEnum.COMPLETED },
+      WAITING: { value: JobStatusEnum.WAITING },
+      ACTIVE: { value: JobStatusEnum.ACTIVE },
+      DELAYED: { value: JobStatusEnum.DELAYED },
+      FAILED: { value: JobStatusEnum.FAILED },
+      PAUSED: { value: JobStatusEnum.PAUSED }, //TODO: в bull написано что устарело, теперь все waiting
     },
   });
 
@@ -49,7 +49,7 @@ export default function ({ schemaComposer }) {
   });
 
   return {
-    StatusEnumTC,
+    JobStatusEnumTC,
     PayloadStatusEnumTC,
     ErrorCodeEnumTC,
   };
