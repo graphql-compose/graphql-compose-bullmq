@@ -1,4 +1,4 @@
-import { isObject } from '../utils';
+import { isObject } from 'graphql-compose';
 
 export default function ({ schemaComposer, JobStatusEnumTC, UIntTC, UIntNonNullTC, BoolOrUIntTC }) {
   const RepeatOptionsInterfaceTC = schemaComposer.createInterfaceTC({

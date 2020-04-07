@@ -13,6 +13,6 @@
     "ts-node-dev": "^1.0.0-pre.44"
   },
   "scripts": {
-    "watch": "ts-node-dev ./src/index.ts"
+    "watch": "ts-node-dev ./src/index.ts --no-notify"
   }
 }

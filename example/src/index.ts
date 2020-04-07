@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server';
 import { Queues } from './queues';
-import schema from './bullSchema';
+import schema from './schema';
 
 const server = new ApolloServer({
   schema,

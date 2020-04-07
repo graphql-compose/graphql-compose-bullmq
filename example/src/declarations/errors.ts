@@ -1,7 +1,7 @@
-import { ErrorCodeEnum } from '../bullSchema/gqlTypes/enums';
+import { ErrorCodeEnum } from '../schema/gqlTypes/enums';
 
 export class PayloadError extends Error {
-  constructor(public code: ErrorCodeEnum, message: string) {
+  constructor(message: string, public code: ErrorCodeEnum) {
     super(message);
     Object.setPrototypeOf(this, PayloadError.prototype);
   }

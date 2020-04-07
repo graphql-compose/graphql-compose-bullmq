@@ -1,5 +1,5 @@
-import { JobStatusEnum } from './../gqlTypes/enums';
-import { generateMutation } from './generator';
+import { JobStatusEnum } from '../gqlTypes/enums';
+import { generateMutation } from './_helpers';
 
 export default function createMutation({ schemaComposer }) {
   const QueueCleanPayload = schemaComposer.createObjectTC({

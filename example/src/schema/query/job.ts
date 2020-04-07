@@ -1,4 +1,4 @@
-export default function createQuery({ JobTC }) {
+export function createJobFC({ JobTC }) {
   return {
     type: JobTC,
     args: {
@@ -8,7 +8,7 @@ export default function createQuery({ JobTC }) {
     resolve: async (_, { queueName, id }, { Queues }) => {
       const Queue = Queues.get(queueName);
       if (!Queue) return null;
-      let job = await Queue.getJob(id);
+      const job = await Queue.getJob(id);
       if (!job) return null;
       return job;
     },

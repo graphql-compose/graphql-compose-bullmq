@@ -1,6 +1,6 @@
-import { PayloadError } from './../../declarations/errors';
-import { ErrorCodeEnum } from './../gqlTypes/enums';
-import { generateMutation } from './generator';
+import { PayloadError } from '../../declarations/errors';
+import { ErrorCodeEnum } from '../gqlTypes/enums';
+import { generateMutation, getQueue } from './_helpers';
 
 export default function createMutation({ schemaComposer }) {
   const JobPromotePayload = schemaComposer.createObjectTC({
@@ -17,8 +17,9 @@ export default function createMutation({ schemaComposer }) {
       queueName: 'String!',
       id: 'String!',
     },
-    resolve: async (_, { id }, { Queue }) => {
-      let job = await Queue.getJob(id);
+    resolve: async (_, { queueName, id }, context) => {
+      const queue = getQueue(queueName, context);
+      const job = await queue.getJob(id);
       if (!job) throw new PayloadError(ErrorCodeEnum.JOB_NOT_FOUND, 'Job not found!');
       await job.promote();
 

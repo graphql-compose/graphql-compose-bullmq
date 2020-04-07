@@ -1,4 +1,4 @@
-export default function createQuery({ QueueTC }) {
+export function createQueueFC({ QueueTC }) {
   return {
     type: QueueTC,
     args: {

@@ -1,4 +1,4 @@
-import { generateMutation } from './generator';
+import { generateMutation } from './_helpers';
 
 export default function createMutation({ schemaComposer }) {
   const QueueRemoveRepeatablePayload = schemaComposer.createObjectTC({

@@ -1,4 +1,4 @@
-export default function createQuery({ QueueTC }) {
+export function createQueuesFC({ QueueTC }) {
   return {
     type: QueueTC.getTypeNonNull().getTypePlural(),
     resolve: (_, __, { Queues }) => {
