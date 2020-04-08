@@ -4,7 +4,7 @@ export function createFailedJobsFC({ JobTC }) {
   return {
     type: [JobTC],
     args: {
-      tart: {
+      start: {
         type: 'Int',
         defaultValue: 0,
       },

@@ -4,7 +4,7 @@ export function createWaitingJobsFC({ JobTC }) {
   return {
     type: [JobTC],
     args: {
-      tart: {
+      start: {
         type: 'Int',
         defaultValue: 0,
       },

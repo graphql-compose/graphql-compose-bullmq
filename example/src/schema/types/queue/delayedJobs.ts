@@ -4,7 +4,7 @@ export function createDelayedJobsFC({ JobTC }) {
   return {
     type: [JobTC],
     args: {
-      tart: {
+      start: {
         type: 'Int',
         defaultValue: 0,
       },
