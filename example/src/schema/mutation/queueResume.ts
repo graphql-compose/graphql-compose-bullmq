@@ -1,7 +1,7 @@
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export default function createQueuePauseMutation({ schemaComposer }) {
-  return generateMutation(schemaComposer, {
+export function createQueueResumeFC() {
+  return {
     type: {
       name: 'QueueResumePayload',
       fields: {
@@ -16,5 +16,5 @@ export default function createQueuePauseMutation({ schemaComposer }) {
       await queue.resume();
       return {};
     },
-  });
+  };
 }

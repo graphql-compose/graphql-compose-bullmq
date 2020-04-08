@@ -1,7 +1,7 @@
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export function createJobRremoveFC({ schemaComposer, JobTC }) {
-  return generateMutation(schemaComposer, {
+export function createJobRremoveFC({ JobTC }) {
+  return {
     type: {
       name: 'JobRemovePayload',
       fields: {
@@ -24,5 +24,5 @@ export function createJobRremoveFC({ schemaComposer, JobTC }) {
         job,
       };
     },
-  });
+  };
 }

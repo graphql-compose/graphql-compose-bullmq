@@ -1,7 +1,7 @@
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export default function createMutation({ schemaComposer }) {
-  return generateMutation(schemaComposer, {
+export function createRemoveRepeatableFC() {
+  return {
     type: {
       name: 'QueueRemoveRepeatablePayload',
       fields: {
@@ -17,5 +17,5 @@ export default function createMutation({ schemaComposer }) {
       await queue.removeRepeatableByKey(key);
       return {};
     },
-  });
+  };
 }

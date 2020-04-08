@@ -1,7 +1,7 @@
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export function createJobAddFC({ schemaComposer, JobTC, JobOptionsInputTC }) {
-  return generateMutation(schemaComposer, {
+export function createJobAddFC({ JobTC, JobOptionsInputTC }) {
+  return {
     type: {
       name: 'JobAddPayload',
       fields: {
@@ -21,5 +21,5 @@ export function createJobAddFC({ schemaComposer, JobTC, JobOptionsInputTC }) {
         job,
       };
     },
-  });
+  };
 }

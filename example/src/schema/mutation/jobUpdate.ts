@@ -1,9 +1,9 @@
 import { PayloadError } from '../../declarations/errors';
 import { ErrorCodeEnum } from '../types/enums';
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export function createJobUpdateFC({ schemaComposer, JobTC }) {
-  return generateMutation(schemaComposer, {
+export function createJobUpdateFC({ JobTC }) {
+  return {
     type: {
       name: 'JobUpdatePayload',
       fields: {
@@ -25,5 +25,5 @@ export function createJobUpdateFC({ schemaComposer, JobTC }) {
         job,
       };
     },
-  });
+  };
 }

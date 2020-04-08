@@ -1,7 +1,7 @@
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export default function createMutation({ schemaComposer, JobStatusEnumTC }) {
-  return generateMutation(schemaComposer, {
+export function createQueueCleanFC({ schemaComposer, JobStatusEnumTC }) {
+  return {
     type: {
       name: 'QueueCleanPayload',
       fields: {
@@ -32,5 +32,5 @@ export default function createMutation({ schemaComposer, JobStatusEnumTC }) {
         jobsId,
       };
     },
-  });
+  };
 }

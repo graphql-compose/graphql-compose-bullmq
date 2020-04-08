@@ -1,8 +1,8 @@
-import queueClean from './queueClean';
-import queuePause from './queuePause';
-import queueResume from './queueResume';
+import { createQueueCleanFC } from './queueClean';
+import { createQueuePauseFC } from './queuePause';
+import { createQueueResumeFC } from './queueResume';
 
-import queueRemoveRepeatable from './queueRemoveRepeatable';
+import { createRemoveRepeatableFC } from './queueRemoveRepeatable';
 
 import { createJobAddFC } from './jobAdd';
 import { createJobDiscardFC } from './jobDiscard';
@@ -12,23 +12,27 @@ import { createJobRetryFC } from './jobRetry';
 import { createJobUpdateFC } from './jobUpdate';
 import { createJobLogAddFC } from './jobLogAdd';
 
+import { createGenerateHelper } from './_helpers';
+
 export function createMutationFields({
   schemaComposer,
   JobTC,
   JobStatusEnumTC,
   JobOptionsInputTC,
 }): any {
+  const generateHelper = createGenerateHelper(schemaComposer);
+  //TODO: пропустить через map это
   return {
-    queueClean: queueClean({ schemaComposer, JobStatusEnumTC }),
-    queuePause: queuePause({ schemaComposer }),
-    queueResume: queueResume({ schemaComposer }),
-    queueRemoveRepeatable: queueRemoveRepeatable({ schemaComposer }),
-    jobAdd: createJobAddFC({ schemaComposer, JobTC, JobOptionsInputTC }),
-    jobDiscard: createJobDiscardFC({ schemaComposer, JobStatusEnumTC }),
-    jobPromote: createjobPromoteFC({ schemaComposer, JobStatusEnumTC }),
-    jobRemove: createJobRremoveFC({ schemaComposer, JobTC }),
-    jobRetry: createJobRetryFC({ schemaComposer, JobStatusEnumTC }),
-    jobUpdate: createJobUpdateFC({ schemaComposer, JobTC }),
-    jobLogAdd: createJobLogAddFC({ schemaComposer, JobStatusEnumTC }),
+    queueClean: generateHelper(createQueueCleanFC({ schemaComposer, JobStatusEnumTC })),
+    queuePause: generateHelper(createQueuePauseFC()),
+    queueResume: generateHelper(createQueueResumeFC()),
+    queueRemoveRepeatable: generateHelper(createRemoveRepeatableFC()),
+    jobAdd: generateHelper(createJobAddFC({ JobTC, JobOptionsInputTC })),
+    jobDiscard: generateHelper(createJobDiscardFC({ JobStatusEnumTC })),
+    jobPromote: generateHelper(createjobPromoteFC({ JobStatusEnumTC })),
+    jobRemove: generateHelper(createJobRremoveFC({ JobTC })),
+    jobRetry: generateHelper(createJobRetryFC({ JobStatusEnumTC })),
+    jobUpdate: generateHelper(createJobUpdateFC({ JobTC })),
+    jobLogAdd: generateHelper(createJobLogAddFC({ JobStatusEnumTC })),
   };
 }

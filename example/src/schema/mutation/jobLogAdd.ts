@@ -1,9 +1,9 @@
 import { PayloadError } from '../../declarations/errors';
 import { ErrorCodeEnum } from '../types/enums';
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export function createJobLogAddFC({ schemaComposer, JobStatusEnumTC }) {
-  return generateMutation(schemaComposer, {
+export function createJobLogAddFC({ JobStatusEnumTC }) {
+  return {
     type: {
       name: 'JobLogAddPayload',
       fields: {
@@ -28,5 +28,5 @@ export function createJobLogAddFC({ schemaComposer, JobStatusEnumTC }) {
         state: await job.getState(),
       };
     },
-  });
+  };
 }

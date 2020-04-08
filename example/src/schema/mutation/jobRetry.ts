@@ -1,9 +1,9 @@
 import { PayloadError } from '../../declarations/errors';
 import { JobStatusEnum, ErrorCodeEnum } from '../types/enums';
-import { generateMutation, getQueue } from './_helpers';
+import { getQueue } from './_helpers';
 
-export function createJobRetryFC({ schemaComposer, JobStatusEnumTC }) {
-  return generateMutation(schemaComposer, {
+export function createJobRetryFC({ JobStatusEnumTC }) {
+  return {
     type: {
       name: 'JobRetryPayload',
       fields: {
@@ -25,5 +25,5 @@ export function createJobRetryFC({ schemaComposer, JobStatusEnumTC }) {
         state: JobStatusEnum.ACTIVE,
       };
     },
-  });
+  };
 }
