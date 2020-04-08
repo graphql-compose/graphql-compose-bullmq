@@ -13,6 +13,9 @@
     "ts-node-dev": "^1.0.0-pre.44"
   },
   "scripts": {
-    "watch": "ts-node-dev ./src/index.ts --no-notify"
+    "watch": "ts-node-dev ./src/index.ts --no-notify",
+    "tscheck": "../node_modules/.bin/tsc --noEmit",
+    "eslint": "../node_modules/.bin/eslint --ext .ts ./src",
+    "lint": "yarn eslint && yarn tscheck"
   }
 }

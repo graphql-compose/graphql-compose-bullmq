@@ -1,7 +1,7 @@
 //import 'dotenv/config'
 
 const BULL_REDIS_URI = {
-  port: process.env.REDIS_PORT || 6379,
+  port: parseInt(process.env.REDIS_PORT || '6379'),
   host: process.env.REDIS_HOST || '127.0.0.1',
   password: process.env.REDIS_PASSWORD || '',
 };

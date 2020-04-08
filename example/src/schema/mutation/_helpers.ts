@@ -10,11 +10,11 @@ import { PayloadStatusEnum, ErrorCodeEnum } from '../types/enums';
 import { PayloadError } from '../../declarations/errors';
 
 export function getQueue(queueName: string, context: any): Queue {
-  const Queue = context?.Queues?.get(queueName);
-  if (!Queue) {
+  const queue = context?.Queues?.get(queueName);
+  if (!queue) {
     throw new PayloadError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
   }
-  return Queue;
+  return queue;
 }
 
 type FieldConfig = Omit<ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>, 'type'> & {

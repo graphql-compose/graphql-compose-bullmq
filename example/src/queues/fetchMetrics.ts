@@ -35,17 +35,19 @@ const metricsWorker = new Worker(
     //https://github.com/taskforcesh/bullmq/issues/69
     console.log(new Date().toISOString(), 'Starting name: ' + job.name + ', job: ' + job.id);
     return new Promise((resolve) => {
-      setTimeout(() =>
-        resolve({
-          status: 'job completed',
-          result: new Date().toISOString(),
-        })
+      setTimeout(
+        () =>
+          resolve({
+            status: 'job completed',
+            result: new Date().toISOString(),
+          }),
+        0
       );
     });
   },
   {
     prefix,
-    connection: metricsQueue.client,
+    connection: BULL_REDIS_URI,
   }
 );
 
