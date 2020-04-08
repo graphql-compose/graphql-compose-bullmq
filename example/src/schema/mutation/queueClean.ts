@@ -1,6 +1,6 @@
 import { generateMutation, getQueue } from './_helpers';
 
-export default function createMutation({ schemaComposer }) {
+export default function createMutation({ schemaComposer, JobStatusEnumTC }) {
   return generateMutation(schemaComposer, {
     type: {
       name: 'QueueCleanPayload',
@@ -15,7 +15,7 @@ export default function createMutation({ schemaComposer }) {
         fields: {
           grace: 'Int!',
           status: {
-            type: 'JobStatusEnum',
+            type: JobStatusEnumTC,
             defaultValue: 'completed',
           },
           limit: {

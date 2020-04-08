@@ -7,7 +7,7 @@ import { createActiveJobsFC } from './activeJobs';
 import { createDelayedJobsFC } from './delayedJobs';
 import { createFailedJobsFC } from './failedJobs';
 
-export function createQueueTC(schemaComposer, { JobTC }) {
+export function createQueueTC(schemaComposer, { JobTC, JobStatusEnumTC }) {
   return schemaComposer.createObjectTC({
     name: 'Queue',
     description: 'Bull queue',
@@ -17,7 +17,7 @@ export function createQueueTC(schemaComposer, { JobTC }) {
       jobNames: '[String!]',
       jobCounts: createJobCountFC(schemaComposer),
       repeatables: createRepeatablesFC(schemaComposer),
-      jobs: createJobsFC({ JobTC }),
+      jobs: createJobsFC({ JobTC, JobStatusEnumTC }),
       waitingJobs: createWaitingJobsFC({ JobTC }),
       completedJobs: createCompletedJobsFC({ JobTC }),
       activeJobs: createActiveJobsFC({ JobTC }),

@@ -18,7 +18,7 @@ export enum ErrorCodeEnum {
   OTHER_ERROR = 'other_error',
 }
 
-export default function ({ schemaComposer }) {
+export function createEnumsTC({ schemaComposer }) {
   const JobStatusEnumTC = schemaComposer.createEnumTC({
     name: 'JobStatusEnum',
     values: {

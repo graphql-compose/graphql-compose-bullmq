@@ -1,10 +1,10 @@
 import { Queue } from 'bullmq';
 
-export function createJobsFC({ JobTC }) {
+export function createJobsFC({ JobTC, JobStatusEnumTC }) {
   return {
     type: [JobTC],
     args: {
-      status: 'JobStatusEnum',
+      status: JobStatusEnumTC,
       start: {
         type: 'Int',
         defaultValue: 0,

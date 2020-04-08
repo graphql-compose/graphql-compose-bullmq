@@ -12,18 +12,23 @@ import { createJobRetryFC } from './jobRetry';
 import { createJobUpdateFC } from './jobUpdate';
 import { createJobLogAddFC } from './jobLogAdd';
 
-export function createMutationFields({ schemaComposer, JobTC, JobOptionsInputTC }): any {
+export function createMutationFields({
+  schemaComposer,
+  JobTC,
+  JobStatusEnumTC,
+  JobOptionsInputTC,
+}): any {
   return {
-    queueClean: queueClean({ schemaComposer }),
+    queueClean: queueClean({ schemaComposer, JobStatusEnumTC }),
     queuePause: queuePause({ schemaComposer }),
     queueResume: queueResume({ schemaComposer }),
     queueRemoveRepeatable: queueRemoveRepeatable({ schemaComposer }),
     jobAdd: createJobAddFC({ schemaComposer, JobTC, JobOptionsInputTC }),
-    jobDiscard: createJobDiscardFC({ schemaComposer }),
-    jobPromote: createjobPromoteFC({ schemaComposer }),
+    jobDiscard: createJobDiscardFC({ schemaComposer, JobStatusEnumTC }),
+    jobPromote: createjobPromoteFC({ schemaComposer, JobStatusEnumTC }),
     jobRemove: createJobRremoveFC({ schemaComposer, JobTC }),
-    jobRetry: createJobRetryFC({ schemaComposer }),
+    jobRetry: createJobRetryFC({ schemaComposer, JobStatusEnumTC }),
     jobUpdate: createJobUpdateFC({ schemaComposer, JobTC }),
-    jobLogAdd: createJobLogAddFC({ schemaComposer }),
+    jobLogAdd: createJobLogAddFC({ schemaComposer, JobStatusEnumTC }),
   };
 }

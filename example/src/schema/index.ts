@@ -3,7 +3,7 @@ import createTypes from './types';
 import { createQueryFields } from './query';
 import { createMutationFields } from './mutation';
 
-const { JobTC, QueueTC, JobOptionsInputTC } = createTypes({ schemaComposer });
+const { JobTC, QueueTC, JobOptionsInputTC, JobStatusEnumTC } = createTypes({ schemaComposer });
 
 schemaComposer.Query.addFields({
   ...createQueryFields({ QueueTC, JobTC }),
@@ -14,6 +14,7 @@ schemaComposer.Mutation.addFields({
     schemaComposer,
     JobTC,
     JobOptionsInputTC,
+    JobStatusEnumTC,
   }),
 });
 

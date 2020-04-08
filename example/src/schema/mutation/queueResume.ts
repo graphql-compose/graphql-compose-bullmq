@@ -5,9 +5,6 @@ export default function createQueuePauseMutation({ schemaComposer }) {
     type: {
       name: 'QueueResumePayload',
       fields: {
-        status: 'PayloadStatusEnum!',
-        error: 'String',
-        errorCode: 'ErrorCodeEnum',
         queueName: 'String!',
       },
     },

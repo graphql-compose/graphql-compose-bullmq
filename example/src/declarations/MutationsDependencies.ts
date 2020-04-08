@@ -1,4 +1,4 @@
-import { SchemaComposer, ObjectTC, InputTC } from './gqlCompose';
+import { SchemaComposer, ObjectTC, InputTC, EnumTC } from './gqlCompose';
 import { Context } from './Context';
 
 export interface MutationsDependencies {
@@ -6,4 +6,5 @@ export interface MutationsDependencies {
   QueueTC: ObjectTC;
   JobTC: ObjectTC;
   JobOptionsInputTC: InputTC;
+  JobStatusEnumTC: EnumTC;
 }

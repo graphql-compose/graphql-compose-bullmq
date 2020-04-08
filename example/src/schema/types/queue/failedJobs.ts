@@ -13,7 +13,7 @@ export function createFailedJobsFC({ JobTC }) {
         defaultValue: -1,
       },
     },
-    resolve: async (queue: Queue, { status, start, end }) => {
+    resolve: async (queue: Queue, { start, end }) => {
       return await queue.getFailed(start, end);
     },
   };
