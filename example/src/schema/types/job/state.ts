@@ -1,8 +1,10 @@
 import { Job } from 'bullmq';
+import { SchemaComposer } from 'graphql-compose';
+import { getJobStatusEnumTC } from '../enums';
 
-export function createStateFC({ JobStatusEnumTC }) {
+export function createStateFC(schemaComposer: SchemaComposer<any>) {
   return {
-    type: JobStatusEnumTC,
+    type: getJobStatusEnumTC(schemaComposer),
     resolve: async (job: Job) => {
       return await job.getState();
     },

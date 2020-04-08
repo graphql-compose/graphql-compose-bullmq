@@ -1,3 +1,5 @@
+import { SchemaComposer } from 'graphql-compose';
+
 export enum JobStatusEnum {
   COMPLETED = 'completed',
   WAITING = 'waiting',
@@ -18,39 +20,34 @@ export enum ErrorCodeEnum {
   OTHER_ERROR = 'other_error',
 }
 
-export function createEnumsTC({ schemaComposer }) {
-  const JobStatusEnumTC = schemaComposer.createEnumTC({
-    name: 'JobStatusEnum',
-    values: {
+export function getJobStatusEnumTC(sc: SchemaComposer<any>) {
+  return sc.getOrCreateETC('JobStatusEnum', (etc) => {
+    etc.addFields({
       COMPLETED: { value: JobStatusEnum.COMPLETED },
       WAITING: { value: JobStatusEnum.WAITING },
       ACTIVE: { value: JobStatusEnum.ACTIVE },
       DELAYED: { value: JobStatusEnum.DELAYED },
       FAILED: { value: JobStatusEnum.FAILED },
       PAUSED: { value: JobStatusEnum.PAUSED }, //TODO: в bull написано что устарело, теперь все waiting
-    },
+    });
   });
+}
 
-  const PayloadStatusEnumTC = schemaComposer.createEnumTC({
-    name: 'PayloadStatusEnum',
-    values: {
+export function getMutationStatusEnumTC(sc: SchemaComposer<any>) {
+  return sc.getOrCreateETC('MutationStatusEnum', (etc) => {
+    etc.addFields({
       OK: { value: PayloadStatusEnum.OK },
       ERROR: { value: PayloadStatusEnum.ERROR },
-    },
+    });
   });
+}
 
-  const ErrorCodeEnumTC = schemaComposer.createEnumTC({
-    name: 'ErrorCodeEnum',
-    values: {
+export function getMutationErrorCodeEnumTC(sc: SchemaComposer<any>) {
+  return sc.getOrCreateETC('MutationErrorCodeEnum', (etc) => {
+    etc.addFields({
       QUEUE_NOT_FOUND: { value: ErrorCodeEnum.QUEUE_NOT_FOUND },
       JOB_NOT_FOUND: { value: ErrorCodeEnum.JOB_NOT_FOUND },
       OTHER_ERROR: { value: ErrorCodeEnum.OTHER_ERROR },
-    },
+    });
   });
-
-  return {
-    JobStatusEnumTC,
-    PayloadStatusEnumTC,
-    ErrorCodeEnumTC,
-  };
 }

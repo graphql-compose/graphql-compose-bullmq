@@ -1,3 +1,5 @@
+import { Job } from 'bullmq';
+
 export function createLogsFC(schemaComposer) {
   return {
     type: schemaComposer.createObjectTC({

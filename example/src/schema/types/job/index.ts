@@ -1,8 +1,9 @@
 import { createLogsFC } from './logs';
 import { createStateFC } from './state';
 import { createRepeatOptionsTC } from './repeatOptionsUnion';
+import { SchemaComposer } from 'graphql-compose';
 
-export function createJobTC(schemaComposer, { JobStatusEnumTC }) {
+export function createJobTC(schemaComposer: SchemaComposer<any>) {
   return schemaComposer.createObjectTC({
     name: 'Job',
     fields: {
@@ -34,7 +35,7 @@ export function createJobTC(schemaComposer, { JobStatusEnumTC }) {
           stackTraceLimit: 'Int',
         },
       }),
-      state: createStateFC({ JobStatusEnumTC }),
+      state: createStateFC(schemaComposer),
       logs: createLogsFC(schemaComposer),
     },
   });

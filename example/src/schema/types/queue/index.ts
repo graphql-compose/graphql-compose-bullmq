@@ -6,8 +6,9 @@ import { createCompletedJobsFC } from './completedJobs';
 import { createActiveJobsFC } from './activeJobs';
 import { createDelayedJobsFC } from './delayedJobs';
 import { createFailedJobsFC } from './failedJobs';
+import { SchemaComposer } from 'graphql-compose';
 
-export function createQueueTC(schemaComposer, { JobTC, JobStatusEnumTC }) {
+export function createQueueTC(schemaComposer: SchemaComposer<any>, { JobTC }) {
   return schemaComposer.createObjectTC({
     name: 'Queue',
     description: 'Bull queue',
@@ -17,7 +18,7 @@ export function createQueueTC(schemaComposer, { JobTC, JobStatusEnumTC }) {
       jobNames: '[String!]',
       jobCounts: createJobCountFC(schemaComposer),
       repeatables: createRepeatablesFC(schemaComposer),
-      jobs: createJobsFC({ JobTC, JobStatusEnumTC }),
+      jobs: createJobsFC({ JobTC }),
       waitingJobs: createWaitingJobsFC({ JobTC }),
       completedJobs: createCompletedJobsFC({ JobTC }),
       activeJobs: createActiveJobsFC({ JobTC }),

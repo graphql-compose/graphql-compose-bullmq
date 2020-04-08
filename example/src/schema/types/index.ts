@@ -1,16 +1,10 @@
-import { createEnumsTC } from './enums';
 import { createInputTypes } from './input';
 import { createQueueTC } from './queue';
 import { createJobTC } from './job';
 
 export default function ({ schemaComposer }) {
-  const { JobStatusEnumTC, PayloadStatusEnumTC, ErrorCodeEnumTC } = createEnumsTC({
-    schemaComposer,
-  });
-
-  const JobTC = createJobTC(schemaComposer, { JobStatusEnumTC });
-
-  const QueueTC = createQueueTC(schemaComposer, { JobTC, JobStatusEnumTC });
+  const JobTC = createJobTC(schemaComposer);
+  const QueueTC = createQueueTC(schemaComposer, { JobTC });
 
   const { JobOptionsInputTC } = createInputTypes(schemaComposer);
 
