@@ -1,3 +1,4 @@
+import { Queue } from 'bullmq';
 import {
   SchemaComposer,
   getFlatProjectionFromAST,
@@ -5,9 +6,16 @@ import {
   ObjectTypeComposerFieldConfigAsObjectDefinition,
   ObjectTypeComposerAsObjectDefinition,
 } from 'graphql-compose';
-import { PayloadStatusEnum, ErrorCodeEnum } from '../gqlTypes/enums';
+import { PayloadStatusEnum, ErrorCodeEnum } from '../types/enums';
 import { PayloadError } from '../../declarations/errors';
-import { Queue } from 'bullmq';
+
+export function getQueue(queueName: string, context: any): Queue {
+  const Queue = context?.Queues?.get(queueName);
+  if (!Queue) {
+    throw new PayloadError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
+  }
+  return Queue;
+}
 
 export function generateMutation(
   schemaComposer: SchemaComposer<any>,
@@ -58,12 +66,4 @@ export function generateMutation(
     type,
     resolve,
   };
-}
-
-export function getQueue(queueName: string, context: any): Queue {
-  const Queue = context?.Queues?.get(queueName);
-  if (!Queue) {
-    throw new PayloadError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
-  }
-  return Queue;
 }

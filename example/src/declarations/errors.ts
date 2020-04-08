@@ -1,4 +1,4 @@
-import { ErrorCodeEnum } from '../schema/gqlTypes/enums';
+import { ErrorCodeEnum } from '../schema/types/enums';
 
 export class PayloadError extends Error {
   constructor(message: string, public code: ErrorCodeEnum) {

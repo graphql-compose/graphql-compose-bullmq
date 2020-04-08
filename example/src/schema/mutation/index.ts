@@ -1,29 +1,29 @@
-// import queueClean from './queueClean';
-// import queuePause from './queuePause';
-// import queueResume from './queueResume';
+import queueClean from './queueClean';
+import queuePause from './queuePause';
+import queueResume from './queueResume';
 
-// import queueRemoveRepeatable from './queueRemoveRepeatable';
+import queueRemoveRepeatable from './queueRemoveRepeatable';
 
 import { createJobAddFC } from './jobAdd';
 import { createJobDiscardFC } from './jobDiscard';
-// import jobPromote from './jobPromote';
+import { createjobPromoteFC } from './jobPromote';
 import { createJobRremoveFC } from './jobRemove';
-// import jobRetry from './jobRetry';
-// import jobUpdate from './jobUpdate';
-// import jobLogAdd from './jobLogAdd';
+import { createJobRetryFC } from './jobRetry';
+import { createJobUpdateFC } from './jobUpdate';
+import { createJobLogAddFC } from './jobLogAdd';
 
 export function createMutationFields({ schemaComposer, JobTC, JobOptionsInputTC }): any {
   return {
-    // queueClean: queueClean({ schemaComposer }),
-    // queuePause: queuePause({ schemaComposer }),
-    // queueResume: queueResume({ schemaComposer }),
-    // queueRemoveRepeatable: queueRemoveRepeatable({ schemaComposer }),
+    queueClean: queueClean({ schemaComposer }),
+    queuePause: queuePause({ schemaComposer }),
+    queueResume: queueResume({ schemaComposer }),
+    queueRemoveRepeatable: queueRemoveRepeatable({ schemaComposer }),
     jobAdd: createJobAddFC({ schemaComposer, JobTC, JobOptionsInputTC }),
     jobDiscard: createJobDiscardFC({ schemaComposer }),
-    // jobPromote: jobPromote({ schemaComposer }),
+    jobPromote: createjobPromoteFC({ schemaComposer }),
     jobRemove: createJobRremoveFC({ schemaComposer, JobTC }),
-    // jobRetry: jobRetry({ schemaComposer }),
-    // jobUpdate: jobUpdate({ schemaComposer, JobTC }),
-    // jobLogAdd: jobLogAdd({ schemaComposer }),
+    jobRetry: createJobRetryFC({ schemaComposer }),
+    jobUpdate: createJobUpdateFC({ schemaComposer, JobTC }),
+    jobLogAdd: createJobLogAddFC({ schemaComposer }),
   };
 }

@@ -6,9 +6,9 @@ export function createJobFC({ JobTC }) {
       id: 'String!',
     },
     resolve: async (_, { queueName, id }, { Queues }) => {
-      const Queue = Queues.get(queueName);
-      if (!Queue) return null;
-      const job = await Queue.getJob(id);
+      const queue = Queues.get(queueName);
+      if (!queue) return null;
+      const job = await queue.getJob(id);
       if (!job) return null;
       return job;
     },

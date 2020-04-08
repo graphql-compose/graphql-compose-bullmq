@@ -1,5 +1,5 @@
 import { schemaComposer } from 'graphql-compose';
-import createTypes from './gqlTypes';
+import createTypes from './types';
 import { createQueryFields } from './query';
 import { createMutationFields } from './mutation';
 

@@ -1,50 +1,35 @@
-import { JobStatusEnum } from '../gqlTypes/enums';
-import { generateMutation } from './_helpers';
+import { generateMutation, getQueue } from './_helpers';
 
 export default function createMutation({ schemaComposer }) {
-  const QueueCleanPayload = schemaComposer.createObjectTC({
-    name: 'QueueCleanPayload',
-    fields: {
-      //jobs: '[String!]',
-    },
-  });
-
-  const QueueCleanFilter = schemaComposer
-    .createInputTC({
-      name: 'QueueCleanFilter',
+  return generateMutation(schemaComposer, {
+    type: {
+      name: 'QueueCleanPayload',
       fields: {
-        grace: 'UInt!',
-        status: {
-          type: 'JobStatusEnum',
-          defaultValue: 'completed',
-        },
-        limit: {
-          //TODO: дочитать умолчания для скалярных типов
-          type: 'UInt',
-          defaultValue: 0,
-        },
+        jobsId: '[String!]', //TODO: Queue.clean возвращает список очищенных id
       },
-    })
-    .getTypeNonNull();
-
-  type FilterArg = {
-    filter: {
-      grace: number;
-      status?: JobStatusEnum;
-      limit?: number;
-    };
-  };
-
-  return generateMutation<{ queueName: string; filter: FilterArg }>({
-    type: QueueCleanPayload,
+    },
     args: {
       queueName: 'String!',
-      filter: QueueCleanFilter,
+      filter: schemaComposer.createInputTC({
+        name: 'QueueCleanFilter',
+        fields: {
+          grace: 'Int!',
+          status: {
+            type: 'JobStatusEnum',
+            defaultValue: 'completed',
+          },
+          limit: {
+            type: 'Int',
+            defaultValue: 0,
+          },
+        },
+      }),
     },
-    resolve: async (_, { name, filter: { grace, status, limit } }, { Queue }) => {
-      const jobs = await Queue.clean(grace, limit, status);
+    resolve: async (_, { queueName, filter: { grace, status, limit } }, context) => {
+      const queue = getQueue(queueName, context);
+      const jobsId = await queue.clean(grace, limit, status);
       return {
-        //jobs,
+        jobsId,
       };
     },
   });

@@ -1,21 +1,20 @@
-import { generateMutation } from './_helpers';
+import { generateMutation, getQueue } from './_helpers';
 
 export default function createMutation({ schemaComposer }) {
-  const QueueRemoveRepeatablePayload = schemaComposer.createObjectTC({
-    name: 'QueueRemoveRepeatablePayload',
-    fields: {
-      key: 'String!',
+  return generateMutation(schemaComposer, {
+    type: {
+      name: 'QueueRemoveRepeatablePayload',
+      fields: {
+        key: 'String!',
+      },
     },
-  });
-
-  return generateMutation<{ queueName: string; key: string }>({
-    type: QueueRemoveRepeatablePayload,
     args: {
       queueName: 'String!',
       key: 'String!',
     },
-    resolve: async (_, { key }, { Queue }) => {
-      await Queue.removeRepeatableByKey(key);
+    resolve: async (_, { queueName, key }, context) => {
+      const queue = getQueue(queueName, context);
+      await queue.removeRepeatableByKey(key);
       return {};
     },
   });

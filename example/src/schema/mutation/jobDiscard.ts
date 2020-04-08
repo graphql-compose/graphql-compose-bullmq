@@ -1,5 +1,5 @@
 import { PayloadError } from '../../declarations/errors';
-import { ErrorCodeEnum } from '../gqlTypes/enums';
+import { ErrorCodeEnum } from '../types/enums';
 import { generateMutation, getQueue } from './_helpers';
 
 export function createJobDiscardFC({ schemaComposer }) {

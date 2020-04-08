@@ -1,8 +1,8 @@
 import { PayloadError } from '../../declarations/errors';
-import { ErrorCodeEnum } from '../gqlTypes/enums';
+import { ErrorCodeEnum } from '../types/enums';
 import { generateMutation, getQueue } from './_helpers';
 
-export default function createMutation({ schemaComposer }) {
+export function createJobLogAddFC({ schemaComposer }) {
   return generateMutation(schemaComposer, {
     type: {
       name: 'JobLogAddPayload',
@@ -19,7 +19,7 @@ export default function createMutation({ schemaComposer }) {
     resolve: async (_, { queueName, id, row }, context) => {
       const queue = getQueue(queueName, context);
       const job = await queue.getJob(id);
-      if (!job) throw new PayloadError(ErrorCodeEnum.JOB_NOT_FOUND, 'Job not found!');
+      if (!job) throw new PayloadError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       const logRes = await job.log(row);
       //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
 

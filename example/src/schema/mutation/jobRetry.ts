@@ -1,28 +1,25 @@
 import { PayloadError } from '../../declarations/errors';
-import { JobStatusEnum, ErrorCodeEnum } from '../gqlTypes/enums';
+import { JobStatusEnum, ErrorCodeEnum } from '../types/enums';
 import { generateMutation, getQueue } from './_helpers';
 
-export default function createMutation({ schemaComposer }) {
-  const JobRetryPayload = schemaComposer.createObjectTC({
-    name: 'JobRetryPayload',
-    fields: {
-      id: 'String',
-      state: 'JobStatusEnum',
+export function createJobRetryFC({ schemaComposer }) {
+  return generateMutation(schemaComposer, {
+    type: {
+      name: 'JobRetryPayload',
+      fields: {
+        id: 'String',
+        state: 'JobStatusEnum',
+      },
     },
-  });
-
-  return generateMutation<{ queueName: string; id: string }>({
-    type: JobRetryPayload,
     args: {
       queueName: 'String!',
       id: 'String!',
     },
     resolve: async (_, { queueName, id }, context) => {
-      const Queue = getQueue(queueName, context);
-      const job = await Queue.getJob(id);
-      if (!job) throw new PayloadError(ErrorCodeEnum.JOB_NOT_FOUND, 'Job not found!');
+      const queue = getQueue(queueName, context);
+      const job = await queue.getJob(id);
+      if (!job) throw new PayloadError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.retry();
-
       return {
         id,
         state: JobStatusEnum.ACTIVE,
