@@ -1,5 +1,6 @@
 import { BULL_REDIS_URI, BULL_HOST_ID } from '../config';
 import { Queue, Worker, QueueScheduler } from 'bullmq';
+import { createBullConnection } from '../connectRedis';
 
 if (!BULL_REDIS_URI) {
   throw new Error(`Env var BULL_REDIS_URI is empty. Cannot init task ${__filename}.`);
@@ -15,12 +16,12 @@ const prefix = queueSettings.prefix;
 
 const metricsScheduler = new QueueScheduler(queueSettings.name, {
   prefix,
-  connection: BULL_REDIS_URI,
+  connection: createBullConnection('scheduler'), // BULL_REDIS_URI,
 });
 
 export const metricsQueue = new Queue(queueSettings.name, {
   prefix,
-  connection: BULL_REDIS_URI,
+  connection: createBullConnection('queue'), // BULL_REDIS_URI,
 });
 
 metricsQueue.add(
@@ -47,7 +48,7 @@ const metricsWorker = new Worker(
   },
   {
     prefix,
-    connection: BULL_REDIS_URI,
+    connection: createBullConnection('worker'), // BULL_REDIS_URI,
   }
 );
 
