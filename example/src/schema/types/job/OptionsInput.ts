@@ -1,11 +1,12 @@
-export function createInputTypes(schemaComposer) {
-  const JobOptionsInputTC = schemaComposer.createInputTC({
-    name: 'JobOptionsInput',
-    fields: {
+import { SchemaComposer } from 'graphql-compose';
+
+export function getJobOptionsInputTC(sc: SchemaComposer<any>) {
+  return sc.getOrCreateITC('JobOptionsInput', (etc) => {
+    etc.addFields({
       priority: 'Int',
       delay: 'Int',
       attempts: 'Int',
-      repeat: schemaComposer.createInputTC({
+      repeat: sc.createInputTC({
         name: 'CronRepeatOptionsInput',
         fields: {
           tz: 'String',
@@ -22,10 +23,6 @@ export function createInputTypes(schemaComposer) {
       removeOnComplete: 'Boolean', //TODO: bool or int
       removeOnFail: 'Boolean', //TODO: bool or int
       stackTraceLimit: 'Int',
-    },
+    });
   });
-
-  return {
-    JobOptionsInputTC,
-  };
 }

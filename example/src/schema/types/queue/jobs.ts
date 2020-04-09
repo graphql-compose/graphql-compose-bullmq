@@ -1,10 +1,11 @@
 import { Queue } from 'bullmq';
 import { SchemaComposer } from 'graphql-compose';
 import { getJobStatusEnumTC } from '../enums';
+import { getJobTC } from '../job';
 
-export function createJobsFC(schemaComposer: SchemaComposer<any>, { JobTC }) {
+export function createJobsFC(schemaComposer: SchemaComposer<any>) {
   return {
-    type: [JobTC],
+    type: getJobTC(schemaComposer).getTypePlural(),
     args: {
       status: getJobStatusEnumTC(schemaComposer),
       start: {

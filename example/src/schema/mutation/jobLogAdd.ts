@@ -1,14 +1,14 @@
-import { PayloadError } from '../../declarations/errors';
-import { ErrorCodeEnum } from '../types/enums';
+import { MutationError } from './Error';
+import { ErrorCodeEnum, getJobStatusEnumTC } from '../types';
 import { getQueue } from './_helpers';
 
-export function createJobLogAddFC({ JobStatusEnumTC }) {
+export function createJobLogAddFC({ schemaComposer }) {
   return {
     type: {
       name: 'JobLogAddPayload',
       fields: {
         id: 'String',
-        state: JobStatusEnumTC,
+        state: getJobStatusEnumTC(schemaComposer),
       },
     },
     args: {
@@ -19,7 +19,7 @@ export function createJobLogAddFC({ JobStatusEnumTC }) {
     resolve: async (_, { queueName, id, row }, context) => {
       const queue = getQueue(queueName, context);
       const job = await queue.getJob(id);
-      if (!job) throw new PayloadError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       const logRes = await job.log(row);
       //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
 

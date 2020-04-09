@@ -9,7 +9,7 @@ export enum JobStatusEnum {
   PAUSED = 'paused',
 }
 
-export enum PayloadStatusEnum {
+export enum MutationStatusEnum {
   OK = 'ok',
   ERROR = 'error',
 }
@@ -36,8 +36,8 @@ export function getJobStatusEnumTC(sc: SchemaComposer<any>) {
 export function getMutationStatusEnumTC(sc: SchemaComposer<any>) {
   return sc.getOrCreateETC('MutationStatusEnum', (etc) => {
     etc.addFields({
-      OK: { value: PayloadStatusEnum.OK },
-      ERROR: { value: PayloadStatusEnum.ERROR },
+      OK: { value: MutationStatusEnum.OK },
+      ERROR: { value: MutationStatusEnum.ERROR },
     });
   });
 }

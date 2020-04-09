@@ -1,6 +1,9 @@
-export function createQueueFC({ QueueTC }) {
+import { SchemaComposer } from 'graphql-compose';
+import { getQueueTC } from '../types/queue';
+
+export function createQueueFC(schemaComposer: SchemaComposer<any>) {
   return {
-    type: QueueTC,
+    type: getQueueTC(schemaComposer),
     args: {
       queueName: 'String!',
     },

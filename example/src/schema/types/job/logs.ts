@@ -1,6 +1,7 @@
 import { Job } from 'bullmq';
+import { SchemaComposer } from 'graphql-compose';
 
-export function createLogsFC(schemaComposer) {
+export function createLogsFC(schemaComposer: SchemaComposer<any>) {
   return {
     type: schemaComposer.createObjectTC({
       name: 'JobLogs',
@@ -9,7 +10,7 @@ export function createLogsFC(schemaComposer) {
         logs: '[String!]!',
       },
     }),
-    resolve: async (job) => {
+    resolve: async (job: Job) => {
       return await job.queue.getJobLogs(job.id);
     },
   };

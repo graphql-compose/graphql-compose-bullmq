@@ -1,14 +1,14 @@
-import { PayloadError } from '../../declarations/errors';
-import { JobStatusEnum, ErrorCodeEnum } from '../types/enums';
+import { MutationError } from './Error';
+import { ErrorCodeEnum, JobStatusEnum, getJobStatusEnumTC } from '../types';
 import { getQueue } from './_helpers';
 
-export function createJobRetryFC({ JobStatusEnumTC }) {
+export function createJobRetryFC({ schemaComposer }) {
   return {
     type: {
       name: 'JobRetryPayload',
       fields: {
         id: 'String',
-        state: JobStatusEnumTC,
+        state: getJobStatusEnumTC(schemaComposer),
       },
     },
     args: {
@@ -18,7 +18,7 @@ export function createJobRetryFC({ JobStatusEnumTC }) {
     resolve: async (_, { queueName, id }, context) => {
       const queue = getQueue(queueName, context);
       const job = await queue.getJob(id);
-      if (!job) throw new PayloadError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.retry();
       return {
         id,

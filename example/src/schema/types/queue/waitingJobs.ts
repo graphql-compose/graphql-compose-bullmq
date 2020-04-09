@@ -1,8 +1,10 @@
+import { SchemaComposer } from 'graphql-compose';
 import { Queue } from 'bullmq';
+import { getJobTC } from '../job';
 
-export function createWaitingJobsFC({ JobTC }) {
+export function createWaitingJobsFC(schemaComposer: SchemaComposer<any>) {
   return {
-    type: [JobTC],
+    type: getJobTC(schemaComposer).getTypePlural(),
     args: {
       start: {
         type: 'Int',

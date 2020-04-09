@@ -1,6 +1,7 @@
 import { getQueue } from './_helpers';
+import { getJobStatusEnumTC } from '../types';
 
-export function createQueueCleanFC({ schemaComposer, JobStatusEnumTC }) {
+export function createQueueCleanFC({ schemaComposer }) {
   return {
     type: {
       name: 'QueueCleanPayload',
@@ -15,7 +16,7 @@ export function createQueueCleanFC({ schemaComposer, JobStatusEnumTC }) {
         fields: {
           grace: 'Int!',
           status: {
-            type: JobStatusEnumTC,
+            type: getJobStatusEnumTC(schemaComposer),
             defaultValue: 'completed',
           },
           limit: {

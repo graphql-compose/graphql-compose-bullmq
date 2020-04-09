@@ -6,13 +6,18 @@ import {
   ObjectTypeComposerFieldConfigAsObjectDefinition,
   ObjectTypeComposerAsObjectDefinition,
 } from 'graphql-compose';
-import { PayloadStatusEnum, ErrorCodeEnum } from '../types/enums';
-import { PayloadError } from '../../declarations/errors';
+import {
+  MutationStatusEnum,
+  ErrorCodeEnum,
+  getMutationStatusEnumTC,
+  getMutationErrorCodeEnumTC,
+} from '../types';
+import { MutationError } from './Error';
 
 export function getQueue(queueName: string, context: any): Queue {
   const queue = context?.Queues?.get(queueName);
   if (!queue) {
-    throw new PayloadError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
+    throw new MutationError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
   }
   return queue;
 }
@@ -37,10 +42,10 @@ export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Gener
     }
 
     type.addFields({
-      status: 'PayloadStatusEnum!',
+      status: getMutationStatusEnumTC(schemaComposer),
       query: 'Query!',
       error: 'String',
-      errorCode: 'ErrorCodeEnum',
+      errorCode: getMutationErrorCodeEnumTC(schemaComposer),
     });
 
     const subResolve = fieldConfig.resolve || (() => ({}));
@@ -49,7 +54,7 @@ export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Gener
         const subResult = await subResolve(source, args, context, info);
         return {
           query: {},
-          status: PayloadStatusEnum.OK,
+          status: MutationStatusEnum.OK,
           ...subResult,
         };
       } catch (e) {
@@ -57,9 +62,9 @@ export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Gener
         if (requestedFields?.error || requestedFields?.errorCode || requestedFields?.status) {
           return {
             query: {},
-            status: PayloadStatusEnum.ERROR,
+            status: MutationStatusEnum.ERROR,
             error: e.message,
-            errorCode: e instanceof PayloadError ? e.code : ErrorCodeEnum.OTHER_ERROR,
+            errorCode: e instanceof MutationError ? e.code : ErrorCodeEnum.OTHER_ERROR,
           };
         } else {
           throw e;

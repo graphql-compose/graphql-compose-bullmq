@@ -1,12 +1,14 @@
 import { getQueue } from './_helpers';
+import { SchemaComposer } from 'graphql-compose';
+import { getJobTC } from '../types/job';
 
-export function createJobRremoveFC({ JobTC }) {
+export function createJobRremoveFC(schemaComposer: SchemaComposer<any>) {
   return {
     type: {
       name: 'JobRemovePayload',
       fields: {
         id: 'String',
-        job: JobTC,
+        job: getJobTC(schemaComposer),
       },
     },
     args: {

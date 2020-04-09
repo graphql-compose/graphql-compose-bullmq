@@ -1,11 +1,12 @@
 import { createQueuesFC } from './queues';
 import { createQueueFC } from './queue';
 import { createJobFC } from './job';
+import { SchemaComposer } from 'graphql-compose';
 
-export function createQueryFields({ QueueTC, JobTC }): any {
+export function createQueryFields(schemaComposer: SchemaComposer<any>): any {
   return {
-    queues: createQueuesFC({ QueueTC }),
-    queue: createQueueFC({ QueueTC }),
-    job: createJobFC({ JobTC }),
+    queues: createQueuesFC(schemaComposer),
+    queue: createQueueFC(schemaComposer),
+    job: createJobFC(schemaComposer),
   };
 }

@@ -8,22 +8,20 @@ import { createDelayedJobsFC } from './delayedJobs';
 import { createFailedJobsFC } from './failedJobs';
 import { SchemaComposer } from 'graphql-compose';
 
-export function createQueueTC(schemaComposer: SchemaComposer<any>, { JobTC }) {
-  return schemaComposer.createObjectTC({
-    name: 'Queue',
-    description: 'Bull queue',
-    fields: {
+export function getQueueTC(sc: SchemaComposer<any>) {
+  return sc.getOrCreateOTC('Queue', (etc) => {
+    etc.addFields({
       hostId: 'String',
       name: 'String!',
       jobNames: '[String!]',
-      jobCounts: createJobCountFC(schemaComposer),
-      repeatables: createRepeatablesFC(schemaComposer),
-      jobs: createJobsFC({ JobTC }),
-      waitingJobs: createWaitingJobsFC({ JobTC }),
-      completedJobs: createCompletedJobsFC({ JobTC }),
-      activeJobs: createActiveJobsFC({ JobTC }),
-      delayedJobs: createDelayedJobsFC({ JobTC }),
-      failedJobs: createFailedJobsFC({ JobTC }),
-    },
+      jobCounts: createJobCountFC(sc),
+      repeatables: createRepeatablesFC(sc),
+      jobs: createJobsFC(sc),
+      waitingJobs: createWaitingJobsFC(sc),
+      completedJobs: createCompletedJobsFC(sc),
+      activeJobs: createActiveJobsFC(sc),
+      delayedJobs: createDelayedJobsFC(sc),
+      failedJobs: createFailedJobsFC(sc),
+    });
   });
 }

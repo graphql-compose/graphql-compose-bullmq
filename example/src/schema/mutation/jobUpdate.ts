@@ -1,13 +1,15 @@
-import { PayloadError } from '../../declarations/errors';
-import { ErrorCodeEnum } from '../types/enums';
+import { MutationError } from './Error';
+import { ErrorCodeEnum } from '../types';
 import { getQueue } from './_helpers';
+import { SchemaComposer } from 'graphql-compose';
+import { getJobTC } from '../types/job';
 
-export function createJobUpdateFC({ JobTC }) {
+export function createJobUpdateFC(schemaComposer: SchemaComposer<any>) {
   return {
     type: {
       name: 'JobUpdatePayload',
       fields: {
-        job: JobTC,
+        job: getJobTC(schemaComposer),
       },
     },
     args: {
@@ -18,7 +20,7 @@ export function createJobUpdateFC({ JobTC }) {
     resolve: async (_, { queueName, id, data }, context) => {
       const queue = getQueue(queueName, context);
       let job = await queue.getJob(id);
-      if (!job) throw new PayloadError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.update(data); //Данные заменяются полностью
       job = await queue.getJob(id);
       return {
