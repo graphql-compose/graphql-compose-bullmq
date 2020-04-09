@@ -6,6 +6,7 @@ import { createCompletedJobsFC } from './completedJobs';
 import { createActiveJobsFC } from './activeJobs';
 import { createDelayedJobsFC } from './delayedJobs';
 import { createFailedJobsFC } from './failedJobs';
+import { createWorkersTC } from './workers';
 import { SchemaComposer } from 'graphql-compose';
 
 export function getQueueTC(sc: SchemaComposer<any>) {
@@ -22,6 +23,7 @@ export function getQueueTC(sc: SchemaComposer<any>) {
       activeJobs: createActiveJobsFC(sc),
       delayedJobs: createDelayedJobsFC(sc),
       failedJobs: createFailedJobsFC(sc),
+      workers: createWorkersTC(sc),
     });
   });
 }
