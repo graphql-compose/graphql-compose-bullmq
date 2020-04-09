@@ -1,8 +1,10 @@
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
 import { getJobTC } from '../job';
 
-export function createCompletedJobsFC(schemaComposer: SchemaComposer<any>) {
+export function createCompletedJobsFC(
+  schemaComposer: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
     type: getJobTC(schemaComposer).getTypePlural(),
     args: {

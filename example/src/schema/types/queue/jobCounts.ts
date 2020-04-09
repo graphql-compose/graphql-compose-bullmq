@@ -1,7 +1,10 @@
 import { JobStatusEnum } from '../enums';
 import { Queue } from 'bullmq';
+import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
 
-export function createJobCountFC(schemaComposer) {
+export function createJobCountFC(
+  schemaComposer: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
     type: schemaComposer.createObjectTC({
       name: 'JobCounts',
