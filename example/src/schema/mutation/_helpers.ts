@@ -12,6 +12,7 @@ import {
   getMutationStatusEnumTC,
   getMutationErrorCodeEnumTC,
 } from '../types';
+import { createBullConnection } from '../../connectRedis';
 import { MutationError } from './Error';
 
 export function getQueue(queueName: string, context: any): Queue {
@@ -21,6 +22,18 @@ export function getQueue(queueName: string, context: any): Queue {
   }
   return queue;
 }
+
+// export function getQueue(queueName: string, prefix: string): Queue {
+//   const queue = new Queue(queueName, {
+//     prefix,
+//     connection: createBullConnection('queue'),
+//   });
+
+//   if (!queue) {
+//     throw new MutationError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
+//   }
+//   return queue;
+// }
 
 type FieldConfig = Omit<ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>, 'type'> & {
   type: ObjectTypeComposerAsObjectDefinition<any, any>;
