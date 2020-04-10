@@ -3,8 +3,6 @@ import { createStateFC } from './state';
 import { createRepeatOptionsTC } from './RepeatOptionsInterface';
 import { SchemaComposer } from 'graphql-compose';
 
-export { getJobOptionsInputTC } from './OptionsInput';
-
 export function getJobTC(sc: SchemaComposer<any>) {
   return sc.getOrCreateOTC('Job', (etc) => {
     etc.addFields({
