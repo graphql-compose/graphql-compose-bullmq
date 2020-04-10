@@ -1,6 +1,6 @@
 import { createLogsFC } from './logs';
 import { createStateFC } from './state';
-import { createRepeatOptionsTC } from './RepeatOptionsUnion';
+import { createRepeatOptionsTC } from './RepeatOptionsInterface';
 import { SchemaComposer } from 'graphql-compose';
 
 export { getJobOptionsInputTC } from './OptionsInput';

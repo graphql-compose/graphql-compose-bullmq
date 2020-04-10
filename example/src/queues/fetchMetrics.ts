@@ -9,7 +9,7 @@ if (!BULL_REDIS_URI) {
 export const queueSettings = {
   hostId: BULL_HOST_ID,
   name: 'fetch_metrics',
-  prefix: 'bull.fetch-metrics',
+  prefix: 'bull.demo',
 };
 
 const prefix = queueSettings.prefix;

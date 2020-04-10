@@ -1,4 +1,4 @@
-import { Job } from 'bullmq';
+import { Job, Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 
 export function createLogsFC(
@@ -9,14 +9,17 @@ export function createLogsFC(
       name: 'JobLogs',
       fields: {
         count: 'Int',
-        logs: '[String!]',
+        items: '[String!]',
       },
+      // args: {}, // TODO: start end
     }),
     resolve: (job: Job) => {
       // `queue` is private property of Job instance
       // so here we are not guarantee that log will be avaliable in the future
-      if ((job as any).queue) {
-        return (job as any).queue.getJobLogs(job.id);
+      if (job.id && (job as any).queue) {
+        return ((job as any).queue as Queue)
+          .getJobLogs(job.id)
+          .then((r) => ({ count: r.count, items: r.logs }));
       }
     },
   };

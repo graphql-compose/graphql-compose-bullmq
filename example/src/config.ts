@@ -8,7 +8,7 @@
 
 // const BULL_REDIS_URI = 'redis://127.0.0.1:6379';
 const BULL_REDIS_URI =
-  'redis://:uut2tiew5waeli1aefup0Toecaikoque5eepahch5AowaiJ2@10.216.129.127:6379';
+  'redis://:uut2tiew5waeli1aefup0Toecaikoque5eepahch5AowaiJ2@10.216.129.128:6379';
 
 const BULL_HOST_ID = 'maybe_uuid_and_mac';
 
