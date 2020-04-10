@@ -1,5 +1,6 @@
 import { SchemaComposer } from 'graphql-compose';
 import { createQueueCleanFC } from './queueClean';
+import { createQueueDrainFC } from './queueDrain';
 import { createQueuePauseFC } from './queuePause';
 import { createQueueResumeFC } from './queueResume';
 
@@ -26,6 +27,7 @@ export function createMutationFields({
   //TODO: пропустить через map это
   return {
     queueClean: generateHelper(createQueueCleanFC({ schemaComposer })),
+    queueDrain: generateHelper(createQueueDrainFC({ schemaComposer })),
     queuePause: generateHelper(createQueuePauseFC()),
     queueResume: generateHelper(createQueueResumeFC()),
     queueRemoveRepeatable: generateHelper(createRemoveRepeatableFC()),
