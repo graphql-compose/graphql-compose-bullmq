@@ -12,18 +12,16 @@ import { SchemaComposer } from 'graphql-compose';
 export function getQueueTC(sc: SchemaComposer<any>) {
   return sc.getOrCreateOTC('Queue', (etc) => {
     etc.addFields({
-      hostId: 'String',
       name: 'String!',
-      jobNames: '[String!]',
       jobCounts: createJobCountFC(sc),
       repeatables: createRepeatablesFC(sc),
       jobs: createJobsFC(sc),
-      waitingJobs: createWaitingJobsFC(sc),
-      completedJobs: createCompletedJobsFC(sc),
-      activeJobs: createActiveJobsFC(sc),
-      delayedJobs: createDelayedJobsFC(sc),
-      failedJobs: createFailedJobsFC(sc),
-      workers: createWorkersTC(sc),
+      jobsWaiting: createWaitingJobsFC(sc),
+      jobsCompleted: createCompletedJobsFC(sc),
+      jobsActive: createActiveJobsFC(sc),
+      jobsDelayed: createDelayedJobsFC(sc),
+      jobsFailed: createFailedJobsFC(sc),
+      activeWorkers: createWorkersTC(sc),
     });
   });
 }

@@ -14,10 +14,12 @@ export function createQueueFC(schemaComposer: SchemaComposer<any>) {
       },
     },
     resolve: async (_, { queueName, prefix }) => {
-      return new Queue(queueName, {
+      const queue = new Queue(queueName, {
         prefix,
         connection: createBullConnection('queue'),
       });
+
+      return queue;
     },
   };
 }

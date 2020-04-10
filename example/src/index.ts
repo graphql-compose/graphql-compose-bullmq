@@ -11,4 +11,5 @@ const server = new ApolloServer({
 
 server.listen(5000).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
+  console.log(`🚀 Server pid: ${process.pid}`);
 });
