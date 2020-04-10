@@ -37,8 +37,8 @@ export function createQueueKeysFC(schemaComposer: SchemaComposer<any>) {
       return keys.map((key) => {
         const parts = key.split(':');
         return {
-          queueName: parts[0],
-          prefix: parts[1],
+          queueName: parts[1],
+          prefix: parts[0],
           prefixMaskNorm,
         };
       });
