@@ -1,8 +1,7 @@
-import { MutationError } from './Error';
-import { ErrorCodeEnum } from '../types';
-import { getQueue } from './_helpers';
+import { MutationError, ErrorCodeEnum } from './helpers/Error';
+import { getQueue } from './helpers/wrapMutationFC';
 import { SchemaComposer } from 'graphql-compose';
-import { getJobTC } from '../types/job';
+import { getJobTC } from '../types/job/Job';
 
 export function createJobUpdateFC(schemaComposer: SchemaComposer<any>) {
   return {

@@ -1,3 +1,3 @@
-export * from './enums';
-export * from './queue';
-export * from './job';
+export * from './scalars/JobStatusEnum';
+export * from './queue/Queue';
+export * from './job/Job';

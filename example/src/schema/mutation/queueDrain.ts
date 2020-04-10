@@ -1,7 +1,9 @@
-import { getQueue } from './_helpers';
+import { getQueue } from './helpers/wrapMutationFC';
 
-export function createQueueDrainFC({ schemaComposer }) {
+export function createQueueDrainFC() {
   return {
+    description:
+      'Drains the queue, i.e., removes all jobs that are waiting or delayed, but not active, completed or failed.',
     type: {
       name: 'QueueDrainPayload',
       fields: {

@@ -1,8 +1,8 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
-import { getJobTC } from '../job';
+import { getJobTC } from '../job/Job';
 
-export function createActiveJobsFC(
+export function createDelayedJobsFC(
   schemaComposer: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
@@ -18,7 +18,7 @@ export function createActiveJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getActive(start, end);
+      return await queue.getDelayed(start, end);
     },
   };
 }

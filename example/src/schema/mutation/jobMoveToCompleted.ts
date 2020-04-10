@@ -1,16 +1,18 @@
-import { getQueue } from './_helpers';
-import { SchemaComposer } from 'graphql-compose';
-import { getJobTC } from '../types/job';
+import { getQueue } from './helpers/wrapMutationFC';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import { getJobTC } from '../types/job/Job';
 
-export function jobMoveToCompletedFC(schemaComposer: SchemaComposer<any>) {
+export function jobMoveToCompletedFC(
+  schemaComposer: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: schemaComposer.createObjectTC({
       name: 'JobMoveToCompletedPayload',
       fields: {
         id: 'String',
         job: getJobTC(schemaComposer),
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       id: 'String!',

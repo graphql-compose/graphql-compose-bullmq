@@ -1,8 +1,10 @@
-import { getQueue } from './_helpers';
+import { getQueue } from './helpers/wrapMutationFC';
 import { getJobStatusEnumTC } from '../types';
 
 export function createQueueCleanFC({ schemaComposer }) {
   return {
+    description:
+      'Cleans jobs from a queue. Similar to remove but keeps jobs within a certain grace period',
     type: {
       name: 'QueueCleanPayload',
       fields: {

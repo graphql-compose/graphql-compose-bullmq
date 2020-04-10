@@ -1,10 +1,10 @@
-import { getQueue } from './_helpers';
+import { getQueue } from './helpers/wrapMutationFC';
 import {
   SchemaComposer,
   InputTypeComposer,
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
-import { getJobTC } from '../types/job';
+import { getJobTC } from '../types/job/Job';
 
 function getPayloadTC(sc: SchemaComposer<any>) {
   return sc.getOrCreateOTC('JobAddPayload', (etc) => {

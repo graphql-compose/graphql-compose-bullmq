@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import { Queues } from './queues';
+import { Queues } from './demo_queues';
 import schema from './schema';
 
 const server = new ApolloServer({

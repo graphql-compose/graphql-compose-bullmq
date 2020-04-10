@@ -1,5 +1,5 @@
 import { SchemaComposer } from 'graphql-compose';
-import { getQueueTC } from '../types/queue';
+import { getQueueTC } from '../types/queue/Queue';
 import { Queue } from 'bullmq';
 import { createBullConnection } from '../../connectRedis';
 

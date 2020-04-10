@@ -1,6 +1,6 @@
-import { MutationError } from './Error';
-import { ErrorCodeEnum, JobStatusEnum, getJobStatusEnumTC } from '../types';
-import { getQueue } from './_helpers';
+import { MutationError, ErrorCodeEnum } from './helpers/Error';
+import { JobStatusEnum, getJobStatusEnumTC } from '../types';
+import { getQueue } from './helpers/wrapMutationFC';
 
 export function createJobRetryFC({ schemaComposer }) {
   return {

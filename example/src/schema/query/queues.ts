@@ -1,5 +1,5 @@
 import { SchemaComposer } from 'graphql-compose';
-import { getQueueTC } from '../types/queue';
+import { getQueueTC } from '../types/queue/Queue';
 
 export function createQueuesFC(schemaComposer: SchemaComposer<any>) {
   return {

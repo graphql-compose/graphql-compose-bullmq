@@ -1,5 +1,5 @@
 import { SchemaComposer } from 'graphql-compose';
-import { getJobTC } from '../types/job';
+import { getJobTC } from '../types/job/Job';
 
 export function createJobFC(schemaComposer: SchemaComposer<any>) {
   return {

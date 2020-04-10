@@ -1,4 +1,4 @@
-import { JobStatusEnum } from '../enums';
+import { JobStatusEnum } from '../scalars/JobStatusEnum';
 import { Queue } from 'bullmq';
 import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
 

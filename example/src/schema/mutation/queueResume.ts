@@ -1,4 +1,4 @@
-import { getQueue } from './_helpers';
+import { getQueue } from './helpers/wrapMutationFC';
 
 export function createQueueResumeFC() {
   return {

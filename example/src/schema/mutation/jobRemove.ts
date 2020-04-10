@@ -1,6 +1,6 @@
-import { getQueue } from './_helpers';
+import { getQueue } from './helpers/wrapMutationFC';
 import { SchemaComposer } from 'graphql-compose';
-import { getJobTC } from '../types/job';
+import { getJobTC } from '../types/job/Job';
 
 export function createJobRremoveFC(schemaComposer: SchemaComposer<any>) {
   return {

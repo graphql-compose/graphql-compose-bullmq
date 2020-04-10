@@ -1,12 +1,12 @@
-import { createJobCountFC } from './jobCounts';
-import { createRepeatablesFC } from './repeatables';
-import { createJobsFC } from './jobs';
-import { createWaitingJobsFC } from './waitingJobs';
-import { createCompletedJobsFC } from './completedJobs';
-import { createActiveJobsFC } from './activeJobs';
-import { createDelayedJobsFC } from './delayedJobs';
-import { createFailedJobsFC } from './failedJobs';
-import { createWorkersTC } from './workers';
+import { createJobCountFC } from './Queue.jobCounts';
+import { createRepeatablesFC } from './Queue.repeatables';
+import { createJobsFC } from './Queue.jobs';
+import { createWaitingJobsFC } from './Queue.waitingJobs';
+import { createCompletedJobsFC } from './Queue.completedJobs';
+import { createActiveJobsFC } from './Queue.activeJobs';
+import { createDelayedJobsFC } from './Queue.delayedJobs';
+import { createFailedJobsFC } from './Queue.failedJobs';
+import { createWorkersTC } from './Queue.workers';
 import { SchemaComposer } from 'graphql-compose';
 
 export function getQueueTC(sc: SchemaComposer<any>) {

@@ -16,7 +16,7 @@ import { createJobRetryFC } from './jobRetry';
 import { createJobUpdateFC } from './jobUpdate';
 import { createJobLogAddFC } from './jobLogAdd';
 
-import { createGenerateHelper } from './_helpers';
+import { createGenerateHelper } from './helpers/wrapMutationFC';
 
 export function createMutationFields({
   schemaComposer,
