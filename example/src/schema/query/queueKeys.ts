@@ -9,6 +9,7 @@ export function createQueueKeysFC(schemaComposer: SchemaComposer<any>) {
         fields: {
           queueName: 'String!',
           prefix: 'String!',
+          prefixMaskNorm: 'String',
         },
       })
       .getTypePlural(),
@@ -23,25 +24,22 @@ export function createQueueKeysFC(schemaComposer: SchemaComposer<any>) {
 
       let prefixMaskNorm = prefixMask;
       const nameCase = prefixMaskNorm.split(':').length - 1;
-      if (nameCase === 2) {
-        prefixMaskNorm = prefixMaskNorm.endsWith('*')
-          ? prefixMaskNorm.substr(0, prefixMaskNorm.length - 1)
-          : prefixMaskNorm;
+      if (nameCase >= 2) {
+        prefixMaskNorm = prefixMaskNorm.split(':').slice(0, 2).join(':') + ':';
       } else if (nameCase === 1) {
         prefixMaskNorm += ':';
       } else {
         prefixMaskNorm += prefixMaskNorm.endsWith('*') ? ':*:' : '*:*:';
       }
 
-      prefixMaskNorm += 'meta';
-
-      const keys = await connection.keys(prefixMaskNorm);
+      const keys = await connection.keys(prefixMaskNorm + 'meta');
 
       return keys.map((key) => {
         const parts = key.split(':');
         return {
           queueName: parts[0],
           prefix: parts[1],
+          prefixMaskNorm,
         };
       });
     },
