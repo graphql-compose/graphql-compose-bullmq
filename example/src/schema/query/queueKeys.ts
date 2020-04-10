@@ -27,9 +27,9 @@ export function createQueueKeysFC(schemaComposer: SchemaComposer<any>) {
       if (nameCase >= 2) {
         prefixMaskNorm = prefixMaskNorm.split(':').slice(0, 2).join(':') + ':';
       } else if (nameCase === 1) {
-        prefixMaskNorm += ':';
+        prefixMaskNorm += prefixMaskNorm.endsWith(':') ? '*:' : ':';
       } else {
-        prefixMaskNorm += prefixMaskNorm.endsWith('*') ? ':*:' : '*:*:';
+        prefixMaskNorm += ':*:';
       }
 
       const keys = await connection.keys(prefixMaskNorm + 'meta');
