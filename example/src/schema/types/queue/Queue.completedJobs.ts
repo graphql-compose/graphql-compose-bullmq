@@ -3,10 +3,10 @@ import { Queue } from 'bullmq';
 import { getJobTC } from '../job/Job';
 
 export function createCompletedJobsFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobTC(schemaComposer).getTypePlural(),
+    type: getJobTC(sc).getTypePlural(),
     args: {
       start: {
         type: 'Int',

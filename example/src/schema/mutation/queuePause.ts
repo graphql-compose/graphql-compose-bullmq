@@ -1,13 +1,16 @@
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueue } from './helpers/wrapMutationFC';
 
-export function createQueuePauseFC() {
+export function createQueuePauseFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'QueuePausePayload',
       fields: {
         queueName: 'String!',
       },
-    },
+    }),
     args: {
       queueName: 'String!',
     },

@@ -3,9 +3,9 @@ import { getQueueTC } from '../types/queue/Queue';
 import { Queue } from 'bullmq';
 import { createBullConnection } from '../../connectRedis';
 
-export function createQueueFC(schemaComposer: SchemaComposer<any>) {
+export function createQueueFC(sc: SchemaComposer<any>) {
   return {
-    type: getQueueTC(schemaComposer),
+    type: getQueueTC(sc),
     args: {
       queueName: 'String!',
       prefix: {

@@ -1,24 +1,27 @@
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueue } from './helpers/wrapMutationFC';
 import { getJobStatusEnumTC } from '../types';
 
-export function createQueueCleanFC({ schemaComposer }) {
+export function createQueueCleanFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     description:
       'Cleans jobs from a queue. Similar to remove but keeps jobs within a certain grace period',
-    type: {
+    type: sc.createObjectTC({
       name: 'QueueCleanPayload',
       fields: {
         jobsId: '[String!]', //TODO: Queue.clean возвращает список очищенных id
       },
-    },
+    }),
     args: {
       queueName: 'String!',
-      filter: schemaComposer.createInputTC({
+      filter: sc.createInputTC({
         name: 'QueueCleanFilter',
         fields: {
           grace: 'Int!',
           status: {
-            type: getJobStatusEnumTC(schemaComposer),
+            type: getJobStatusEnumTC(sc),
             defaultValue: 'completed',
           },
           limit: {

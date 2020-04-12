@@ -1,13 +1,16 @@
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueue } from './helpers/wrapMutationFC';
 
-export function createRemoveRepeatableFC() {
+export function createRemoveRepeatableFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'QueueRemoveRepeatablePayload',
       fields: {
         key: 'String!',
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       key: 'String!',

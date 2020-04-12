@@ -1,9 +1,9 @@
 import { SchemaComposer } from 'graphql-compose';
 import { createBullConnection } from '../../connectRedis';
 
-export function createQueueKeysFC(schemaComposer: SchemaComposer<any>) {
+export function createQueueKeysFC(sc: SchemaComposer<any>) {
   return {
-    type: schemaComposer
+    type: sc
       .createObjectTC({
         name: 'QueueKeysResult',
         fields: {

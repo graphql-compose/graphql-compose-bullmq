@@ -1,4 +1,4 @@
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { createQueueCleanFC } from './queueClean';
 import { createQueueDrainFC } from './queueDrain';
 import { createQueuePauseFC } from './queuePause';
@@ -24,23 +24,29 @@ export function createMutationFields({
   schemaComposer: SchemaComposer<any>;
 }): any {
   const generateHelper = createGenerateHelper(schemaComposer);
-  //TODO: пропустить через map это
+
+  function generateWrappedFC(
+    createFC: (sc: SchemaComposer<any>) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>
+  ) {
+    return generateHelper(createFC(schemaComposer));
+  }
+
   return {
-    queueClean: generateHelper(createQueueCleanFC({ schemaComposer })),
-    queueDrain: generateHelper(createQueueDrainFC({ schemaComposer })),
-    queuePause: generateHelper(createQueuePauseFC()),
-    queueResume: generateHelper(createQueueResumeFC()),
-    queueRemoveRepeatable: generateHelper(createRemoveRepeatableFC()),
+    queueClean: generateWrappedFC(createQueueCleanFC),
+    queueDrain: generateWrappedFC(createQueueDrainFC),
+    queuePause: generateWrappedFC(createQueuePauseFC),
+    queueResume: generateWrappedFC(createQueueResumeFC),
+    queueRemoveRepeatable: generateWrappedFC(createRemoveRepeatableFC),
 
-    jobAdd: generateHelper(createJobAddFC(schemaComposer)),
-    jobAddRepeatableCron: generateHelper(createJobAddRepeatableCronFC(schemaComposer)),
-    jobAddRepeatableEvery: generateHelper(createJobAddRepeatableEveryFC(schemaComposer)),
+    jobAdd: generateWrappedFC(createJobAddFC),
+    jobAddRepeatableCron: generateWrappedFC(createJobAddRepeatableCronFC),
+    jobAddRepeatableEvery: generateWrappedFC(createJobAddRepeatableEveryFC),
 
-    jobDiscard: generateHelper(createJobDiscardFC({ schemaComposer })),
-    jobPromote: generateHelper(createjobPromoteFC({ schemaComposer })),
-    jobRemove: generateHelper(createJobRremoveFC(schemaComposer)),
-    jobRetry: generateHelper(createJobRetryFC({ schemaComposer })),
-    jobUpdate: generateHelper(createJobUpdateFC(schemaComposer)),
-    jobLogAdd: generateHelper(createJobLogAddFC({ schemaComposer })),
+    jobDiscard: generateWrappedFC(createJobDiscardFC),
+    jobPromote: generateWrappedFC(createjobPromoteFC),
+    jobRemove: generateWrappedFC(createJobRremoveFC),
+    jobRetry: generateWrappedFC(createJobRetryFC),
+    jobUpdate: generateWrappedFC(createJobUpdateFC),
+    jobLogAdd: generateWrappedFC(createJobLogAddFC),
   };
 }

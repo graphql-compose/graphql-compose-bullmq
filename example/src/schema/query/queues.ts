@@ -1,9 +1,9 @@
 import { SchemaComposer } from 'graphql-compose';
 import { getQueueTC } from '../types/queue/Queue';
 
-export function createQueuesFC(schemaComposer: SchemaComposer<any>) {
+export function createQueuesFC(sc: SchemaComposer<any>) {
   return {
-    type: getQueueTC(schemaComposer).getTypeNonNull().getTypePlural(),
+    type: getQueueTC(sc).getTypeNonNull().getTypePlural(),
     resolve: (_, __, { Queues }) => {
       return Queues.values();
     },

@@ -1,9 +1,9 @@
 import { SchemaComposer } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
-export function createJobFC(schemaComposer: SchemaComposer<any>) {
+export function createJobFC(sc: SchemaComposer<any>) {
   return {
-    type: getJobTC(schemaComposer),
+    type: getJobTC(sc),
     args: {
       queueName: 'String!',
       id: 'String!',

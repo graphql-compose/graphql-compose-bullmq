@@ -1,16 +1,18 @@
 import { getQueue } from './helpers/wrapMutationFC';
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
-export function createJobRremoveFC(schemaComposer: SchemaComposer<any>) {
+export function createJobRremoveFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'JobRemovePayload',
       fields: {
         id: 'String',
-        job: getJobTC(schemaComposer),
+        job: getJobTC(sc),
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       id: 'String!',

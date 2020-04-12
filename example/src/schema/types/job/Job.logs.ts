@@ -2,10 +2,10 @@ import { Job, Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 
 export function createLogsFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: schemaComposer.createObjectTC({
+    type: sc.createObjectTC({
       name: 'JobLogs',
       fields: {
         count: 'Int',

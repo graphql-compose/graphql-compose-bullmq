@@ -1,16 +1,18 @@
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { getQueue } from './helpers/wrapMutationFC';
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
-export function createJobUpdateFC(schemaComposer: SchemaComposer<any>) {
+export function createJobUpdateFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'JobUpdatePayload',
       fields: {
-        job: getJobTC(schemaComposer),
+        job: getJobTC(sc),
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       id: 'String!',

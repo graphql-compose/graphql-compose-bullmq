@@ -4,12 +4,12 @@ import { getJobStatusEnumTC } from '../scalars/JobStatusEnum';
 import { getJobTC } from '../job/Job';
 
 export function createJobsFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobTC(schemaComposer).getTypePlural(),
+    type: getJobTC(sc).getTypePlural(),
     args: {
-      status: getJobStatusEnumTC(schemaComposer),
+      status: getJobStatusEnumTC(sc),
       start: {
         type: 'Int',
         defaultValue: 0,

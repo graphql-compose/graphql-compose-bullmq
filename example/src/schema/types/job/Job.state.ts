@@ -3,10 +3,10 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql
 import { getJobStatusEnumTC } from '../scalars/JobStatusEnum';
 
 export function createStateFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobStatusEnumTC(schemaComposer),
+    type: getJobStatusEnumTC(sc),
     resolve: async (job: Job) => {
       return await job.getState();
     },

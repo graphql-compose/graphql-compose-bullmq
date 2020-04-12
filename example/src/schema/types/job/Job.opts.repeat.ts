@@ -1,7 +1,7 @@
 import { isObject, SchemaComposer } from 'graphql-compose';
 
-export function createRepeatOptionsTC(schemaComposer: SchemaComposer<any>) {
-  const RepeatOptionsInterfaceTC = schemaComposer.createInterfaceTC({
+export function createRepeatOptionsTC(sc: SchemaComposer<any>) {
+  const RepeatOptionsInterfaceTC = sc.createInterfaceTC({
     name: 'RepeatOptionsInterface',
     fields: {
       tz: 'String',
@@ -10,7 +10,7 @@ export function createRepeatOptionsTC(schemaComposer: SchemaComposer<any>) {
     },
   });
 
-  const RepeatOptionsCronTC = schemaComposer.createObjectTC({
+  const RepeatOptionsCronTC = sc.createObjectTC({
     name: 'RepeatOptionsCron',
     interfaces: [RepeatOptionsInterfaceTC],
     fields: {
@@ -22,7 +22,7 @@ export function createRepeatOptionsTC(schemaComposer: SchemaComposer<any>) {
     },
   });
 
-  const RepeatOptionsEveryTC = schemaComposer.createObjectTC({
+  const RepeatOptionsEveryTC = sc.createObjectTC({
     name: 'RepeatOptionsEvery',
     interfaces: [RepeatOptionsInterfaceTC],
     fields: {
@@ -41,8 +41,8 @@ export function createRepeatOptionsTC(schemaComposer: SchemaComposer<any>) {
     return isObject(value) && value.hasOwnProperty('cron');
   });
 
-  schemaComposer.addSchemaMustHaveType(RepeatOptionsEveryTC);
-  schemaComposer.addSchemaMustHaveType(RepeatOptionsCronTC);
+  sc.addSchemaMustHaveType(RepeatOptionsEveryTC);
+  sc.addSchemaMustHaveType(RepeatOptionsCronTC);
 
   return RepeatOptionsInterfaceTC;
 }

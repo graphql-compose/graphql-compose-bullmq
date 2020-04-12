@@ -3,14 +3,14 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 
 import { getJobTC } from '../types/job/Job';
 
 export function jobMoveToCompletedFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: schemaComposer.createObjectTC({
+    type: sc.createObjectTC({
       name: 'JobMoveToCompletedPayload',
       fields: {
         id: 'String',
-        job: getJobTC(schemaComposer),
+        job: getJobTC(sc),
       },
     }),
     args: {

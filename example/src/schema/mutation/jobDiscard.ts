@@ -1,16 +1,19 @@
-import { MutationError } from './helpers/Error';
-import { ErrorCodeEnum, getJobStatusEnumTC } from '../types';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import { MutationError, ErrorCodeEnum } from './helpers/Error';
+import { getJobStatusEnumTC } from '../types';
 import { getQueue } from './helpers/wrapMutationFC';
 
-export function createJobDiscardFC({ schemaComposer }) {
+export function createJobDiscardFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'JobDiscardPayload',
       fields: {
         id: 'String',
-        state: getJobStatusEnumTC(schemaComposer),
+        state: getJobStatusEnumTC(sc),
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       id: 'String!',

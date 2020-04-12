@@ -2,10 +2,10 @@ import { Queue } from 'bullmq';
 import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
 
 export function createRepeatablesFC(
-  schemaComposer: SchemaComposer<any>
+  sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: schemaComposer
+    type: sc
       .createObjectTC({
         name: 'RepeatableJobInformation',
         fields: {

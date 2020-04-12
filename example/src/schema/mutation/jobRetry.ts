@@ -1,16 +1,19 @@
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
 import { getQueue } from './helpers/wrapMutationFC';
 
-export function createJobRetryFC({ schemaComposer }) {
+export function createJobRetryFC(
+  sc: SchemaComposer<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: {
+    type: sc.createObjectTC({
       name: 'JobRetryPayload',
       fields: {
         id: 'String',
-        state: getJobStatusEnumTC(schemaComposer),
+        state: getJobStatusEnumTC(sc),
       },
-    },
+    }),
     args: {
       queueName: 'String!',
       id: 'String!',
