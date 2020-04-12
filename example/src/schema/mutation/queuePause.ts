@@ -7,9 +7,6 @@ export function createQueuePauseFC(
   return {
     type: sc.createObjectTC({
       name: 'QueuePausePayload',
-      fields: {
-        queueName: 'String!',
-      },
     }),
     args: {
       queueName: 'String!',

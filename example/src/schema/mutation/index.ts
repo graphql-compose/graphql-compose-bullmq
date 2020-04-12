@@ -7,8 +7,9 @@ import { createQueueResumeFC } from './queueResume';
 import { createRemoveRepeatableFC } from './queueRemoveRepeatable';
 
 import { createJobAddFC } from './jobAdd';
-import { createJobAddRepeatableCronFC } from './jobAdd';
-import { createJobAddRepeatableEveryFC } from './jobAdd';
+import { createJobAddBulkFC } from './jobAddBulk';
+import { createJobAddCronFC } from './jobAddCron';
+import { createJobAddEveryFC } from './jobAddEvery';
 import { createJobDiscardFC } from './jobDiscard';
 import { createjobPromoteFC } from './jobPromote';
 import { createJobRremoveFC } from './jobRemove';
@@ -18,11 +19,7 @@ import { createJobLogAddFC } from './jobLogAdd';
 
 import { createGenerateHelper } from './helpers/wrapMutationFC';
 
-export function createMutationFields({
-  schemaComposer,
-}: {
-  schemaComposer: SchemaComposer<any>;
-}): any {
+export function createMutationFields(schemaComposer: SchemaComposer<any>): any {
   const generateHelper = createGenerateHelper(schemaComposer);
 
   function generateWrappedFC(
@@ -39,8 +36,9 @@ export function createMutationFields({
     queueRemoveRepeatable: generateWrappedFC(createRemoveRepeatableFC),
 
     jobAdd: generateWrappedFC(createJobAddFC),
-    jobAddRepeatableCron: generateWrappedFC(createJobAddRepeatableCronFC),
-    jobAddRepeatableEvery: generateWrappedFC(createJobAddRepeatableEveryFC),
+    jobAddBulk: generateWrappedFC(createJobAddBulkFC),
+    jobAddRepeatableCron: generateWrappedFC(createJobAddCronFC),
+    jobAddRepeatableEvery: generateWrappedFC(createJobAddEveryFC),
 
     jobDiscard: generateWrappedFC(createJobDiscardFC),
     jobPromote: generateWrappedFC(createjobPromoteFC),

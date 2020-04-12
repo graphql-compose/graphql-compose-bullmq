@@ -7,9 +7,7 @@ schemaComposer.Query.addFields({
 });
 
 schemaComposer.Mutation.addFields({
-  ...createMutationFields({
-    schemaComposer,
-  }),
+  ...createMutationFields(schemaComposer),
 });
 
 export default schemaComposer.buildSchema();

@@ -2,12 +2,12 @@ import { getQueue } from './helpers/wrapMutationFC';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
-export function createJobAddFC(
+export function createJobAddCronFC(
   sc: SchemaComposer<any>
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'JobAddPayload',
+      name: 'JobAddCronPayload',
       fields: {
         job: getJobTC(sc),
       },
@@ -17,7 +17,7 @@ export function createJobAddFC(
       jobName: 'String!',
       data: 'JSON!',
       options: sc.createInputTC({
-        name: 'JobOptionsInput',
+        name: 'JobOptionsInputCron',
         fields: {
           priority: 'Int',
           delay: 'Int',
@@ -29,6 +29,18 @@ export function createJobAddFC(
           removeOnComplete: 'Boolean', //TODO: bool or int
           removeOnFail: 'Boolean', //TODO: bool or int
           stackTraceLimit: 'Int',
+          repeat: sc
+            .createInputTC({
+              name: 'JobOptionsInputRepeatCron',
+              fields: {
+                tz: 'String',
+                endDate: 'Date',
+                limit: 'Int',
+                cron: 'String!',
+                startDate: 'Date',
+              },
+            })
+            .getTypeNonNull(),
         },
       }),
     },

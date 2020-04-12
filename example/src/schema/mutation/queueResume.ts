@@ -7,9 +7,6 @@ export function createQueueResumeFC(
   return {
     type: sc.createObjectTC({
       name: 'QueueResumePayload',
-      fields: {
-        queueName: 'String!',
-      },
     }),
     args: {
       queueName: 'String!',

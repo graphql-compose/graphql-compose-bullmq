@@ -9,9 +9,6 @@ export function createQueueDrainFC(
       'Drains the queue, i.e., removes all jobs that are waiting or delayed, but not active, completed or failed.',
     type: sc.createObjectTC({
       name: 'QueueDrainPayload',
-      fields: {
-        jobsId: '[String!]',
-      },
     }),
     args: {
       queueName: 'String!',
