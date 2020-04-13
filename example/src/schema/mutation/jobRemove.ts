@@ -1,16 +1,20 @@
 import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
+import { Options } from '../OptionsType';
 
 export function createJobRremoveFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobRemovePayload',
+      name: `${typePrefix}JobRemovePayload`,
       fields: {
         id: 'String',
-        job: getJobTC(sc),
+        job: getJobTC(sc, opts),
       },
     }),
     args: {

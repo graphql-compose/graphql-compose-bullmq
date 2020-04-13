@@ -1,15 +1,19 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { findQueue } from './helpers/queueFind';
+import { Options } from '../OptionsType';
 
 export function createJobAddFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobAddPayload',
+      name: `${typePrefix}JobAddPayload`,
       fields: {
-        job: getJobTC(sc),
+        job: getJobTC(sc, opts),
       },
     }),
     args: {
@@ -21,7 +25,7 @@ export function createJobAddFC(
       jobName: 'String!',
       data: 'JSON!',
       options: sc.createInputTC({
-        name: 'JobOptionsInput',
+        name: `${typePrefix}JobOptionsInput`,
         fields: {
           priority: 'Int',
           delay: 'Int',

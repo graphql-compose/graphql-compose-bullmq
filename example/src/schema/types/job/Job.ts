@@ -2,13 +2,16 @@ import { createLogsFC } from './Job.logs';
 import { createStateFC } from './Job.state';
 import { createRepeatOptionsTC } from './Job.opts.repeat';
 import { SchemaComposer } from 'graphql-compose';
+import { Options } from '../../OptionsType';
 
-export function getJobTC(sc: SchemaComposer<any>) {
-  return sc.getOrCreateOTC('Job', (etc) => {
+export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix, jobDataTC = 'JSON!' } = opts;
+
+  return sc.getOrCreateOTC(`${typePrefix}Job`, (etc) => {
     etc.addFields({
       id: 'String!',
       name: 'String!',
-      data: 'JSON!',
+      data: jobDataTC,
       progress: 'Int',
       delay: 'Int',
       timestamp: 'Date!',
@@ -19,12 +22,12 @@ export function getJobTC(sc: SchemaComposer<any>) {
       finishedOn: 'Date',
       processedOn: 'Date',
       opts: sc.createObjectTC({
-        name: 'JobOptionsOutput',
+        name: `${typePrefix}JobOptionsOutput`,
         fields: {
           priority: 'Int',
           delay: 'Int',
           attempts: 'Int',
-          repeat: createRepeatOptionsTC(sc),
+          repeat: createRepeatOptionsTC(sc, opts),
           backoff: 'Int', // | TODO: BackoffOptions
           lifo: 'Boolean',
           timeout: 'Int',
@@ -34,8 +37,8 @@ export function getJobTC(sc: SchemaComposer<any>) {
           stackTraceLimit: 'Int',
         },
       }),
-      state: createStateFC(sc),
-      logs: createLogsFC(sc),
+      state: createStateFC(sc, opts),
+      logs: createLogsFC(sc, opts),
     });
   });
 }

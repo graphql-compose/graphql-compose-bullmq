@@ -1,8 +1,11 @@
 import { isObject, SchemaComposer } from 'graphql-compose';
+import { Options } from '../../OptionsType';
 
-export function createRepeatOptionsTC(sc: SchemaComposer<any>) {
+export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix } = opts;
+
   const RepeatOptionsInterfaceTC = sc.createInterfaceTC({
-    name: 'RepeatOptionsInterface',
+    name: `${typePrefix}RepeatOptionsInterface`,
     fields: {
       tz: 'String',
       endDate: 'Date',
@@ -11,7 +14,7 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>) {
   });
 
   const RepeatOptionsCronTC = sc.createObjectTC({
-    name: 'RepeatOptionsCron',
+    name: `${typePrefix}RepeatOptionsCron`,
     interfaces: [RepeatOptionsInterfaceTC],
     fields: {
       tz: 'String',
@@ -23,7 +26,7 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>) {
   });
 
   const RepeatOptionsEveryTC = sc.createObjectTC({
-    name: 'RepeatOptionsEvery',
+    name: `${typePrefix}RepeatOptionsEvery`,
     interfaces: [RepeatOptionsInterfaceTC],
     fields: {
       tz: 'String',

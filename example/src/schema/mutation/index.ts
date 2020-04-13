@@ -18,14 +18,18 @@ import { createJobUpdateFC } from './jobUpdate';
 import { createJobLogAddFC } from './jobLogAdd';
 
 import { createGenerateHelper } from './helpers/wrapMutationFC';
+import { Options } from '../OptionsType';
 
-export function createMutationFields(schemaComposer: SchemaComposer<any>): any {
-  const generateHelper = createGenerateHelper(schemaComposer);
+export function createMutationFields(schemaComposer: SchemaComposer<any>, opts: Options): any {
+  const generateHelper = createGenerateHelper(schemaComposer, opts);
 
   function generateWrappedFC(
-    createFC: (sc: SchemaComposer<any>) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>
+    createFC: (
+      sc: SchemaComposer<any>,
+      opts: Options
+    ) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>
   ) {
-    return generateHelper(createFC(schemaComposer));
+    return generateHelper(createFC(schemaComposer, opts));
   }
 
   return {

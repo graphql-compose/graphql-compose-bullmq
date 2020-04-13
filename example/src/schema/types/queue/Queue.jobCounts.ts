@@ -1,13 +1,17 @@
 import { JobStatusEnum } from '../scalars/JobStatusEnum';
 import { Queue } from 'bullmq';
 import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
+import { Options } from '../../OptionsType';
 
 export function createJobCountFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobCounts',
+      name: `${typePrefix}JobCounts`,
       fields: {
         active: 'Int',
         completed: 'Int',

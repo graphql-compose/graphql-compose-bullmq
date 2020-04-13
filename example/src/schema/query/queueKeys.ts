@@ -1,11 +1,13 @@
 import { SchemaComposer } from 'graphql-compose';
 import { normalizePrefixGlob, fetchQueueTitles } from './_helpers';
+import { Options } from '../OptionsType';
 
-export function createQueueKeysFC(sc: SchemaComposer<any>) {
+export function createQueueKeysFC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix } = opts;
   return {
     type: sc
       .createObjectTC({
-        name: 'QueueKeysResult',
+        name: `${typePrefix}QueueKeysResult`,
         fields: {
           queueName: 'String!',
           prefix: 'String!',

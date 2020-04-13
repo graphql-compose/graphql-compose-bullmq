@@ -1,12 +1,15 @@
 import { Job, Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
+import { Options } from '../../OptionsType';
 
 export function createLogsFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
+  const { typePrefix } = opts;
   return {
     type: sc.createObjectTC({
-      name: 'JobLogs',
+      name: `${typePrefix}JobLogs`,
       fields: {
         count: 'Int',
         items: '[String!]',

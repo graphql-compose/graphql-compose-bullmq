@@ -2,16 +2,20 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { getJobStatusEnumTC } from '../types';
 import { findQueue } from './helpers/queueFind';
+import { Options } from '../OptionsType';
 
 export function createJobDiscardFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobDiscardPayload',
+      name: `${typePrefix}JobDiscardPayload`,
       fields: {
         id: 'String',
-        state: getJobStatusEnumTC(sc),
+        state: getJobStatusEnumTC(sc, opts),
       },
     }),
     args: {

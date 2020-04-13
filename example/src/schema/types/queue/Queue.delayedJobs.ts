@@ -1,12 +1,14 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
 import { getJobTC } from '../job/Job';
+import { Options } from '../../OptionsType';
 
 export function createDelayedJobsFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobTC(sc).getTypePlural(),
+    type: getJobTC(sc, opts).getTypePlural(),
     args: {
       start: {
         type: 'Int',

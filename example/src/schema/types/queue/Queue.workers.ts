@@ -1,14 +1,18 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
+import { Options } from '../../OptionsType';
 
 export function createWorkersTC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc
       .createObjectTC({
         // see https://redis.io/commands/client-list
-        name: 'QueueWorker',
+        name: `${typePrefix}QueueWorker`,
         fields: {
           id: 'String',
           addr: 'String',

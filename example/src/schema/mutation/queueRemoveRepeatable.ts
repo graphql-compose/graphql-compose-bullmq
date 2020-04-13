@@ -1,12 +1,16 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { findQueue } from './helpers/queueFind';
+import { Options } from '../OptionsType';
 
 export function createRemoveRepeatableFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'QueueRemoveRepeatablePayload',
+      name: `${typePrefix}QueueRemoveRepeatablePayload`,
       fields: {
         key: 'String!',
       },

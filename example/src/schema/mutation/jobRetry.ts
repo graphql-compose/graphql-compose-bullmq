@@ -2,16 +2,20 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
 import { findQueue } from './helpers/queueFind';
+import { Options } from '../OptionsType';
 
 export function createJobRetryFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobRetryPayload',
+      name: `${typePrefix}JobRetryPayload`,
       fields: {
         id: 'String',
-        state: getJobStatusEnumTC(sc),
+        state: getJobStatusEnumTC(sc, opts),
       },
     }),
     args: {

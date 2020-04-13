@@ -1,15 +1,19 @@
 import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
+import { Options } from '../OptionsType';
 
 export function createJobAddCronFC(
-  sc: SchemaComposer<any>
+  sc: SchemaComposer<any>,
+  opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
+  const { typePrefix } = opts;
+
   return {
     type: sc.createObjectTC({
-      name: 'JobAddCronPayload',
+      name: `${typePrefix}JobAddCronPayload`,
       fields: {
-        job: getJobTC(sc),
+        job: getJobTC(sc, opts),
       },
     }),
     args: {
@@ -21,7 +25,7 @@ export function createJobAddCronFC(
       jobName: 'String!',
       data: 'JSON!',
       options: sc.createInputTC({
-        name: 'JobOptionsInputCron',
+        name: `${typePrefix}JobOptionsInputCron`,
         fields: {
           priority: 'Int',
           delay: 'Int',
@@ -35,7 +39,7 @@ export function createJobAddCronFC(
           stackTraceLimit: 'Int',
           repeat: sc
             .createInputTC({
-              name: 'JobOptionsInputRepeatCron',
+              name: `${typePrefix}JobOptionsInputRepeatCron`,
               fields: {
                 tz: 'String',
                 endDate: 'Date',

@@ -1,4 +1,5 @@
 import { SchemaComposer } from 'graphql-compose';
+import { Options } from '../../OptionsType';
 
 export enum JobStatusEnum {
   COMPLETED = 'completed',
@@ -9,8 +10,9 @@ export enum JobStatusEnum {
   PAUSED = 'paused',
 }
 
-export function getJobStatusEnumTC(sc: SchemaComposer<any>) {
-  return sc.getOrCreateETC('JobStatusEnum', (etc) => {
+export function getJobStatusEnumTC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix } = opts;
+  return sc.getOrCreateETC(`${typePrefix}JobStatusEnum`, (etc) => {
     etc.addFields({
       COMPLETED: { value: JobStatusEnum.COMPLETED },
       WAITING: { value: JobStatusEnum.WAITING },

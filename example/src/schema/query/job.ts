@@ -1,10 +1,11 @@
 import { SchemaComposer } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { getQueue } from './_helpers';
+import { Options } from '../OptionsType';
 
-export function createJobFC(sc: SchemaComposer<any>) {
+export function createJobFC(sc: SchemaComposer<any>, opts: Options) {
   return {
-    type: getJobTC(sc),
+    type: getJobTC(sc, opts),
     args: {
       prefix: {
         type: 'String',

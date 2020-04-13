@@ -1,3 +1,4 @@
+import { Options } from './../../OptionsType';
 import {
   SchemaComposer,
   getFlatProjectionFromAST,
@@ -16,7 +17,10 @@ type Generator = (
   fieldConfig: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>
 ) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>;
 
-export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Generator {
+export function createGenerateHelper(
+  schemaComposer: SchemaComposer<any>,
+  opts: Options
+): Generator {
   return function generateMutation(
     fieldConfig: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>
   ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -27,10 +31,10 @@ export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Gener
     }
 
     fieldConfig.type.addFields({
-      status: getMutationStatusEnumTC(schemaComposer),
+      status: getMutationStatusEnumTC(schemaComposer, opts),
       query: 'Query!',
       error: 'String',
-      errorCode: getMutationErrorCodeEnumTC(schemaComposer),
+      errorCode: getMutationErrorCodeEnumTC(schemaComposer, opts),
     });
 
     const subResolve = fieldConfig.resolve || (() => ({}));
@@ -61,8 +65,10 @@ export function createGenerateHelper(schemaComposer: SchemaComposer<any>): Gener
   };
 }
 
-function getMutationErrorCodeEnumTC(sc: SchemaComposer<any>) {
-  return sc.getOrCreateETC('MutationErrorCodeEnum', (etc) => {
+function getMutationErrorCodeEnumTC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix } = opts;
+
+  return sc.getOrCreateETC(`${typePrefix}MutationErrorCodeEnum`, (etc) => {
     etc.addFields({
       QUEUE_NOT_FOUND: { value: ErrorCodeEnum.QUEUE_NOT_FOUND },
       JOB_NOT_FOUND: { value: ErrorCodeEnum.JOB_NOT_FOUND },
@@ -71,8 +77,10 @@ function getMutationErrorCodeEnumTC(sc: SchemaComposer<any>) {
   });
 }
 
-function getMutationStatusEnumTC(sc: SchemaComposer<any>) {
-  return sc.getOrCreateETC('MutationStatusEnum', (etc) => {
+function getMutationStatusEnumTC(sc: SchemaComposer<any>, opts: Options) {
+  const { typePrefix } = opts;
+
+  return sc.getOrCreateETC(`${typePrefix}MutationStatusEnum`, (etc) => {
     etc.addFields({
       OK: { value: MutationStatusEnum.OK },
       ERROR: { value: MutationStatusEnum.ERROR },
