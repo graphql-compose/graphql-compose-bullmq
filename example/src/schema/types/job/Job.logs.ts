@@ -1,6 +1,6 @@
 import { Job, Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createLogsFC(
   sc: SchemaComposer<any>,

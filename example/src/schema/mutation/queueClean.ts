@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { findQueue } from './helpers/queueFind';
 import { getJobStatusEnumTC } from '../types';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
 export function createQueueCleanFC(
   sc: SchemaComposer<any>,

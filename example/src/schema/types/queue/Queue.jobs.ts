@@ -2,7 +2,7 @@ import { Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { getJobStatusEnumTC } from '../scalars/JobStatusEnum';
 import { getJobTC } from '../job/Job';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createJobsFC(
   sc: SchemaComposer<any>,

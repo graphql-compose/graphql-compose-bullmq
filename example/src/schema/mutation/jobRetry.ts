@@ -2,7 +2,7 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
 import { findQueue } from './helpers/queueFind';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
 export function createJobRetryFC(
   sc: SchemaComposer<any>,

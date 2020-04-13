@@ -2,7 +2,7 @@ import { createLogsFC } from './Job.logs';
 import { createStateFC } from './Job.state';
 import { createRepeatOptionsTC } from './Job.opts.repeat';
 import { SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
   const { typePrefix, jobDataTC = 'JSON!' } = opts;

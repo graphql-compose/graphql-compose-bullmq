@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
 import { getJobTC } from '../job/Job';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createActiveJobsFC(
   sc: SchemaComposer<any>,

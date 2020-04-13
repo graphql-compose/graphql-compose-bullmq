@@ -18,9 +18,9 @@ import { createJobUpdateFC } from './jobUpdate';
 import { createJobLogAddFC } from './jobLogAdd';
 
 import { createGenerateHelper } from './helpers/wrapMutationFC';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
-export function createMutationFields(schemaComposer: SchemaComposer<any>, opts: Options): any {
+export function createMutationFields(schemaComposer: SchemaComposer<any>, opts: Options) {
   const generateHelper = createGenerateHelper(schemaComposer, opts);
 
   function generateWrappedFC(

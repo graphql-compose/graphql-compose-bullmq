@@ -1,9 +1,12 @@
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueueTC } from '../types/queue/Queue';
 import { getQueue } from './_helpers';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
-export function createQueueFC(sc: SchemaComposer<any>, opts: Options) {
+export function createQueueFC(
+  sc: SchemaComposer<any>,
+  opts: Options
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: getQueueTC(sc, opts),
     args: {

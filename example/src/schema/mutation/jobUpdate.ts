@@ -2,7 +2,7 @@ import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
 export function createJobUpdateFC(
   sc: SchemaComposer<any>,

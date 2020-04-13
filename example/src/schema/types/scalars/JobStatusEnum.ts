@@ -1,5 +1,5 @@
 import { SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export enum JobStatusEnum {
   COMPLETED = 'completed',

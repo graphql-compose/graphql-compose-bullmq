@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { Queue } from 'bullmq';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createWorkersTC(
   sc: SchemaComposer<any>,

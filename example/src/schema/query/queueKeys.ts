@@ -1,8 +1,11 @@
-import { SchemaComposer } from 'graphql-compose';
+import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { normalizePrefixGlob, fetchQueueTitles } from './_helpers';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
-export function createQueueKeysFC(sc: SchemaComposer<any>, opts: Options) {
+export function createQueueKeysFC(
+  sc: SchemaComposer<any>,
+  opts: Options
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const { typePrefix } = opts;
   return {
     type: sc

@@ -2,7 +2,7 @@ import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { getJobStatusEnumTC } from '../types';
 import { findQueue } from './helpers/queueFind';
-import { Options } from '../OptionsType';
+import { Options } from '../definitions';
 
 export function createJobDiscardFC(
   sc: SchemaComposer<any>,

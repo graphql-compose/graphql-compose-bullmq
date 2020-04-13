@@ -1,6 +1,6 @@
 import { Queue } from 'bullmq';
 import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createRepeatablesFC(
   sc: SchemaComposer<any>,

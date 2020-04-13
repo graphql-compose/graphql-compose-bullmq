@@ -1,22 +1,10 @@
-import { Options } from './OptionsType';
-import {
-  schemaComposer,
-  SchemaComposer,
-  ObjectTypeComposer,
-  ObjectTypeComposerFieldConfigMapDefinition,
-} from 'graphql-compose';
+import { Options } from './definitions';
+import { schemaComposer, SchemaComposer } from 'graphql-compose';
 import { createQueryFields } from './query';
 import { createMutationFields } from './mutation';
 import { getQueueTC, getJobTC } from './types';
 
-export function composeBull(
-  opts: Options & { schemaComposer?: SchemaComposer<any> }
-): {
-  QueueTC: ObjectTypeComposer<any, any>;
-  JobTC: ObjectTypeComposer<any, any>;
-  queryFields: ObjectTypeComposerFieldConfigMapDefinition<any, any>;
-  mutationFields: ObjectTypeComposerFieldConfigMapDefinition<any, any>;
-} {
+export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<any> }) {
   const sc = opts?.schemaComposer || schemaComposer;
 
   return {
@@ -30,7 +18,7 @@ export function composeBull(
 //---------------------------------------------------------
 
 const jobDataTC = schemaComposer.createObjectTC({
-  name: 'MyJobCounts',
+  name: 'MyJobData',
   fields: {
     fieldA: 'String!',
     fieldB: 'String',

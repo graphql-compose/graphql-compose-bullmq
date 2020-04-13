@@ -1,7 +1,7 @@
 import { JobStatusEnum } from '../scalars/JobStatusEnum';
 import { Queue } from 'bullmq';
 import { ObjectTypeComposerFieldConfigDefinition, SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createJobCountFC(
   sc: SchemaComposer<any>,

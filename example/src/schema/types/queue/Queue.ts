@@ -8,7 +8,7 @@ import { createDelayedJobsFC } from './Queue.delayedJobs';
 import { createFailedJobsFC } from './Queue.failedJobs';
 import { createWorkersTC } from './Queue.workers';
 import { SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
   const { typePrefix } = opts;

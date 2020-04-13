@@ -1,5 +1,5 @@
 import { isObject, SchemaComposer } from 'graphql-compose';
-import { Options } from '../../OptionsType';
+import { Options } from '../../definitions';
 
 export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
   const { typePrefix } = opts;

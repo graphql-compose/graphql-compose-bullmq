@@ -1,4 +1,4 @@
-import { Options } from './../../OptionsType';
+import { Options } from './../../definitions';
 import {
   SchemaComposer,
   getFlatProjectionFromAST,
