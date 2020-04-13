@@ -1,9 +1,9 @@
-import { findQueue } from './helpers/queueFind';
+import { findQueue } from '../helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
 
-export function jobMoveToCompletedFC(
+export function createJobRremoveFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -11,7 +11,7 @@ export function jobMoveToCompletedFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}JobMoveToCompletedPayload`,
+      name: `${typePrefix}JobRemovePayload`,
       fields: {
         id: 'String',
         job: getJobTC(sc, opts),
@@ -29,7 +29,7 @@ export function jobMoveToCompletedFC(
       const queue = await findQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (job) {
-        await job.moveToCompleted({}, 'tokenmustbehere'); //TODO: нати где брать токен
+        await job.remove();
       }
       return {
         id,

@@ -1,8 +1,8 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { findQueue } from './helpers/queueFind';
+import { findQueue } from '../helpers/queueFind';
 import { Options } from '../definitions';
 
-export function createQueuePauseFC(
+export function createRemoveRepeatableFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -10,7 +10,10 @@ export function createQueuePauseFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}QueuePausePayload`,
+      name: `${typePrefix}QueueRemoveRepeatablePayload`,
+      fields: {
+        key: 'String!',
+      },
     }),
     args: {
       prefix: {
@@ -18,10 +21,11 @@ export function createQueuePauseFC(
         defaultValue: 'bull',
       },
       queueName: 'String!',
+      key: 'String!',
     },
-    resolve: async (_, { prefix, queueName }) => {
+    resolve: async (_, { prefix, queueName, key }) => {
       const queue = await findQueue(prefix, queueName);
-      await queue.pause();
+      await queue.removeRepeatableByKey(key);
       return {};
     },
   };

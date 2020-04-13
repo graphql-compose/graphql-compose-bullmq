@@ -1,10 +1,10 @@
+import { MutationError, ErrorCodeEnum } from '../helpers/Error';
+import { findQueue } from '../helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { MutationError, ErrorCodeEnum } from './helpers/Error';
-import { getJobStatusEnumTC } from '../types';
-import { findQueue } from './helpers/queueFind';
+import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
 
-export function createJobLogAddFC(
+export function createJobUpdateFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -12,10 +12,9 @@ export function createJobLogAddFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}JobLogAddPayload`,
+      name: `${typePrefix}JobUpdatePayload`,
       fields: {
-        id: 'String',
-        state: getJobStatusEnumTC(sc, opts),
+        job: getJobTC(sc, opts),
       },
     }),
     args: {
@@ -25,18 +24,16 @@ export function createJobLogAddFC(
       },
       queueName: 'String!',
       id: 'String!',
-      row: 'String!',
+      data: 'JSON!',
     },
-    resolve: async (_, { prefix, queueName, id, row }) => {
+    resolve: async (_, { prefix, queueName, id, data }) => {
       const queue = await findQueue(prefix, queueName);
-      const job = await queue.getJob(id);
+      let job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
-      const logRes = await job.log(row);
-      //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
-
+      await job.update(data); //Данные заменяются полностью
+      job = await queue.getJob(id);
       return {
-        id,
-        state: await job.getState(),
+        job,
       };
     },
   };

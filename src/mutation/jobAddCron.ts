@@ -1,10 +1,9 @@
+import { findQueue } from '../helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { findQueue } from './helpers/queueFind';
 import { Options } from '../definitions';
-import { createJobDataITC } from '../types/job/JobInput';
 
-export function createJobAddFC(
+export function createJobAddCronFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -12,7 +11,7 @@ export function createJobAddFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}JobAddPayload`,
+      name: `${typePrefix}JobAddCronPayload`,
       fields: {
         job: getJobTC(sc, opts),
       },
@@ -24,11 +23,9 @@ export function createJobAddFC(
       },
       queueName: 'String!',
       jobName: 'String!',
-      data: {
-        type: () => createJobDataITC(sc, opts),
-      },
+      data: 'JSON!',
       options: sc.createInputTC({
-        name: `${typePrefix}JobOptionsInput`,
+        name: `${typePrefix}JobOptionsInputCron`,
         fields: {
           priority: 'Int',
           delay: 'Int',
@@ -40,6 +37,18 @@ export function createJobAddFC(
           removeOnComplete: 'Boolean', //TODO: bool or int
           removeOnFail: 'Boolean', //TODO: bool or int
           stackTraceLimit: 'Int',
+          repeat: sc
+            .createInputTC({
+              name: `${typePrefix}JobOptionsInputRepeatCron`,
+              fields: {
+                tz: 'String',
+                endDate: 'Date',
+                limit: 'Int',
+                cron: 'String!',
+                startDate: 'Date',
+              },
+            })
+            .getTypeNonNull(),
         },
       }),
     },

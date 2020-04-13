@@ -1,18 +1,16 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { findQueue } from './helpers/queueFind';
+import { findQueue } from '../helpers/queueFind';
 import { Options } from '../definitions';
 
-export function createQueueDrainFC(
+export function createQueuePauseFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const { typePrefix } = opts;
 
   return {
-    description:
-      'Drains the queue, i.e., removes all jobs that are waiting or delayed, but not active, completed or failed.',
     type: sc.createObjectTC({
-      name: `${typePrefix}QueueDrainPayload`,
+      name: `${typePrefix}QueuePausePayload`,
     }),
     args: {
       prefix: {
@@ -20,14 +18,10 @@ export function createQueueDrainFC(
         defaultValue: 'bull',
       },
       queueName: 'String!',
-      delayed: {
-        type: 'Boolean',
-        defaultValue: false,
-      },
     },
-    resolve: async (_, { prefix, queueName, delayed }) => {
+    resolve: async (_, { prefix, queueName }) => {
       const queue = await findQueue(prefix, queueName);
-      await queue.drain(delayed);
+      await queue.pause();
       return {};
     },
   };

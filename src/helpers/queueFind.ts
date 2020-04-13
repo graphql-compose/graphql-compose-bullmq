@@ -1,5 +1,5 @@
 import { MutationError, ErrorCodeEnum } from './Error';
-import { createBullConnection } from '../../../connectRedis';
+import { createBullConnection } from '../connectRedis';
 import { Queue } from 'bullmq';
 
 export async function findQueue(

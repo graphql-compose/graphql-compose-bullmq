@@ -1,4 +1,4 @@
-import { createBullConnection } from '../../connectRedis';
+import { createBullConnection } from '../connectRedis';
 import { Queue } from 'bullmq';
 
 export function normalizePrefixGlob(prefixGlob: string): string {

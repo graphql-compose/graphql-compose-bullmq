@@ -1,1 +1,1 @@
-import {} from 'graphql-compose';
+export * from './composeBull';

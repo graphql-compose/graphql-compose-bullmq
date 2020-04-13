@@ -1,4 +1,4 @@
-import { findQueue } from './helpers/queueFind';
+import { findQueue } from '../helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';

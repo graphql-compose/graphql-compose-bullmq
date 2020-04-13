@@ -1,5 +1,7 @@
 import Redis, { RedisOptions } from 'ioredis';
-import { BULL_REDIS_URI } from './config';
+
+// TODO: remove get from OPTIONS
+const BULL_REDIS_URI = 'redis://127.0.0.1:6379';
 
 const redisInstances = new Map<string, Redis.Redis>();
 

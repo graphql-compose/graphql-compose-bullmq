@@ -4,13 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.11.0",
-    "bullmq": "^1.8.4",
-    "graphql": "^14.6.0",
-    "graphql-compose": "^7.14.0"
+    "apollo-server": "^2.11.0"
   },
   "devDependencies": {
     "ts-node-dev": "^1.0.0-pre.44"
+  },
+  "resolutions": {
+    "graphql": "link:../node_modules/graphql"
   },
   "scripts": {
     "watch": "ts-node-dev ./src/index.ts --no-notify",

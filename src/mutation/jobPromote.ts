@@ -1,9 +1,10 @@
-import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getJobTC } from '../types/job/Job';
+import { MutationError, ErrorCodeEnum } from '../helpers/Error';
+import { getJobStatusEnumTC } from '../types';
+import { findQueue } from '../helpers/queueFind';
 import { Options } from '../definitions';
 
-export function createJobRremoveFC(
+export function createjobPromoteFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -11,10 +12,10 @@ export function createJobRremoveFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}JobRemovePayload`,
+      name: `${typePrefix}JobPromotePayload`,
       fields: {
         id: 'String',
-        job: getJobTC(sc, opts),
+        state: getJobStatusEnumTC(sc, opts),
       },
     }),
     args: {
@@ -28,12 +29,12 @@ export function createJobRremoveFC(
     resolve: async (_, { prefix, queueName, id }) => {
       const queue = await findQueue(prefix, queueName);
       const job = await queue.getJob(id);
-      if (job) {
-        await job.remove();
-      }
+      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+      await job.promote();
+
       return {
         id,
-        job,
+        state: await job.getState(),
       };
     },
   };

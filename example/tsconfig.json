@@ -2,11 +2,12 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "noEmit": true,
     "strict": true,
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "./src",
-    "outDir": "./lib",
+    "rootDir": "../",
+    "outDir": "./example/dist",
     "lib": ["esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -14,5 +15,5 @@
     "noImplicitAny": false,
     "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "*.js"]
+  "include": ["./example/src/**/*.ts", "./src"]
 }

@@ -1,10 +1,9 @@
+import { findQueue } from '../helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { MutationError, ErrorCodeEnum } from './helpers/Error';
-import { getJobStatusEnumTC } from '../types';
-import { findQueue } from './helpers/queueFind';
+import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
 
-export function createJobDiscardFC(
+export function jobMoveToCompletedFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
@@ -12,10 +11,10 @@ export function createJobDiscardFC(
 
   return {
     type: sc.createObjectTC({
-      name: `${typePrefix}JobDiscardPayload`,
+      name: `${typePrefix}JobMoveToCompletedPayload`,
       fields: {
         id: 'String',
-        state: getJobStatusEnumTC(sc, opts),
+        job: getJobTC(sc, opts),
       },
     }),
     args: {
@@ -29,12 +28,12 @@ export function createJobDiscardFC(
     resolve: async (_, { prefix, queueName, id }) => {
       const queue = await findQueue(prefix, queueName);
       const job = await queue.getJob(id);
-      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
-      await job.discard();
-
+      if (job) {
+        await job.moveToCompleted({}, 'tokenmustbehere'); //TODO: нати где брать токен
+      }
       return {
         id,
-        state: await job.getState(),
+        job,
       };
     },
   };

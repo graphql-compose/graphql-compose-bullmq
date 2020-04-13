@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { MutationError, ErrorCodeEnum } from './helpers/Error';
+import { MutationError, ErrorCodeEnum } from '../helpers/Error';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
-import { findQueue } from './helpers/queueFind';
+import { findQueue } from '../helpers/queueFind';
 import { Options } from '../definitions';
 
 export function createJobRetryFC(
