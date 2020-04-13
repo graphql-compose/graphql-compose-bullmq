@@ -21,7 +21,7 @@ export function createRepeatablesFC(
       })
       .getTypePlural(),
     resolve: async (queue: Queue) => {
-      return await queue.getRepeatableJobs();
+      return queue.getRepeatableJobs();
     },
   };
 }

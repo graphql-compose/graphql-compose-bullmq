@@ -18,7 +18,7 @@ export function createDelayedJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getDelayed(start, end);
+      return queue.getDelayed(start, end);
     },
   };
 }

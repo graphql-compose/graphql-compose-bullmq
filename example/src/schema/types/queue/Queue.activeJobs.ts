@@ -18,7 +18,7 @@ export function createActiveJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getActive(start, end);
+      return queue.getActive(start, end);
     },
   };
 }

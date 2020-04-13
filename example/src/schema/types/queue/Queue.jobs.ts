@@ -21,7 +21,7 @@ export function createJobsFC(
       // TODO: add sorting
     },
     resolve: async (queue: Queue, { status, start, end }) => {
-      return await queue.getJobs([status], start, end, false);
+      return queue.getJobs([status], start, end, false);
     },
   };
 }

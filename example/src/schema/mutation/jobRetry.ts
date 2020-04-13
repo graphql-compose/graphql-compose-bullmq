@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 
 export function createJobRetryFC(
   sc: SchemaComposer<any>
@@ -15,11 +15,15 @@ export function createJobRetryFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       id: 'String!',
     },
-    resolve: async (_, { queueName, id }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, id }) => {
+      const queue = getQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.retry();

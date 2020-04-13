@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { getJobStatusEnumTC } from '../types';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 
 export function createJobLogAddFC(
   sc: SchemaComposer<any>
@@ -15,12 +15,16 @@ export function createJobLogAddFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       id: 'String!',
       row: 'String!',
     },
-    resolve: async (_, { queueName, id, row }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, id, row }) => {
+      const queue = getQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       const logRes = await job.log(row);

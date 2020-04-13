@@ -7,13 +7,13 @@ export function createQueueFC(sc: SchemaComposer<any>) {
   return {
     type: getQueueTC(sc),
     args: {
-      queueName: 'String!',
       prefix: {
         type: 'String',
         defaultValue: 'bull',
       },
+      queueName: 'String!',
     },
-    resolve: async (_, { queueName, prefix }) => {
+    resolve: async (_, { prefix, queueName }) => {
       const queue = new Queue(queueName, {
         prefix,
         connection: createBullConnection('queue'),

@@ -1,6 +1,6 @@
-import { getQueue } from './helpers/wrapMutationFC';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
+import { getQueue } from './helpers/queueGet';
 
 export function createJobAddFC(
   sc: SchemaComposer<any>
@@ -13,6 +13,10 @@ export function createJobAddFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       jobName: 'String!',
       data: 'JSON!',
@@ -32,8 +36,8 @@ export function createJobAddFC(
         },
       }),
     },
-    resolve: async (_, { queueName, jobName, data, options }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, jobName, data, options }) => {
+      const queue = getQueue(prefix, queueName);
       const job = await queue.add(jobName, data, options);
       return {
         job,

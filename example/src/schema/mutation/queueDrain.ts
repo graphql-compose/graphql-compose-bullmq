@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 
 export function createQueueDrainFC(
   sc: SchemaComposer<any>
@@ -11,14 +11,18 @@ export function createQueueDrainFC(
       name: 'QueueDrainPayload',
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       delayed: {
         type: 'Boolean',
         defaultValue: false,
       },
     },
-    resolve: async (_, { queueName, delayed }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, delayed }) => {
+      const queue = getQueue(prefix, queueName);
       await queue.drain(delayed);
       return {};
     },

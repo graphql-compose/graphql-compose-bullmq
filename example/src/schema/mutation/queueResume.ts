@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 
 export function createQueueResumeFC(
   sc: SchemaComposer<any>
@@ -9,10 +9,14 @@ export function createQueueResumeFC(
       name: 'QueueResumePayload',
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
     },
-    resolve: async (_, { queueName }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName }) => {
+      const queue = getQueue(prefix, queueName);
       await queue.resume();
       return {};
     },

@@ -1,4 +1,3 @@
-import { Queue } from 'bullmq';
 import {
   SchemaComposer,
   getFlatProjectionFromAST,
@@ -11,14 +10,6 @@ import { MutationError, ErrorCodeEnum } from './Error';
 export enum MutationStatusEnum {
   OK = 'ok',
   ERROR = 'error',
-}
-
-export function getQueue(queueName: string, context: any): Queue {
-  const queue = context?.Queues?.get(queueName);
-  if (!queue) {
-    throw new MutationError('Queue not found!', ErrorCodeEnum.QUEUE_NOT_FOUND);
-  }
-  return queue;
 }
 
 type Generator = (

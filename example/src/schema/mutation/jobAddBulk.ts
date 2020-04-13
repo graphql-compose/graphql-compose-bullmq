@@ -1,4 +1,4 @@
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -13,6 +13,10 @@ export function createJobAddBulkFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       jobs: sc
         .createInputTC({
@@ -39,9 +43,8 @@ export function createJobAddBulkFC(
         })
         .getTypePlural(),
     },
-    resolve: async (_, { queueName, jobs }, context) => {
-      console.log('Я здесб!');
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, jobs }) => {
+      const queue = getQueue(prefix, queueName);
       const jobsRes = await queue.addBulk(jobs);
       return {
         jobs: jobsRes,

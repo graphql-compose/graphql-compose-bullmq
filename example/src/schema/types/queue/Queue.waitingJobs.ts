@@ -18,7 +18,7 @@ export function createWaitingJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getWaiting(start, end);
+      return queue.getWaiting(start, end);
     },
   };
 }

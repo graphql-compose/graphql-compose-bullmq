@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 import { getJobStatusEnumTC } from '../types';
 
 export function createQueueCleanFC(
@@ -15,6 +15,10 @@ export function createQueueCleanFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       filter: sc.createInputTC({
         name: 'QueueCleanFilter',
@@ -31,8 +35,8 @@ export function createQueueCleanFC(
         },
       }),
     },
-    resolve: async (_, { queueName, filter: { grace, status, limit } }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, filter: { grace, status, limit } }) => {
+      const queue = getQueue(prefix, queueName);
       const jobsId = await queue.clean(grace, limit, status);
       return {
         jobsId,

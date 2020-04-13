@@ -17,7 +17,7 @@ export function createJobCountFC(
       },
     }),
     resolve: async (queue: Queue) => {
-      return await queue.getJobCounts(
+      return queue.getJobCounts(
         JobStatusEnum.ACTIVE,
         JobStatusEnum.COMPLETED,
         JobStatusEnum.DELAYED,

@@ -1,4 +1,4 @@
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -13,6 +13,10 @@ export function createJobAddCronFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       jobName: 'String!',
       data: 'JSON!',
@@ -44,8 +48,8 @@ export function createJobAddCronFC(
         },
       }),
     },
-    resolve: async (_, { queueName, jobName, data, options }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, jobName, data, options }) => {
+      const queue = getQueue(prefix, queueName);
       const job = await queue.add(jobName, data, options);
       return {
         job,

@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 
 export function createRemoveRepeatableFC(
   sc: SchemaComposer<any>
@@ -12,11 +12,15 @@ export function createRemoveRepeatableFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       key: 'String!',
     },
-    resolve: async (_, { queueName, key }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, key }) => {
+      const queue = getQueue(prefix, queueName);
       await queue.removeRepeatableByKey(key);
       return {};
     },

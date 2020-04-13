@@ -18,7 +18,7 @@ export function createFailedJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getFailed(start, end);
+      return queue.getFailed(start, end);
     },
   };
 }

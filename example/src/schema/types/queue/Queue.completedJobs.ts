@@ -18,7 +18,7 @@ export function createCompletedJobsFC(
       },
     },
     resolve: async (queue: Queue, { start, end }) => {
-      return await queue.getCompleted(start, end);
+      return queue.getCompleted(start, end);
     },
   };
 }

@@ -1,4 +1,4 @@
-import { getQueue } from './helpers/wrapMutationFC';
+import { getQueue } from './helpers/queueGet';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -14,11 +14,15 @@ export function createJobRremoveFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String',
+        defaultValue: 'bull',
+      },
       queueName: 'String!',
       id: 'String!',
     },
-    resolve: async (_, { queueName, id }, context) => {
-      const queue = getQueue(queueName, context);
+    resolve: async (_, { prefix, queueName, id }) => {
+      const queue = getQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (job) {
         await job.remove();

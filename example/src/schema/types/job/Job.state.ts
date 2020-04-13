@@ -8,7 +8,7 @@ export function createStateFC(
   return {
     type: getJobStatusEnumTC(sc),
     resolve: async (job: Job) => {
-      return await job.getState();
+      return job.getState();
     },
   };
 }
