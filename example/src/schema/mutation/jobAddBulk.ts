@@ -1,4 +1,4 @@
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -44,7 +44,7 @@ export function createJobAddBulkFC(
         .getTypePlural(),
     },
     resolve: async (_, { prefix, queueName, jobs }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       const jobsRes = await queue.addBulk(jobs);
       return {
         jobs: jobsRes,

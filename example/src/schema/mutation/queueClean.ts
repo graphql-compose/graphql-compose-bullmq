@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 import { getJobStatusEnumTC } from '../types';
 
 export function createQueueCleanFC(
@@ -36,7 +36,7 @@ export function createQueueCleanFC(
       }),
     },
     resolve: async (_, { prefix, queueName, filter: { grace, status, limit } }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       const jobsId = await queue.clean(grace, limit, status);
       return {
         jobsId,

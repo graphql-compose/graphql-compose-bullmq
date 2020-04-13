@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 
 export function createJobAddFC(
   sc: SchemaComposer<any>
@@ -37,7 +37,7 @@ export function createJobAddFC(
       }),
     },
     resolve: async (_, { prefix, queueName, jobName, data, options }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       const job = await queue.add(jobName, data, options);
       return {
         job,

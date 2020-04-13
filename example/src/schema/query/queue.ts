@@ -1,7 +1,6 @@
 import { SchemaComposer } from 'graphql-compose';
 import { getQueueTC } from '../types/queue/Queue';
-import { Queue } from 'bullmq';
-import { createBullConnection } from '../../connectRedis';
+import { getQueue } from './_helpers';
 
 export function createQueueFC(sc: SchemaComposer<any>) {
   return {
@@ -14,12 +13,7 @@ export function createQueueFC(sc: SchemaComposer<any>) {
       queueName: 'String!',
     },
     resolve: async (_, { prefix, queueName }) => {
-      const queue = new Queue(queueName, {
-        prefix,
-        connection: createBullConnection('queue'),
-      });
-
-      return queue;
+      return getQueue(prefix, queueName);
     },
   };
 }

@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 
 export function createQueueResumeFC(
   sc: SchemaComposer<any>
@@ -16,7 +16,7 @@ export function createQueueResumeFC(
       queueName: 'String!',
     },
     resolve: async (_, { prefix, queueName }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       await queue.resume();
       return {};
     },

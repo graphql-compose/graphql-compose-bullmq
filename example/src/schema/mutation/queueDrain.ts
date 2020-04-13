@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 
 export function createQueueDrainFC(
   sc: SchemaComposer<any>
@@ -22,7 +22,7 @@ export function createQueueDrainFC(
       },
     },
     resolve: async (_, { prefix, queueName, delayed }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       await queue.drain(delayed);
       return {};
     },

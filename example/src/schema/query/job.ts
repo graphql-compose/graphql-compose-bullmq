@@ -1,7 +1,6 @@
 import { SchemaComposer } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { Queue } from 'bullmq';
-import { createBullConnection } from '../../connectRedis';
+import { getQueue } from './_helpers';
 
 export function createJobFC(sc: SchemaComposer<any>) {
   return {
@@ -15,10 +14,7 @@ export function createJobFC(sc: SchemaComposer<any>) {
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {
-      const queue = new Queue(queueName, {
-        prefix,
-        connection: createBullConnection('queue'),
-      });
+      const queue = getQueue(prefix, queueName);
       if (!queue) return null;
       const job = await queue.getJob(id);
       if (!job) return null;

@@ -1,4 +1,4 @@
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -22,7 +22,7 @@ export function jobMoveToCompletedFC(
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (job) {
         await job.moveToCompleted({}, 'tokenmustbehere'); //TODO: нати где брать токен

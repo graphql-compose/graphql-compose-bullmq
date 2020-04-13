@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
 import { getJobStatusEnumTC } from '../types';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 
 export function createJobDiscardFC(
   sc: SchemaComposer<any>
@@ -23,7 +23,7 @@ export function createJobDiscardFC(
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.discard();

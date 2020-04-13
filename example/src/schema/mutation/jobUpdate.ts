@@ -1,5 +1,5 @@
 import { MutationError, ErrorCodeEnum } from './helpers/Error';
-import { getQueue } from './helpers/queueGet';
+import { findQueue } from './helpers/queueFind';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 
@@ -23,7 +23,7 @@ export function createJobUpdateFC(
       data: 'JSON!',
     },
     resolve: async (_, { prefix, queueName, id, data }) => {
-      const queue = getQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName);
       let job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.update(data); //Данные заменяются полностью
