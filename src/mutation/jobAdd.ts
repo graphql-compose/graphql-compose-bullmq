@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { Options } from '../definitions';
 import { createJobDataITC } from '../types/job/JobInput';
 
@@ -18,11 +18,6 @@ export function createJobAddFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       jobName: 'String!',
       data: {
         type: () => createJobDataITC(sc, opts),

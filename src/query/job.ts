@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
-import { getQueue } from './_helpers';
+import { getQueue } from '../helpers';
 import { Options } from '../definitions';
 
 export function createJobFC(
@@ -10,11 +10,6 @@ export function createJobFC(
   return {
     type: getJobTC(sc, opts),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {

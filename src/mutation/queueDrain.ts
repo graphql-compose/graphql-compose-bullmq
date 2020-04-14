@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { Options } from '../definitions';
 
 export function createQueueDrainFC(
@@ -15,11 +15,6 @@ export function createQueueDrainFC(
       name: `${typePrefix}QueueDrainPayload`,
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       delayed: {
         type: 'Boolean',
         defaultValue: false,

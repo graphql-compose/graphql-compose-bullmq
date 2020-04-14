@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { Options } from '../definitions';
 
 export function createRemoveRepeatableFC(
@@ -16,11 +16,6 @@ export function createRemoveRepeatableFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       key: 'String!',
     },
     resolve: async (_, { prefix, queueName, key }) => {

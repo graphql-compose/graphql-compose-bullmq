@@ -1,5 +1,5 @@
-import { MutationError, ErrorCodeEnum } from '../helpers/Error';
-import { findQueue } from '../helpers/queueFind';
+import { MutationError, ErrorCodeEnum } from '../helpers';
+import { findQueue } from '../helpers';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
@@ -18,11 +18,6 @@ export function createJobUpdateFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       id: 'String!',
       data: 'JSON!',
     },

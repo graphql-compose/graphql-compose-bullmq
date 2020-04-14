@@ -19,7 +19,7 @@ import {
   createJobUpdateFC,
   createJobLogAddFC,
 } from './mutation';
-import { createMutationFC } from './helpers/wrapMutationFC';
+import { createMutationFC, predefineQueueArgs } from './helpers';
 
 export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<any> }) {
   const sc = opts?.schemaComposer || schemaComposer;
@@ -28,27 +28,36 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
     QueueTC: getQueueTC(sc, opts),
     JobTC: getJobTC(sc, opts),
     queryFields: {
-      queueKeys: createQueueKeysFC(sc, opts),
-      queues: createQueuesFC(sc, opts),
-      queue: createQueueFC(sc, opts),
-      job: createJobFC(sc, opts),
+      queueKeys: predefineQueueArgs(createQueueKeysFC(sc, opts), opts),
+      queues: predefineQueueArgs(createQueuesFC(sc, opts), opts),
+      queue: predefineQueueArgs(createQueueFC(sc, opts), opts),
+      job: predefineQueueArgs(createJobFC(sc, opts), opts),
     },
     mutationFields: {
-      queueClean: createMutationFC(createQueueCleanFC, sc, opts),
-      queueDrain: createMutationFC(createQueueDrainFC, sc, opts),
-      queuePause: createMutationFC(createQueuePauseFC, sc, opts),
-      queueResume: createMutationFC(createQueueResumeFC, sc, opts),
-      queueRemoveRepeatable: createMutationFC(createRemoveRepeatableFC, sc, opts),
-      jobAdd: createMutationFC(createJobAddFC, sc, opts),
-      jobAddBulk: createMutationFC(createJobAddBulkFC, sc, opts),
-      jobAddRepeatableCron: createMutationFC(createJobAddCronFC, sc, opts),
-      jobAddRepeatableEvery: createMutationFC(createJobAddEveryFC, sc, opts),
-      jobDiscard: createMutationFC(createJobDiscardFC, sc, opts),
-      jobPromote: createMutationFC(createjobPromoteFC, sc, opts),
-      jobRemove: createMutationFC(createJobRremoveFC, sc, opts),
-      jobRetry: createMutationFC(createJobRetryFC, sc, opts),
-      jobUpdate: createMutationFC(createJobUpdateFC, sc, opts),
-      jobLogAdd: createMutationFC(createJobLogAddFC, sc, opts),
+      queueClean: predefineQueueArgs(createMutationFC(createQueueCleanFC, sc, opts), opts),
+      queueDrain: predefineQueueArgs(createMutationFC(createQueueDrainFC, sc, opts), opts),
+      queuePause: predefineQueueArgs(createMutationFC(createQueuePauseFC, sc, opts), opts),
+      queueResume: predefineQueueArgs(createMutationFC(createQueueResumeFC, sc, opts), opts),
+      queueRemoveRepeatable: predefineQueueArgs(
+        createMutationFC(createRemoveRepeatableFC, sc, opts),
+        opts
+      ),
+      jobAdd: predefineQueueArgs(createMutationFC(createJobAddFC, sc, opts), opts),
+      jobAddBulk: predefineQueueArgs(createMutationFC(createJobAddBulkFC, sc, opts), opts),
+      jobAddRepeatableCron: predefineQueueArgs(
+        createMutationFC(createJobAddCronFC, sc, opts),
+        opts
+      ),
+      jobAddRepeatableEvery: predefineQueueArgs(
+        createMutationFC(createJobAddEveryFC, sc, opts),
+        opts
+      ),
+      jobDiscard: predefineQueueArgs(createMutationFC(createJobDiscardFC, sc, opts), opts),
+      jobPromote: predefineQueueArgs(createMutationFC(createjobPromoteFC, sc, opts), opts),
+      jobRemove: predefineQueueArgs(createMutationFC(createJobRremoveFC, sc, opts), opts),
+      jobRetry: predefineQueueArgs(createMutationFC(createJobRetryFC, sc, opts), opts),
+      jobUpdate: predefineQueueArgs(createMutationFC(createJobUpdateFC, sc, opts), opts),
+      jobLogAdd: predefineQueueArgs(createMutationFC(createJobLogAddFC, sc, opts), opts),
     },
   };
 }

@@ -1,4 +1,4 @@
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
@@ -17,11 +17,6 @@ export function createJobAddBulkFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       jobs: sc
         .createInputTC({
           name: `${typePrefix}JobAddInputBulk`,

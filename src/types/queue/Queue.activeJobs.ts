@@ -16,7 +16,7 @@ export function createActiveJobsFC(
       },
       end: {
         type: 'Int',
-        defaultValue: -1,
+        defaultValue: 20,
       },
     },
     resolve: async (queue: Queue, { start, end }) => {

@@ -1,7 +1,7 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { MutationError, ErrorCodeEnum } from '../helpers/Error';
+import { MutationError, ErrorCodeEnum } from '../helpers';
 import { JobStatusEnum, getJobStatusEnumTC } from '../types';
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { Options } from '../definitions';
 
 export function createJobRetryFC(
@@ -19,11 +19,6 @@ export function createJobRetryFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {

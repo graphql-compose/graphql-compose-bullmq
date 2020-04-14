@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueueTC } from '../types/queue/Queue';
-import { fetchQueueTitles, getQueues } from './_helpers';
+import { fetchQueueTitles, getQueues } from '../helpers';
 import { Options } from '../definitions';
 
 export function createQueuesFC(

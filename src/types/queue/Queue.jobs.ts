@@ -18,7 +18,7 @@ export function createJobsFC(
       },
       end: {
         type: 'Int',
-        defaultValue: -1,
+        defaultValue: 20,
       },
       // TODO: add sorting
     },

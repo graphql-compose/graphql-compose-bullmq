@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { findQueue } from '../helpers/queueFind';
+import { findQueue } from '../helpers';
 import { getJobStatusEnumTC } from '../types';
 import { Options } from '../definitions';
 
@@ -19,11 +19,6 @@ export function createQueueCleanFC(
       },
     }),
     args: {
-      prefix: {
-        type: 'String',
-        defaultValue: 'bull',
-      },
-      queueName: 'String!',
       filter: sc.createInputTC({
         name: `${typePrefix}QueueCleanFilter`,
         fields: {

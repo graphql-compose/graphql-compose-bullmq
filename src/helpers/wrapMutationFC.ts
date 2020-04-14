@@ -6,7 +6,7 @@ import {
   ObjectTypeComposer,
   inspect,
 } from 'graphql-compose';
-import { MutationError, ErrorCodeEnum } from './Error';
+import { MutationError, ErrorCodeEnum } from './MutationError';
 
 export enum MutationStatusEnum {
   OK = 'ok',
