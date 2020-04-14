@@ -1,4 +1,8 @@
-import { schemaComposer, SchemaComposer } from 'graphql-compose';
+import {
+  schemaComposer,
+  SchemaComposer,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { Options } from './definitions';
 import { getQueueTC, getJobTC } from './types';
 import { createQueuesFC, createQueueKeysFC, createQueueFC, createJobFC } from './query';
@@ -19,22 +23,54 @@ import {
   createJobUpdateFC,
   createJobLogAddFC,
 } from './mutation';
-import { createMutationFC, predefineQueueArgs } from './helpers';
+import { createMutationFC, wrapQueueArgs } from './helpers';
 
 export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<any> }) {
   const sc = opts?.schemaComposer || schemaComposer;
+
+  /**
+   * Compose several FC creator with middlewares
+   *  Eg. composeFC(sc, opts)(createQueueKeysFC, wrapQueueArgs, wrapOtherMiddleware)
+   *  Will work like the following code:
+   *    let fc = createQueueKeysFC(sc, opts);
+   *    fc = wrapQueueArgs(fc, sc, opts)
+   *    fc = wrapOtherMiddleware(fc, sc, opts)
+   *    return fc;
+   */
+  function composeFC(sc: SchemaComposer<any>, opts: Options) {
+    return (
+      creator: (
+        sc: SchemaComposer<any>,
+        opts: Options
+      ) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>,
+      ...middlewares: ((
+        fc: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>,
+        sc: SchemaComposer<any>,
+        opts: Options
+      ) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>)[]
+    ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> => {
+      let fc = creator(sc, opts);
+      for (let i = 0; i < middlewares.length; i++) {
+        fc = middlewares[i](fc, sc, opts);
+      }
+      return fc;
+    };
+  }
+
+  const wrap = composeFC(sc, opts);
 
   return {
     QueueTC: getQueueTC(sc, opts),
     JobTC: getJobTC(sc, opts),
     queryFields: {
-      queueKeys: predefineQueueArgs(createQueueKeysFC(sc, opts), opts),
+      queueKeys: wrap(createQueueKeysFC, wrapQueueArgs),
       queues: predefineQueueArgs(createQueuesFC(sc, opts), opts),
       queue: predefineQueueArgs(createQueueFC(sc, opts), opts),
       job: predefineQueueArgs(createJobFC(sc, opts), opts),
     },
     mutationFields: {
-      queueClean: predefineQueueArgs(createMutationFC(createQueueCleanFC, sc, opts), opts),
+      queueClean: wrap(createQueueCleanFC, createMutationFC, predefineQueueArgs),
+      // queueClean: predefineQueueArgs(createMutationFC(createQueueCleanFC, sc, opts), opts),
       queueDrain: predefineQueueArgs(createMutationFC(createQueueDrainFC, sc, opts), opts),
       queuePause: predefineQueueArgs(createMutationFC(createQueuePauseFC, sc, opts), opts),
       queueResume: predefineQueueArgs(createMutationFC(createQueueResumeFC, sc, opts), opts),
