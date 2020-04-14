@@ -22,7 +22,7 @@ export function createJobDiscardFC(
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       await job.discard();

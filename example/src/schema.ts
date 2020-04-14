@@ -1,5 +1,6 @@
 import { composeBull } from '../../src';
 import { schemaComposer } from 'graphql-compose';
+import { createBullConnection } from './connectRedis';
 
 const { queryFields, mutationFields } = composeBull({
   schemaComposer,
@@ -9,6 +10,7 @@ const { queryFields, mutationFields } = composeBull({
     name: 'fetch_metrics',
     prefix: 'bull.demo',
   },
+  //redis: createBullConnection('queue'),
 });
 
 schemaComposer.Query.addFields({

@@ -1,10 +1,11 @@
-import { createBullConnection } from '../connectRedis';
+import { Options } from './../definitions';
 import { normalizePrefixGlob } from './normalizePrefixGlob';
+import { getBullConnection } from './getBullConnection';
 
 export type Title = { prefix: string; queueName: string };
 
-export async function fetchQueueTitles(prefix: string): Promise<Array<Title>> {
-  const connection = createBullConnection('custom');
+export async function fetchQueueTitles(prefix: string, opts: Options): Promise<Array<Title>> {
+  const connection = getBullConnection(opts);
   const keys = await connection.keys(normalizePrefixGlob(prefix));
 
   return keys.map((key) => {

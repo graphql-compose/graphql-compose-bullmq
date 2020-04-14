@@ -21,7 +21,7 @@ export function createQueueDrainFC(
       },
     },
     resolve: async (_, { prefix, queueName, delayed }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       await queue.drain(delayed);
       return {};
     },

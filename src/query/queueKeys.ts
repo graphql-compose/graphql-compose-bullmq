@@ -24,7 +24,7 @@ export function createQueueKeysFC(
       },
     },
     resolve: async (_, { prefixGlob }) => {
-      return fetchQueueTitles(normalizePrefixGlob(prefixGlob));
+      return fetchQueueTitles(normalizePrefixGlob(prefixGlob), opts);
     },
   };
 }

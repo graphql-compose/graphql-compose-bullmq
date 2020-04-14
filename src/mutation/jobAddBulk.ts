@@ -43,7 +43,7 @@ export function createJobAddBulkFC(
         .getTypePlural(),
     },
     resolve: async (_, { prefix, queueName, jobs }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const jobsRes = await queue.addBulk(jobs);
       return {
         jobs: jobsRes,

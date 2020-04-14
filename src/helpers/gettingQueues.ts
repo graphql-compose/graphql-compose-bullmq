@@ -1,16 +1,17 @@
 import { Title } from './queueTitles';
 import { Queue } from 'bullmq';
-import { createBullConnection } from '../connectRedis';
 import { MutationError, ErrorCodeEnum } from './MutationError';
+import { getBullConnection } from './getBullConnection';
+import { Options } from '../definitions';
 
-export function getQueues(titles: Array<Title>): Array<Queue> {
-  return titles.map((title) => getQueue(title.prefix, title.queueName));
+export function getQueues(titles: Array<Title>, opts: Options): Array<Queue> {
+  return titles.map((title) => getQueue(title.prefix, title.queueName, opts));
 }
 
-export function getQueue(prefix: string, queueName: string): Queue {
+export function getQueue(prefix: string, queueName: string, opts: Options): Queue {
   const queue = new Queue(queueName, {
     prefix,
-    connection: createBullConnection('queue'),
+    connection: getBullConnection(opts),
   });
 
   return queue;
@@ -19,9 +20,10 @@ export function getQueue(prefix: string, queueName: string): Queue {
 export async function findQueue(
   prefix: string,
   queueName: string,
+  opts: Options,
   checkExistence: boolean = true
 ): Promise<Queue> {
-  const connection = createBullConnection('custom');
+  const connection = getBullConnection(opts);
 
   if (checkExistence) {
     const queueExists = await connection.exists([prefix, queueName, 'meta'].join(':'));
@@ -33,7 +35,7 @@ export async function findQueue(
 
   const queue = new Queue(queueName, {
     prefix,
-    connection: createBullConnection('queue'),
+    connection,
   });
 
   return queue;

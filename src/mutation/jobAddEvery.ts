@@ -47,7 +47,7 @@ export function createJobAddEveryFC(
       }),
     },
     resolve: async (_, { prefix, queueName, jobName, data, options }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.add(jobName, data, options);
       return {
         job,

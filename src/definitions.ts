@@ -10,7 +10,7 @@ export type Options = {
   };
   redis?:
     | {
-        uri: string;
+        uri?: string;
         opts?: RedisOptions;
       }
     | Redis.Redis;

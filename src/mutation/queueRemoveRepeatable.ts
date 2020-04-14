@@ -19,7 +19,7 @@ export function createRemoveRepeatableFC(
       key: 'String!',
     },
     resolve: async (_, { prefix, queueName, key }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       await queue.removeRepeatableByKey(key);
       return {};
     },

@@ -35,7 +35,7 @@ export function createQueueCleanFC(
       }),
     },
     resolve: async (_, { prefix, queueName, filter: { grace, status, limit } }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const jobsId = await queue.clean(grace, limit, status);
       return {
         jobsId,

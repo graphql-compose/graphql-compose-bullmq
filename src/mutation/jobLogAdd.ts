@@ -23,7 +23,7 @@ export function createJobLogAddFC(
       row: 'String!',
     },
     resolve: async (_, { prefix, queueName, id, row }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
       const logRes = await job.log(row);

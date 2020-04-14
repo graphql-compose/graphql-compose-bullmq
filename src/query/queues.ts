@@ -16,8 +16,8 @@ export function createQueuesFC(
       },
     },
     resolve: async (_, { prefix }) => {
-      const titles = await fetchQueueTitles(prefix);
-      return getQueues(titles);
+      const titles = await fetchQueueTitles(prefix, opts);
+      return getQueues(titles, opts);
     },
   };
 }

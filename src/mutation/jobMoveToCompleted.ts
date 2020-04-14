@@ -21,7 +21,7 @@ export function jobMoveToCompletedFC(
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.getJob(id);
       if (job) {
         await job.moveToCompleted({}, 'tokenmustbehere'); //TODO: нати где брать токен

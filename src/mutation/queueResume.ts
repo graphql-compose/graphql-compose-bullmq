@@ -14,7 +14,7 @@ export function createQueueResumeFC(
     }),
     args: {},
     resolve: async (_, { prefix, queueName }) => {
-      const queue = await findQueue(prefix, queueName);
+      const queue = await findQueue(prefix, queueName, opts);
       await queue.resume();
       return {};
     },

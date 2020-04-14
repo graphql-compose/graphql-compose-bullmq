@@ -11,7 +11,7 @@ export function createQueueFC(
     type: getQueueTC(sc, opts),
     args: {},
     resolve: async (_, { prefix, queueName }) => {
-      return getQueue(prefix, queueName);
+      return getQueue(prefix, queueName, opts);
     },
   };
 }
