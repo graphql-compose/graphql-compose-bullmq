@@ -18,6 +18,11 @@ export function createJobAddFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       jobName: 'String!',
       data: {
         type: () => createJobDataITC(sc, opts),

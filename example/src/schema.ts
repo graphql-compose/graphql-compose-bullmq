@@ -10,7 +10,7 @@ const { queryFields, mutationFields } = composeBull({
     name: 'fetch_metrics',
     prefix: 'bull.demo',
   },
-  //redis: createBullConnection('queue'),
+  redis: createBullConnection('queue'),
 });
 
 schemaComposer.Query.addFields({

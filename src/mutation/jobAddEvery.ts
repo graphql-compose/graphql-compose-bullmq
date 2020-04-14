@@ -17,6 +17,11 @@ export function createJobAddEveryFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       jobName: 'String!',
       data: 'JSON!',
       options: sc.createInputTC({

@@ -9,7 +9,13 @@ export function createQueueFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: getQueueTC(sc, opts),
-    args: {},
+    args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
+    },
     resolve: async (_, { prefix, queueName }) => {
       return getQueue(prefix, queueName, opts);
     },

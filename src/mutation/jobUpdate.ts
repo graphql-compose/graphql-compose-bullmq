@@ -18,6 +18,11 @@ export function createJobUpdateFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       id: 'String!',
       data: 'JSON!',
     },

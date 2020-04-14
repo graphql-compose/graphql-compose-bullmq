@@ -16,6 +16,11 @@ export function createRemoveRepeatableFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       key: 'String!',
     },
     resolve: async (_, { prefix, queueName, key }) => {

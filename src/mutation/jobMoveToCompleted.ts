@@ -18,6 +18,11 @@ export function jobMoveToCompletedFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {

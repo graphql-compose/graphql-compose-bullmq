@@ -17,6 +17,11 @@ export function createJobAddBulkFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       jobs: sc
         .createInputTC({
           name: `${typePrefix}JobAddInputBulk`,

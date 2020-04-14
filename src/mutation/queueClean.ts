@@ -19,6 +19,11 @@ export function createQueueCleanFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       filter: sc.createInputTC({
         name: `${typePrefix}QueueCleanFilter`,
         fields: {

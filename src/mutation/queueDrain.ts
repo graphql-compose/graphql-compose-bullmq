@@ -15,6 +15,11 @@ export function createQueueDrainFC(
       name: `${typePrefix}QueueDrainPayload`,
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       delayed: {
         type: 'Boolean',
         defaultValue: false,

@@ -19,6 +19,11 @@ export function createJobLogAddFC(
       },
     }),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       id: 'String!',
       row: 'String!',
     },

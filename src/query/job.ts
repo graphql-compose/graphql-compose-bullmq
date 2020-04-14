@@ -10,6 +10,11 @@ export function createJobFC(
   return {
     type: getJobTC(sc, opts),
     args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
       id: 'String!',
     },
     resolve: async (_, { prefix, queueName, id }) => {

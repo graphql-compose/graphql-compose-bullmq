@@ -13,19 +13,6 @@ export enum MutationStatusEnum {
   ERROR = 'error',
 }
 
-export type CreateFC = (
-  sc: SchemaComposer<any>,
-  opts: Options
-) => ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>;
-
-export function createMutationFC(
-  createFC: CreateFC,
-  schemaComposer: SchemaComposer<any>,
-  opts: Options
-) {
-  return wrapMutationFC(createFC(schemaComposer, opts), schemaComposer, opts);
-}
-
 export function wrapMutationFC(
   fieldConfig: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>,
   schemaComposer: SchemaComposer<any>,

@@ -12,7 +12,13 @@ export function createQueueResumeFC(
     type: sc.createObjectTC({
       name: `${typePrefix}QueueResumePayload`,
     }),
-    args: {},
+    args: {
+      prefix: {
+        type: 'String!',
+        defaultValue: 'bull',
+      },
+      queueName: 'String!',
+    },
     resolve: async (_, { prefix, queueName }) => {
       const queue = await findQueue(prefix, queueName, opts);
       await queue.resume();
