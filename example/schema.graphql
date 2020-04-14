@@ -1,0 +1,388 @@
+scalar Date
+
+scalar JSON
+
+type Mutation {
+  queueClean(filter: PrefixQueueCleanFilter): PrefixQueueCleanPayload
+  queueDrain(delayed: Boolean = false): PrefixQueueDrainPayload
+  queuePause: PrefixQueuePausePayload
+  queueResume: PrefixQueueResumePayload
+  queueRemoveRepeatable(key: String!): PrefixQueueRemoveRepeatablePayload
+  jobAdd(
+    jobName: String!
+    data: MyJobDataInput!
+    options: PrefixJobOptionsInput
+  ): PrefixJobAddPayload
+  jobAddBulk(jobs: [PrefixJobAddInputBulk]): PrefixJobAddBulkPayload
+  jobAddRepeatableCron(
+    jobName: String!
+    data: JSON!
+    options: PrefixJobOptionsInputCron
+  ): PrefixJobAddCronPayload
+  jobAddRepeatableEvery(
+    jobName: String!
+    data: JSON!
+    options: PrefixJobOptionsInputEvery
+  ): PrefixJobAddEveryPayload
+  jobDiscard(id: String!): PrefixJobDiscardPayload
+  jobPromote(id: String!): PrefixJobPromotePayload
+  jobRemove(id: String!): PrefixJobRemovePayload
+  jobRetry(id: String!): PrefixJobRetryPayload
+  jobUpdate(id: String!, data: JSON!): PrefixJobUpdatePayload
+  jobLogAdd(id: String!, row: String!): PrefixJobLogAddPayload
+}
+
+type MyJobData {
+  fieldA: String!
+  fieldB: String
+}
+
+input MyJobDataInput {
+  fieldA: String!
+  fieldB: String
+}
+
+type PrefixJob {
+  id: String!
+  name: String!
+  data: MyJobData
+  progress: Int
+  delay: Int
+  timestamp: Date!
+  attemptsMade: Int
+  failedReason: JSON
+  stacktrace: [String!]
+  returnvalue: JSON
+  finishedOn: Date
+  processedOn: Date
+  opts: PrefixJobOptionsOutput
+  state: PrefixJobStatusEnum
+  logs: PrefixJobLogs
+}
+
+type PrefixJobAddBulkPayload {
+  jobs: [PrefixJob]
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobAddCronPayload {
+  job: PrefixJob
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobAddEveryPayload {
+  job: PrefixJob
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+input PrefixJobAddInputBulk {
+  name: String!
+  data: JSON!
+  options: PrefixJobOptionsInputBulk
+}
+
+type PrefixJobAddPayload {
+  job: PrefixJob
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobCounts {
+  active: Int
+  completed: Int
+  failed: Int
+  delayed: Int
+  waiting: Int
+}
+
+type PrefixJobDiscardPayload {
+  id: String
+  state: PrefixJobStatusEnum
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobLogAddPayload {
+  id: String
+  state: PrefixJobStatusEnum
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobLogs {
+  count: Int
+  items: [String!]
+}
+
+input PrefixJobOptionsInput {
+  priority: Int
+  delay: Int
+  attempts: Int
+  backoff: Int
+  lifo: Boolean
+  timeout: Int
+  jobId: String
+  removeOnComplete: Boolean
+  removeOnFail: Boolean
+  stackTraceLimit: Int
+}
+
+input PrefixJobOptionsInputBulk {
+  priority: Int
+  delay: Int
+  attempts: Int
+  backoff: Int
+  lifo: Boolean
+  timeout: Int
+  jobId: String
+  removeOnComplete: Boolean
+  removeOnFail: Boolean
+  stackTraceLimit: Int
+}
+
+input PrefixJobOptionsInputCron {
+  priority: Int
+  delay: Int
+  attempts: Int
+  backoff: Int
+  lifo: Boolean
+  timeout: Int
+  jobId: String
+  removeOnComplete: Boolean
+  removeOnFail: Boolean
+  stackTraceLimit: Int
+  repeat: PrefixJobOptionsInputRepeatCron!
+}
+
+input PrefixJobOptionsInputEvery {
+  priority: Int
+  delay: Int
+  attempts: Int
+  backoff: Int
+  lifo: Boolean
+  timeout: Int
+  jobId: String
+  removeOnComplete: Boolean
+  removeOnFail: Boolean
+  stackTraceLimit: Int
+  repeat: PrefixJobOptionsInputRepeatEvery!
+}
+
+input PrefixJobOptionsInputRepeatCron {
+  tz: String
+  endDate: Date
+  limit: Int
+  cron: String!
+  startDate: Date
+}
+
+input PrefixJobOptionsInputRepeatEvery {
+  tz: String
+  endDate: Date
+  limit: Int
+  every: String!
+}
+
+type PrefixJobOptionsOutput {
+  priority: Int
+  delay: Int
+  attempts: Int
+  repeat: PrefixRepeatOptionsInterface
+  backoff: Int
+  lifo: Boolean
+  timeout: Int
+  jobId: String
+  removeOnComplete: Int
+  removeOnFail: Int
+  stackTraceLimit: Int
+}
+
+type PrefixJobPromotePayload {
+  id: String
+  state: PrefixJobStatusEnum
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobRemovePayload {
+  id: String
+  job: PrefixJob
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixJobRetryPayload {
+  id: String
+  state: PrefixJobStatusEnum
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+enum PrefixJobStatusEnum {
+  COMPLETED
+  WAITING
+  ACTIVE
+  DELAYED
+  FAILED
+  PAUSED
+}
+
+type PrefixJobUpdatePayload {
+  job: PrefixJob
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+enum PrefixMutationErrorCodeEnum {
+  QUEUE_NOT_FOUND
+  JOB_NOT_FOUND
+  OTHER_ERROR
+}
+
+enum PrefixMutationStatusEnum {
+  OK
+  ERROR
+}
+
+type PrefixQueue {
+  name: String!
+  jobCounts: PrefixJobCounts
+  repeatables: [PrefixRepeatableJobInformation]
+  jobs(status: PrefixJobStatusEnum, start: Int = 0, end: Int = 20): [PrefixJob]
+  jobsWaiting(start: Int = 0, end: Int = 20): [PrefixJob]
+  jobsCompleted(start: Int = 0, end: Int = 20): [PrefixJob]
+  jobsActive(start: Int = 0, end: Int = 20): [PrefixJob]
+  jobsDelayed(start: Int = 0, end: Int = 20): [PrefixJob]
+  jobsFailed(start: Int = 0, end: Int = 20): [PrefixJob]
+  activeWorkers: [PrefixQueueWorker]
+}
+
+input PrefixQueueCleanFilter {
+  grace: Int!
+  status: PrefixJobStatusEnum = COMPLETED
+  limit: Int = 0
+}
+
+type PrefixQueueCleanPayload {
+  jobsId: [String!]
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixQueueDrainPayload {
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixQueueKeysResult {
+  queueName: String!
+  prefix: String!
+}
+
+type PrefixQueuePausePayload {
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixQueueRemoveRepeatablePayload {
+  key: String!
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixQueueResumePayload {
+  status: PrefixMutationStatusEnum
+  query: Query!
+  error: String
+  errorCode: PrefixMutationErrorCodeEnum
+}
+
+type PrefixQueueWorker {
+  id: String
+  addr: String
+  fd: String
+  name: String
+  age: Int
+  idle: Int
+  flags: String
+  db: Int
+  sub: Int
+  psub: Int
+  multi: Int
+  qbuf: Int
+  qbufFree: Int
+  obl: Int
+  oll: Int
+  omem: Int
+  events: String
+  cmd: String
+}
+
+type PrefixRepeatableJobInformation {
+  key: String
+  name: String
+  id: String
+  endDate: Date
+  tz: String
+  cron: String
+  next: Date
+}
+
+type PrefixRepeatOptionsCron implements PrefixRepeatOptionsInterface {
+  tz: String
+  endDate: Date
+  limit: Int
+  cron: String
+  startDate: Date
+}
+
+type PrefixRepeatOptionsEvery implements PrefixRepeatOptionsInterface {
+  tz: String
+  endDate: Date
+  limit: Int
+  every: String
+}
+
+interface PrefixRepeatOptionsInterface {
+  tz: String
+  endDate: Date
+  limit: Int
+}
+
+type Query {
+  queueKeys(prefixGlob: String = "bull*"): [PrefixQueueKeysResult]
+  queues: [PrefixQueue!]
+  queue: PrefixQueue
+  job(id: String!): PrefixJob
+}
