@@ -1,13 +1,7 @@
-import { BULL_REDIS_URI, BULL_HOST_ID } from '../config';
 import { Queue, Worker, QueueScheduler } from 'bullmq';
 import { createBullConnection } from '../connectRedis';
 
-if (!BULL_REDIS_URI) {
-  throw new Error(`Env var BULL_REDIS_URI is empty. Cannot init task ${__filename}.`);
-}
-
 export const queueSettings = {
-  hostId: BULL_HOST_ID,
   name: 'fetch_metrics',
   prefix: 'bull.demo',
 };
@@ -62,7 +56,6 @@ metricsWorker.on('failed', (job, err) => {
 
 export default {
   name: queueSettings.name as string,
-  hostId: queueSettings.hostId as string,
   prefix: queueSettings.prefix as string,
   bullQueue: metricsQueue,
   jobNames: ['fetch_metrics_every_5m'],

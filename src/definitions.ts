@@ -5,8 +5,8 @@ export type Options = {
   typePrefix: string;
   jobDataTC?: string | ObjectTypeComposer<any, any>;
   queue?: {
-    name: string;
-    prefix: string;
+    name?: string;
+    prefix?: string;
   };
   redis?: RedisOptions | IORedis.Redis;
 };

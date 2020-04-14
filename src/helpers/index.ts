@@ -4,3 +4,4 @@ export * from './MutationError';
 export * from './normalizePrefixGlob';
 export * from './wrapMutationFC';
 export * from './wrapQueueArgs';
+export * from './composeFC';
