@@ -13,3 +13,4 @@ export { createJobRremoveFC } from './jobRemove';
 export { createJobRetryFC } from './jobRetry';
 export { createJobUpdateFC } from './jobUpdate';
 export { createJobLogAddFC } from './jobLogAdd';
+export { createJobMoveToDelayedFC } from './jobMoveToDelayed';

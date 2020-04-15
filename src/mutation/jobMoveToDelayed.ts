@@ -1,20 +1,22 @@
+import { MutationError, ErrorCodeEnum } from './../helpers/MutationError';
 import { findQueue } from '../helpers';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
 
-export function createJobMoveToCompletedFC(
+export function createJobMoveToDelayedFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const { typePrefix } = opts;
 
   return {
+    description: 'Moves job from active to delayed.',
     type: sc.createObjectTC({
-      name: `${typePrefix}JobMoveToCompletedPayload`,
+      name: `${typePrefix}JobMoveToDelayedPayload`,
       fields: {
-        id: 'String',
         job: getJobTC(sc, opts),
+        willBeProcessedOn: 'Date',
       },
     }),
     args: {
@@ -24,15 +26,19 @@ export function createJobMoveToCompletedFC(
       },
       queueName: 'String!',
       id: 'String!',
+      delay: {
+        type: 'Int!',
+        defaultValue: 60000,
+      },
     },
-    resolve: async (_, { prefix, queueName, id }) => {
+    resolve: async (_, { prefix, queueName, id, delay }) => {
       const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.getJob(id);
-      if (job) {
-        await job.moveToCompleted({}, 'tokenmustbehere'); //TODO: нати где брать токен
-      }
+      if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+      const willBeProcessedOn = Date.now() + delay;
+      await job.moveToDelayed(willBeProcessedOn);
       return {
-        id,
+        willBeProcessedOn,
         job,
       };
     },

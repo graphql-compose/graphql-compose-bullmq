@@ -1,13 +1,15 @@
 export function normalizePrefixGlob(prefixGlob: string): string {
   let prefixGlobNorm = prefixGlob;
-  const nameCase = prefixGlobNorm.split(':');
-  if (nameCase.length >= 3) {
-    prefixGlobNorm = nameCase.filter((s) => s !== '').join(':') + ':';
-  } else if (nameCase.length === 2) {
+  const sectionsCount = prefixGlobNorm.split(':').length - 1;
+
+  if (sectionsCount > 1) {
+    prefixGlobNorm += prefixGlobNorm.endsWith(':') ? '' : ':';
+  } else if (sectionsCount == 1) {
     prefixGlobNorm += prefixGlobNorm.endsWith(':') ? '*:' : ':';
   } else {
-    prefixGlobNorm += ':*:';
+    prefixGlobNorm += prefixGlobNorm.trim().length > 0 ? ':*:' : '*:*:';
   }
+
   prefixGlobNorm += 'meta';
 
   return prefixGlobNorm;

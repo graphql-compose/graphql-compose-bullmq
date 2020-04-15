@@ -18,6 +18,7 @@ import {
   createJobRetryFC,
   createJobUpdateFC,
   createJobLogAddFC,
+  createJobMoveToDelayedFC,
 } from './mutation';
 import { wrapMutationFC, wrapQueueArgs, composeFC } from './helpers';
 
@@ -52,6 +53,7 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
       jobRetry: wrapMutation(createJobRetryFC),
       jobUpdate: wrapMutation(createJobUpdateFC),
       jobLogAdd: wrapMutation(createJobLogAddFC),
+      jobMoveToDelayed: wrapMutation(createJobMoveToDelayedFC),
     },
   };
 }
