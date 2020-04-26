@@ -3,7 +3,7 @@ import { createBullConnection } from '../connectRedis';
 
 export const queueSettings = {
   name: 'fetch_metrics',
-  prefix: 'bull.demo',
+  prefix: 'bull:demo',
 };
 
 const prefix = queueSettings.prefix;

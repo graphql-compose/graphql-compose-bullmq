@@ -11,8 +11,8 @@ export async function fetchQueueTitles(prefix: string, opts: Options): Promise<A
   return keys.map((key) => {
     const parts = key.split(':');
     return {
-      prefix: parts[0],
-      queueName: parts[1],
+      prefix: parts.slice(0, -2).join(':'),
+      queueName: parts[parts.length - 2],
     };
   });
 }

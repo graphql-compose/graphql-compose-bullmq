@@ -1,5 +1,5 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { normalizePrefixGlob, fetchQueueTitles } from '../helpers';
+import { fetchQueueTitles } from '../helpers';
 import { Options } from '../definitions';
 
 export function createQueueKeysFC(
@@ -24,7 +24,7 @@ export function createQueueKeysFC(
       },
     },
     resolve: async (_, { prefixGlob }) => {
-      return fetchQueueTitles(normalizePrefixGlob(prefixGlob), opts);
+      return fetchQueueTitles(prefixGlob, opts);
     },
   };
 }
