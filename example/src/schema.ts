@@ -8,7 +8,7 @@ const { queryFields, mutationFields } = composeBull({
   jobDataTC: `type MyJobData { fieldA: String! fieldB: String}`,
   queue: {
     name: 'fetch_metrics',
-    prefix: 'bull.demo',
+    prefix: 'bull:demo:*',
   },
   redis: createBullConnection('queue'),
 });
