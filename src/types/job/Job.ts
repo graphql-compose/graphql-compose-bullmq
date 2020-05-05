@@ -28,7 +28,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
           delay: 'Int',
           attempts: 'Int',
           repeat: createRepeatOptionsTC(sc, opts),
-          backoff: 'Int', // | TODO: BackoffOptions
+          backoff: 'JSON', // | TODO: BackoffOptions
           lifo: 'Boolean',
           timeout: 'Int',
           jobId: 'String',

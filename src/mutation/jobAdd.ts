@@ -33,7 +33,7 @@ export function createJobAddFC(
           priority: 'Int',
           delay: 'Int',
           attempts: 'Int',
-          backoff: 'Int', // | TODO: BackoffOptions
+          backoff: 'JSON', // | TODO: BackoffOptions
           lifo: 'Boolean',
           timeout: 'Int',
           jobId: 'String',
