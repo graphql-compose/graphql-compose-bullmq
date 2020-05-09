@@ -29,7 +29,9 @@ const metricsWorker = new Worker(
   async (job) => {
     //https://github.com/taskforcesh/bullmq/issues/69
     console.log(new Date().toISOString(), 'Starting name: ' + job.name + ', job: ' + job.id);
-    return new Promise((resolve) => {
+    //throw new Error('Ошибка обработки данных...');
+    return new Promise((resolve, reject) => {
+      //setTimeout(() => reject('Здесь какая то причина ...'), 0);
       setTimeout(
         () =>
           resolve({

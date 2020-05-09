@@ -1,3 +1,4 @@
+import { createIsPausedFC } from './Queue.isPaused';
 import { createJobCountFC } from './Queue.jobCounts';
 import { createRepeatablesFC } from './Queue.repeatables';
 import { createJobsFC } from './Queue.jobs';
@@ -16,6 +17,7 @@ export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
   return sc.getOrCreateOTC(`${typePrefix}Queue`, (etc) => {
     etc.addFields({
       name: 'String!',
+      isPaused: createIsPausedFC(),
       jobCounts: createJobCountFC(sc, opts),
       repeatables: createRepeatablesFC(sc, opts),
       jobs: createJobsFC(sc, opts),
