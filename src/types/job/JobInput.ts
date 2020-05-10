@@ -17,7 +17,7 @@ export function createJobDataITC(
       someTC = someTC.getInputTypeComposer();
     }
 
-    return someTC.getTypeNonNull();
+    return someTC.NonNull;
   } else {
     return 'JSON!';
   }

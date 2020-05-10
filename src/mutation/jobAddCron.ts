@@ -37,18 +37,16 @@ export function createJobAddCronFC(
           removeOnComplete: 'Boolean', //TODO: bool or int
           removeOnFail: 'Boolean', //TODO: bool or int
           stackTraceLimit: 'Int',
-          repeat: sc
-            .createInputTC({
-              name: `${typePrefix}JobOptionsInputRepeatCron`,
-              fields: {
-                tz: 'String',
-                endDate: 'Date',
-                limit: 'Int',
-                cron: 'String!',
-                startDate: 'Date',
-              },
-            })
-            .getTypeNonNull(),
+          repeat: sc.createInputTC({
+            name: `${typePrefix}JobOptionsInputRepeatCron`,
+            fields: {
+              tz: 'String',
+              endDate: 'Date',
+              limit: 'Int',
+              cron: 'String!',
+              startDate: 'Date',
+            },
+          }).NonNull,
         },
       }),
     },
