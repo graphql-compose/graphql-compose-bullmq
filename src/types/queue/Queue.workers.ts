@@ -9,32 +9,30 @@ export function createWorkersTC(
   const { typePrefix } = opts;
 
   return {
-    type: sc
-      .createObjectTC({
-        // see https://redis.io/commands/client-list
-        name: `${typePrefix}QueueWorker`,
-        fields: {
-          id: 'String',
-          addr: 'String',
-          fd: 'String',
-          name: 'String',
-          age: 'Int',
-          idle: 'Int',
-          flags: 'String',
-          db: 'Int',
-          sub: 'Int',
-          psub: 'Int',
-          multi: 'Int',
-          qbuf: 'Int',
-          qbufFree: 'Int',
-          obl: 'Int',
-          oll: 'Int',
-          omem: 'Int',
-          events: 'String',
-          cmd: 'String',
-        },
-      })
-      .getTypePlural(),
+    type: sc.createObjectTC({
+      // see https://redis.io/commands/client-list
+      name: `${typePrefix}QueueWorker`,
+      fields: {
+        id: 'String',
+        addr: 'String',
+        fd: 'String',
+        name: 'String',
+        age: 'Int',
+        idle: 'Int',
+        flags: 'String',
+        db: 'Int',
+        sub: 'Int',
+        psub: 'Int',
+        multi: 'Int',
+        qbuf: 'Int',
+        qbufFree: 'Int',
+        obl: 'Int',
+        oll: 'Int',
+        omem: 'Int',
+        events: 'String',
+        cmd: 'String',
+      },
+    }).List,
     args: {},
     resolve: async (queue: Queue) => {
       const workers = await queue.getWorkers();

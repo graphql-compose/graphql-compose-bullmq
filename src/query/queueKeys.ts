@@ -8,15 +8,13 @@ export function createQueueKeysFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const { typePrefix } = opts;
   return {
-    type: sc
-      .createObjectTC({
-        name: `${typePrefix}QueueKeysResult`,
-        fields: {
-          queueName: 'String!',
-          prefix: 'String!',
-        },
-      })
-      .getTypePlural(),
+    type: sc.createObjectTC({
+      name: `${typePrefix}QueueKeysResult`,
+      fields: {
+        queueName: 'String!',
+        prefix: 'String!',
+      },
+    }).List,
     args: {
       prefixGlob: {
         type: 'String',

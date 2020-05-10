@@ -37,17 +37,15 @@ export function createJobAddEveryFC(
           removeOnComplete: 'Boolean', //TODO: bool or int
           removeOnFail: 'Boolean', //TODO: bool or int
           stackTraceLimit: 'Int',
-          repeat: sc
-            .createInputTC({
-              name: `${typePrefix}JobOptionsInputRepeatEvery`,
-              fields: {
-                tz: 'String',
-                endDate: 'Date',
-                limit: 'Int',
-                every: 'String!',
-              },
-            })
-            .getTypeNonNull(),
+          repeat: sc.createInputTC({
+            name: `${typePrefix}JobOptionsInputRepeatEvery`,
+            fields: {
+              tz: 'String',
+              endDate: 'Date',
+              limit: 'Int',
+              every: 'String!',
+            },
+          }).NonNull,
         },
       }),
     },
