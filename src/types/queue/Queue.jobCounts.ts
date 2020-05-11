@@ -25,7 +25,7 @@ export function createJobCountFC(
         JobStatusEnum.ACTIVE,
         JobStatusEnum.COMPLETED,
         JobStatusEnum.DELAYED,
-        JobStatusEnum.PAUSED,
+        JobStatusEnum.FAILED,
         JobStatusEnum.WAITING
       );
     },

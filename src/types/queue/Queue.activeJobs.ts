@@ -8,7 +8,7 @@ export function createActiveJobsFC(
   opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobTC(sc, opts).getTypePlural(),
+    type: getJobTC(sc, opts).List,
     args: {
       start: {
         type: 'Int',

@@ -1,7 +1,7 @@
 import Redis, { RedisOptions } from 'ioredis';
 
 // TODO: remove get from OPTIONS
-const BULL_REDIS_URI = 'redis://127.0.0.1:6379';
+const BULL_REDIS_URI = process.env.BULL_REDIS_URI || 'redis://127.0.0.1:6379';
 
 const redisInstances = new Map<string, Redis.Redis>();
 

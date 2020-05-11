@@ -8,7 +8,7 @@ export function createQueuesFC(
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
-    type: getQueueTC(sc, opts).getTypeNonNull().getTypePlural(),
+    type: getQueueTC(sc, opts).NonNull.List,
     args: {
       prefix: {
         type: 'String',

@@ -44,8 +44,5 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
     return isObject(value) && value.hasOwnProperty('cron');
   });
 
-  sc.addSchemaMustHaveType(RepeatOptionsEveryTC);
-  sc.addSchemaMustHaveType(RepeatOptionsCronTC);
-
   return RepeatOptionsInterfaceTC;
 }

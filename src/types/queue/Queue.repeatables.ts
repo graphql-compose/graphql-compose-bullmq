@@ -9,21 +9,19 @@ export function createRepeatablesFC(
   const { typePrefix } = opts;
 
   return {
-    type: sc
-      .createObjectTC({
-        name: `${typePrefix}RepeatableJobInformation`,
-        fields: {
-          key: 'String',
-          name: 'String',
-          id: 'String',
-          endDate: 'Date',
-          tz: 'String',
-          cron: 'String',
-          //every: 'Date', //TODO: вроде как должен быть обязательным, проверить - нет в бул-4
-          next: 'Date',
-        },
-      })
-      .getTypePlural(),
+    type: sc.createObjectTC({
+      name: `${typePrefix}RepeatableJobInformation`,
+      fields: {
+        key: 'String',
+        name: 'String',
+        id: 'String',
+        endDate: 'Date',
+        tz: 'String',
+        cron: 'String',
+        //every: 'Date', //TODO: вроде как должен быть обязательным, проверить - нет в бул-4
+        next: 'Date',
+      },
+    }).List,
     resolve: async (queue: Queue) => {
       return queue.getRepeatableJobs();
     },

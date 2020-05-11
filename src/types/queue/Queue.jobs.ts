@@ -9,7 +9,7 @@ export function createJobsFC(
   opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: getJobTC(sc, opts).getTypePlural(),
+    type: getJobTC(sc, opts).List,
     args: {
       status: getJobStatusEnumTC(sc, opts),
       start: {
