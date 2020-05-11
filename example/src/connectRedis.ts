@@ -1,12 +1,7 @@
 import Redis, { RedisOptions } from 'ioredis';
 
 // TODO: remove get from OPTIONS
-//const BULL_REDIS_URI = 'redis://127.0.0.1:6379';
-// const BULL_REDIS_URI =
-//   'redis-sentinel://10.216.129.126:26379,10.216.129.127:26379,10.216.129.128:26379?name=srv-dev-redis01.corp.ps.kz&password=uut2tiew5waeli1aefup0Toecaikoque5eepahch5AowaiJ2';
-
-const BULL_REDIS_URI =
-  'redis-sentinel://10.216.129.126:26379,10.216.129.127:26379,10.216.129.128:26379?name=srv-dev-redis01.corp.ps.kz&password=uut2tiew5waeli1aefup0Toecaikoque5eepahch5AowaiJ2';
+const BULL_REDIS_URI = process.env.BULL_REDIS_URI || 'redis://127.0.0.1:6379';
 
 const redisInstances = new Map<string, Redis.Redis>();
 
