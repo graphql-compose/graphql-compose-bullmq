@@ -11,9 +11,6 @@ export function createRemoveRepeatableFC(
   return {
     type: sc.createObjectTC({
       name: `${typePrefix}QueueRemoveRepeatablePayload`,
-      fields: {
-        key: 'String!',
-      },
     }),
     args: {
       prefix: {
@@ -21,12 +18,21 @@ export function createRemoveRepeatableFC(
         defaultValue: 'bull',
       },
       queueName: 'String!',
-      key: 'String!',
+      jobName: 'String',
+      repeat: sc.createInputTC({
+        name: `${typePrefix}JobOptionsInputRepeatRemove`,
+        fields: {
+          tz: 'String',
+          endDate: 'Date',
+          cron: 'String',
+          every: 'String',
+        },
+      }).NonNull,
     },
-    resolve: async (_, { prefix, queueName, key }) => {
+    resolve: async (_, { prefix, queueName, jobName, repeat }) => {
       const queue = await findQueue(prefix, queueName, opts);
-      await queue.removeRepeatableByKey(key);
-      return { key };
+      await queue.removeRepeatable(jobName, repeat);
+      return {};
     },
   };
 }
