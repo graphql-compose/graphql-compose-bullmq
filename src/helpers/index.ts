@@ -5,3 +5,4 @@ export * from './normalizePrefixGlob';
 export * from './wrapMutationFC';
 export * from './wrapQueueArgs';
 export * from './composeFC';
+export * from './deleteKeys';

@@ -2,6 +2,7 @@ export { createQueueCleanFC } from './queueClean';
 export { createQueueDrainFC } from './queueDrain';
 export { createQueuePauseFC } from './queuePause';
 export { createQueueResumeFC } from './queueResume';
+export { createQueueDeleteFC } from './queueDelete';
 export { createRemoveRepeatableFC } from './queueRemoveRepeatable';
 export { createJobAddFC } from './jobAdd';
 export { createJobAddBulkFC } from './jobAddBulk';
