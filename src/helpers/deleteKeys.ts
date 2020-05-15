@@ -29,14 +29,9 @@ export async function deleteQueue(
     for (let i = 0; i < keys.length; i++) {
       const del = await connection.del(keys[i]);
       if (del) {
-        console.log(keys[i]);
         total++;
       }
     }
-  });
-
-  stream.on('end', function () {
-    console.log('all keys have been deleted!');
   });
 
   return total;
