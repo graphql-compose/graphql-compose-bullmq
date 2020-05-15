@@ -1,6 +1,7 @@
 import { MutationError, ErrorCodeEnum } from './MutationError';
 import { getBullConnection } from './getBullConnection';
 import { Options } from '../definitions';
+import { resolve } from 'dns';
 
 export async function deleteQueue(
   prefix: string,
@@ -20,18 +21,26 @@ export async function deleteQueue(
     }
   }
 
-  //redis-cli: scan 0 match fullName* count 300
-  const stream = connection.scanStream({ match: fullName + '*', count: 300 });
+  const total = await new Promise<number>((resolve, reject) => {
+    //redis-cli: scan 0 match fullName* count 300
+    const stream = connection.scanStream({ match: fullName + '*', count: 300 });
 
-  let total = 0;
+    let total = 0;
 
-  stream.on('data', async (keys) => {
-    for (let i = 0; i < keys.length; i++) {
-      const del = await connection.del(keys[i]);
-      if (del) {
-        total++;
+    stream.on('data', async (keys) => {
+      for (let i = 0; i < keys.length; i++) {
+        const del = await connection.del(keys[i]);
+        if (del) {
+          total++;
+        }
       }
-    }
+    });
+
+    stream.on('end', () => {
+      resolve(total);
+    });
+
+    stream.on('error', reject);
   });
 
   return total;
