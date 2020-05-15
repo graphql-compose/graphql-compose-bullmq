@@ -1,7 +1,6 @@
 import { MutationError, ErrorCodeEnum } from './MutationError';
 import { getBullConnection } from './getBullConnection';
 import { Options } from '../definitions';
-import { resolve } from 'dns';
 
 export async function deleteQueue(
   prefix: string,
