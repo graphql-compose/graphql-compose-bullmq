@@ -22,17 +22,22 @@ export async function deleteQueue(
 
   const total = await new Promise<number>((resolve, reject) => {
     //redis-cli: scan 0 match fullName* count 300
-    const stream = connection.scanStream({ match: fullName + '*', count: 300 });
+    const stream = connection.scanStream({ match: fullName + '*', count: 1000 });
 
     let total = 0;
 
+    let pipeline = connection.pipeline();
+
     stream.on('data', async (keys) => {
       for (let i = 0; i < keys.length; i++) {
-        const del = await connection.del(keys[i]);
+        const del = pipeline.del(keys[i]);
         if (del) {
           total++;
         }
       }
+
+      await pipeline.exec();
+      pipeline = connection.pipeline();
     });
 
     stream.on('end', () => {
