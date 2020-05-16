@@ -11,6 +11,7 @@ export { createJobAddEveryFC } from './jobAddEvery';
 export { createJobDiscardFC } from './jobDiscard';
 export { createjobPromoteFC } from './jobPromote';
 export { createJobRremoveFC } from './jobRemove';
+export { createJobRremoveBulkFC } from './jobRemoveBulk';
 export { createJobRetryFC } from './jobRetry';
 export { createJobUpdateFC } from './jobUpdate';
 export { createJobLogAddFC } from './jobLogAdd';
