@@ -43,7 +43,7 @@ export function createJobAddEveryFC(
               tz: 'String',
               endDate: 'Date',
               limit: 'Int',
-              every: 'String!',
+              every: 'Int!',
             },
           }).NonNull,
         },

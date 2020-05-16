@@ -24,6 +24,12 @@ metricsQueue.add(
   { repeat: { cron: '*/1 * * * *' } }
 );
 
+metricsQueue.add(
+  'fetch_metrics_every_100000',
+  { field1: 'asdasdadas' },
+  { repeat: { every: 100000 } }
+);
+
 const metricsWorker = new Worker(
   queueSettings.name,
   async (job) => {
