@@ -8,6 +8,7 @@ export enum JobStatusEnum {
   DELAYED = 'delayed',
   FAILED = 'failed',
   PAUSED = 'paused',
+  UNKNOWN = 'unknown',
 }
 
 export function getJobStatusEnumTC(sc: SchemaComposer<any>, opts: Options) {
@@ -20,6 +21,7 @@ export function getJobStatusEnumTC(sc: SchemaComposer<any>, opts: Options) {
       DELAYED: { value: JobStatusEnum.DELAYED },
       FAILED: { value: JobStatusEnum.FAILED },
       PAUSED: { value: JobStatusEnum.PAUSED }, //TODO: в bull написано что устарело, теперь все waiting
+      UNKNOWN: { value: JobStatusEnum.UNKNOWN },
     });
   });
 }
