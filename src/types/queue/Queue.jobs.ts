@@ -1,6 +1,7 @@
 import { Queue } from 'bullmq';
 import { SchemaComposer, ObjectTypeComposerFieldConfigDefinition } from 'graphql-compose';
 import { getJobStatusEnumTC } from '../scalars/JobStatusEnum';
+import { getOrderEnumTC, OrderEnum } from '../scalars/OrderEnum';
 import { getJobTC } from '../job/Job';
 import { Options } from '../../definitions';
 
@@ -20,10 +21,13 @@ export function createJobsFC(
         type: 'Int',
         defaultValue: 20,
       },
-      // TODO: add sorting
+      order: {
+        type: getOrderEnumTC(sc, opts),
+        defaultValue: OrderEnum.DESC,
+      },
     },
-    resolve: async (queue: Queue, { status, start, end }) => {
-      return queue.getJobs([status], start, end, false);
+    resolve: async (queue: Queue, { status, start, end, order }) => {
+      return queue.getJobs([status], start, end, order === OrderEnum.ASC);
     },
   };
 }
