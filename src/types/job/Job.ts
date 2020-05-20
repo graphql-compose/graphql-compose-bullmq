@@ -10,7 +10,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
   return sc.getOrCreateOTC(`${typePrefix}Job`, (etc) => {
     etc.addFields({
       id: 'String!',
-      name: 'String!',
+      name: 'String',
       data: jobDataTC,
       progress: 'Int',
       delay: 'Int',
