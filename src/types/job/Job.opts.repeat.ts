@@ -10,6 +10,9 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
       tz: 'String',
       endDate: 'Date',
       limit: 'Int',
+      count: 'Int',
+      prevMillis: 'Int',
+      jobId: 'String',
     },
   });
 
@@ -22,6 +25,9 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
       limit: 'Int',
       cron: 'String',
       startDate: 'Date',
+      count: 'Int',
+      prevMillis: 'Int',
+      jobId: 'String',
     },
   });
 
@@ -33,6 +39,9 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
       endDate: 'Date',
       limit: 'Int',
       every: 'String',
+      count: 'Int',
+      prevMillis: 'Int',
+      jobId: 'String',
     },
   });
 
