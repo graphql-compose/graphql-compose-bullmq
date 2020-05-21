@@ -21,6 +21,7 @@ import {
   createJobUpdateFC,
   createJobLogAddFC,
   createJobMoveToDelayedFC,
+  createQueuePepUpFC,
 } from './mutation';
 import { wrapMutationFC, wrapQueueArgs, composeFC } from './helpers';
 
@@ -58,6 +59,7 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
       jobUpdate: wrapMutation(createJobUpdateFC),
       jobLogAdd: wrapMutation(createJobLogAddFC),
       jobMoveToDelayed: wrapMutation(createJobMoveToDelayedFC),
+      queuePepUp: wrapMutation(createQueuePepUpFC),
     },
   };
 }

@@ -6,3 +6,4 @@ export * from './wrapMutationFC';
 export * from './wrapQueueArgs';
 export * from './composeFC';
 export * from './deleteKeys';
+export * from './fixDelayStream';
