@@ -14,7 +14,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
       data: jobDataTC,
       progress: 'Int',
       delay: 'Int',
-      timestamp: 'Date!',
+      timestamp: 'Date',
       attemptsMade: 'Int',
       failedReason: 'JSON',
       stacktrace: '[String!]',
