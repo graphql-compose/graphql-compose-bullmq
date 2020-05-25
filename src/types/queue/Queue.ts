@@ -8,6 +8,7 @@ import { createActiveJobsFC } from './Queue.activeJobs';
 import { createDelayedJobsFC } from './Queue.delayedJobs';
 import { createFailedJobsFC } from './Queue.failedJobs';
 import { createWorkersTC } from './Queue.workers';
+import { createDurationAvgFC } from './Queue.durationAvg';
 import { SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
@@ -27,6 +28,7 @@ export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
       jobsDelayed: createDelayedJobsFC(sc, opts),
       jobsFailed: createFailedJobsFC(sc, opts),
       activeWorkers: createWorkersTC(sc, opts),
+      durationAvg: createDurationAvgFC(sc, opts),
     });
   });
 }
