@@ -16,16 +16,17 @@ export function createDurationAvgFC(
     },
     resolve: async (queue: Queue, { limit }) => {
       const jobs = await queue.getCompleted(0, limit);
-
-      const amount = jobs.reduce((acc, job) => {
-        if (job?.finishedOn && job?.processedOn) {
-          return acc + job.finishedOn - job?.processedOn;
+      let amount = 0;
+      if (jobs.length === 0) {
+        return 0;
+      } else {
+        for (const job of jobs) {
+          if (job.finishedOn && job.processedOn) {
+            amount += job.finishedOn - job?.processedOn;
+          }
         }
-
-        return acc;
-      }, 0);
-
-      return (amount / jobs.length).toFixed(0);
+        return (amount / jobs.length).toFixed(0);
+      }
     },
   };
 }
