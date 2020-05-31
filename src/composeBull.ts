@@ -1,7 +1,13 @@
 import { schemaComposer, SchemaComposer } from 'graphql-compose';
 import { Options } from './definitions';
 import { getQueueTC, getJobTC } from './types';
-import { createQueuesFC, createQueueKeysFC, createQueueFC, createJobFC } from './query';
+import {
+  createQueuesFC,
+  createQueueKeysFC,
+  createQueueFC,
+  createJobFC,
+  createInfoFC,
+} from './query';
 import {
   createQueueCleanFC,
   createQueueDrainFC,
@@ -39,6 +45,7 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
       queues: wrapQuery(createQueuesFC),
       queue: wrapQuery(createQueueFC),
       job: wrapQuery(createJobFC),
+      info: wrapQuery(createInfoFC),
     },
     mutationFields: {
       queueClean: wrapMutation(createQueueCleanFC),
