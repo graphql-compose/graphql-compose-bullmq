@@ -9,6 +9,7 @@ import { createDelayedJobsFC } from './Queue.delayedJobs';
 import { createFailedJobsFC } from './Queue.failedJobs';
 import { createWorkersTC } from './Queue.workers';
 import { createDurationAvgFC } from './Queue.durationAvg';
+import { createJobsMemoryUsageAvgFC } from './Queue.jobsMemoryUsageAvg';
 import { SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
@@ -29,6 +30,7 @@ export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
       jobsFailed: createFailedJobsFC(sc, opts),
       activeWorkers: createWorkersTC(sc, opts),
       durationAvg: createDurationAvgFC(sc, opts),
+      jobsMemoryUsageAvg: createJobsMemoryUsageAvgFC(sc, opts),
     });
   });
 }

@@ -7,3 +7,4 @@ export * from './wrapQueueArgs';
 export * from './composeFC';
 export * from './deleteKeys';
 export * from './fixDelayStream';
+export * from './memoryUsage';
