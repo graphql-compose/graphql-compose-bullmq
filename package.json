@@ -38,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "2.26.0",
     "@typescript-eslint/parser": "2.26.0",
     "bullmq": "^1.8.11",
+    "cpx": "^1.5.0",
     "cross-env": "7.0.2",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.1.0",
@@ -57,7 +58,8 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "rimraf lib && tsc -p ./tsconfig.build.json",
+    "build": "rimraf lib && tsc -p ./tsconfig.build.json && yarn build-lua",
+    "build-lua": "cpx \"src/**/*.{lua,}\" ./lib",
     "watch": "jest --watch",
     "coverage": "jest --coverage --maxWorkers 2",
     "lint": "yarn eslint && yarn tscheck",
@@ -65,5 +67,6 @@
     "tscheck": "tsc --noEmit",
     "test": "cross-env NODE_ENV=test npm run coverage && npm run lint",
     "semantic-release": "semantic-release"
-  }
+  },
+  "dependencies": {}
 }
