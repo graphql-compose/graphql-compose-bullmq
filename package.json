@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/graphql-compose/graphql-compose-bullmq",
   "peerDependencies": {
-    "graphql-compose": "^7.15.0",
-    "bullmq": "^1.8.11"
+    "bullmq": "^1.8.11",
+    "graphql-compose": "^7.15.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.3",

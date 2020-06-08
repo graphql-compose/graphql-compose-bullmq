@@ -29,13 +29,15 @@ import {
   createJobMoveToDelayedFC,
   createQueuePepUpFC,
 } from './mutation';
-import { wrapMutationFC, wrapQueueArgs, composeFC } from './helpers';
+import { createJobAddSubFC } from './subscriptions';
+import { wrapMutationFC, wrapQueueArgs, wrapQueueSubsArgs, composeFC } from './helpers';
 
 export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<any> }) {
   const sc = opts?.schemaComposer || schemaComposer;
 
   const wrapQuery = composeFC(sc, opts)(wrapQueueArgs);
   const wrapMutation = composeFC(sc, opts)(wrapMutationFC, wrapQueueArgs);
+  const wrapSubscription = composeFC(sc, opts)(wrapQueueSubsArgs);
 
   return {
     QueueTC: getQueueTC(sc, opts),
@@ -67,6 +69,9 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
       jobLogAdd: wrapMutation(createJobLogAddFC),
       jobMoveToDelayed: wrapMutation(createJobMoveToDelayedFC),
       queuePepUp: wrapMutation(createQueuePepUpFC),
+    },
+    subscriptionFields: {
+      jobAddSub: wrapSubscription(createJobAddSubFC),
     },
   };
 }
