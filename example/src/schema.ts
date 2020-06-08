@@ -2,7 +2,7 @@ import { composeBull } from '../../src';
 import { schemaComposer } from 'graphql-compose';
 import { createBullConnection } from './connectRedis';
 
-const { queryFields, mutationFields } = composeBull({
+const { queryFields, mutationFields, subscriptionFields } = composeBull({
   schemaComposer,
   typePrefix: 'Prefix',
   jobDataTC: `type MyJobData { fieldA: String! fieldB: String}`,
@@ -19,6 +19,10 @@ schemaComposer.Query.addFields({
 
 schemaComposer.Mutation.addFields({
   ...mutationFields,
+});
+
+schemaComposer.Subscription.addFields({
+  ...subscriptionFields,
 });
 
 export default schemaComposer.buildSchema();
