@@ -1,4 +1,9 @@
-import { schemaComposer, SchemaComposer } from 'graphql-compose';
+import {
+  schemaComposer,
+  SchemaComposer,
+  ObjectTypeComposer,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { Options } from './definitions';
 import { getQueueTC, getJobTC } from './types';
 import {
@@ -29,17 +34,27 @@ import {
   createJobMoveToDelayedFC,
   createQueuePepUpFC,
 } from './mutation';
-import { createJobAddSubFC } from './subscriptions';
+import { createOnJobWaitingFC } from './subscriptions';
 import { wrapMutationFC, wrapQueueArgs, wrapQueueSubsArgs, composeFC } from './helpers';
 
-export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<any> }) {
+interface ComposeBullResult {
+  QueueTC: ObjectTypeComposer;
+  JobTC: ObjectTypeComposer;
+  queryFields: Record<string, ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>>;
+  mutationFields: Record<string, ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>>;
+  subscriptionFields?: Record<string, ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>>;
+}
+
+export function composeBull(
+  opts: Options & { schemaComposer?: SchemaComposer<any> }
+): ComposeBullResult {
   const sc = opts?.schemaComposer || schemaComposer;
 
   const wrapQuery = composeFC(sc, opts)(wrapQueueArgs);
   const wrapMutation = composeFC(sc, opts)(wrapMutationFC, wrapQueueArgs);
   const wrapSubscription = composeFC(sc, opts)(wrapQueueSubsArgs);
 
-  return {
+  const data = {
     QueueTC: getQueueTC(sc, opts),
     JobTC: getJobTC(sc, opts),
     queryFields: {
@@ -70,8 +85,13 @@ export function composeBull(opts: Options & { schemaComposer?: SchemaComposer<an
       jobMoveToDelayed: wrapMutation(createJobMoveToDelayedFC),
       queuePepUp: wrapMutation(createQueuePepUpFC),
     },
-    subscriptionFields: {
-      jobAddSub: wrapSubscription(createJobAddSubFC),
-    },
-  };
+  } as ComposeBullResult;
+
+  if (opts?.redisEvents) {
+    data.subscriptionFields = {
+      onJobWaiting: wrapSubscription(createOnJobWaitingFC),
+    };
+  }
+
+  return data;
 }

@@ -5,7 +5,7 @@ const BULL_REDIS_URI = process.env.BULL_REDIS_URI || 'redis://127.0.0.1:6379';
 
 const redisInstances = new Map<string, Redis.Redis>();
 
-export function createBullConnection(type: 'queue' | 'worker' | 'scheduler' | 'custom') {
+export function createBullConnection(type: 'queue' | 'worker' | 'scheduler' | 'events' | 'custom') {
   const existedClient = redisInstances.get(type);
   if (existedClient) {
     return existedClient;

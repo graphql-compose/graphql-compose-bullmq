@@ -7,13 +7,13 @@ export function getAsyncIterator(
   eventName: string,
   opts: Options
 ) {
-  const queueEvents = getQueueEvents(prefix, queueName, opts);
+  const queueEvents = getQueueEventsSingleton(prefix, queueName, opts);
   return createAsyncIterator(queueEvents, prefix, queueName, eventName);
 }
 
 const queueEventsMap = new Map();
 
-function getQueueEvents(prefix: string, queueName: string, opts: Options): QueueEvents {
+function getQueueEventsSingleton(prefix: string, queueName: string, opts: Options): QueueEvents {
   const fullName = [prefix, queueName].join('.');
 
   if (queueEventsMap.has(fullName)) {
@@ -22,7 +22,7 @@ function getQueueEvents(prefix: string, queueName: string, opts: Options): Queue
 
   const queueEvents = new QueueEvents(queueName, {
     prefix,
-    //connection: new Redis(),
+    connection: opts?.redisEvents,
   });
 
   queueEventsMap.set(fullName, queueEvents);
@@ -36,8 +36,8 @@ function createAsyncIterator<T = any>(
   queueName: string,
   eventName: string
 ): AsyncIterator<T> {
-  const pullSeries: any = [];
-  const pushSeries: any = [];
+  let pullSeries: any = [];
+  let pushSeries: any = [];
   let listening = true;
 
   const pushValue = async (event) => {
@@ -73,12 +73,12 @@ function createAsyncIterator<T = any>(
       for (const resolve of pullSeries) {
         resolve({ value: undefined, done: true });
       }
-      pullSeries.length = 0;
-      pushSeries.length = 0;
+      pullSeries = [];
+      pushSeries = [];
     }
   }
 
-  const returnProp = function () {
+  const returnProp = () => {
     release();
     return Promise.resolve({ value: undefined, done: true });
   };
