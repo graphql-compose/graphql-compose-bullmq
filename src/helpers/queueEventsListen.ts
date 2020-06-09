@@ -23,7 +23,7 @@ function getQueueEventsSingleton(prefix: string, queueName: string, opts: Option
 
   const queueEvents = new QueueEvents(queueName, {
     prefix,
-    connection: getBullConnection(opts),
+    connection: getBullConnection(opts).duplicate(),
   });
 
   queueEventsMap.set(fullName, queueEvents);
