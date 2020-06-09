@@ -23,7 +23,7 @@ export function createOnQueueResumedFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName }) => {
+    resolve: async (_, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
       return {
         queue,

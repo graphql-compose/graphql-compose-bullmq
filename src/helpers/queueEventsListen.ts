@@ -8,7 +8,7 @@ export function getAsyncIterator(
   opts: Options
 ) {
   const queueEvents = getQueueEventsSingleton(prefix, queueName, opts);
-  return createAsyncIterator(queueEvents, prefix, queueName, eventName);
+  return createAsyncIterator(queueEvents, eventName);
 }
 
 const queueEventsMap = new Map();
@@ -32,8 +32,6 @@ function getQueueEventsSingleton(prefix: string, queueName: string, opts: Option
 
 function createAsyncIterator<T = any>(
   queueEvents: QueueEvents,
-  prefix: string,
-  queueName: string,
   eventName: string
 ): Required<AsyncIterator<T>> {
   let pullSeries: any = [];
@@ -43,7 +41,7 @@ function createAsyncIterator<T = any>(
   const pushValue = async (event) => {
     if (pullSeries.length !== 0) {
       const resolver = pullSeries.shift();
-      resolver(event);
+      resolver({ value: event, done: false });
     } else {
       pushSeries.push(event);
     }
@@ -61,7 +59,7 @@ function createAsyncIterator<T = any>(
   };
 
   const handler = (event) => {
-    pushValue({ prefix, queueName, ...event });
+    pushValue(event);
   };
 
   queueEvents.on(eventName, handler);

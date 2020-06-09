@@ -27,7 +27,7 @@ export function createOnJobDelayedFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName, jobId, delay }) => {
+    resolve: async ({ jobId, delay }, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
       const job = await queue.getJob(jobId);
       return {

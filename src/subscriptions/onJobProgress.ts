@@ -27,7 +27,7 @@ export function createOnJobProgressFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName, jobId, data }) => {
+    resolve: async ({ jobId, data }, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
       const job = await queue.getJob(jobId);
       return {

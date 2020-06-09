@@ -7,9 +7,13 @@ const server = new ApolloServer({
   context: () => {
     return { Queues };
   },
+  subscriptions: {
+    path: '/',
+  },
 });
 
-server.listen(5000).then(({ url }) => {
+server.listen(process.env.PORT || 5000).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
+  console.log(`🚀 WebSocket ready at ${url.replace(/^http/i, 'ws')}`);
   console.log(`🚀 Server pid: ${process.pid}`);
 });

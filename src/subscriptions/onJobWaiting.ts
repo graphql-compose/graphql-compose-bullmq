@@ -26,7 +26,7 @@ export function createOnJobWaitingFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName, jobId }) => {
+    resolve: async ({ jobId }, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
       const job = await queue.getJob(jobId);
       return {
