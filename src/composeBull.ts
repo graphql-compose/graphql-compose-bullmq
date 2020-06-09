@@ -34,7 +34,18 @@ import {
   createJobMoveToDelayedFC,
   createQueuePepUpFC,
 } from './mutation';
-import { createOnJobWaitingFC } from './subscriptions';
+import {
+  createOnJobActiveFC,
+  createOnJobCompletedFC,
+  createOnJobDelayedFC,
+  createOnJobFailedFC,
+  createOnJobProgressFC,
+  createOnJobRemovedFC,
+  createOnJobStalledFC,
+  createOnJobWaitingFC,
+  createOnQueuePausedFC,
+  createOnQueueResumedFC,
+} from './subscriptions';
 import { wrapMutationFC, wrapQueueArgs, wrapQueueSubsArgs, composeFC } from './helpers';
 
 interface ComposeBullResult {
@@ -87,11 +98,20 @@ export function composeBull(
     },
   } as ComposeBullResult;
 
-  if (opts?.redisEvents) {
-    data.subscriptionFields = {
-      onJobWaiting: wrapSubscription(createOnJobWaitingFC),
-    };
-  }
+  //if (opts?.redisEvents) {
+  data.subscriptionFields = {
+    onJobActive: wrapSubscription(createOnJobActiveFC),
+    onJobCompleted: wrapSubscription(createOnJobCompletedFC),
+    onJobDelayed: wrapSubscription(createOnJobDelayedFC),
+    onJobFailed: wrapSubscription(createOnJobFailedFC),
+    onJobProgress: wrapSubscription(createOnJobProgressFC),
+    onJobRemoved: wrapSubscription(createOnJobRemovedFC),
+    onJobStalled: wrapSubscription(createOnJobStalledFC),
+    onJobWaiting: wrapSubscription(createOnJobWaitingFC),
+    onQueuePaused: wrapSubscription(createOnQueuePausedFC),
+    onQueueResumed: wrapSubscription(createOnQueueResumedFC),
+  };
+  //}
 
   return data;
 }

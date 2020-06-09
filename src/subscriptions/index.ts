@@ -1,1 +1,10 @@
+export { createOnJobActiveFC } from './onJobActive';
+export { createOnJobCompletedFC } from './onJobCompleted';
+export { createOnJobDelayedFC } from './onJobDelayed';
+export { createOnJobFailedFC } from './onJobFailed';
+export { createOnJobProgressFC } from './onJobProgress';
+export { createOnJobRemovedFC } from './onJobRemoved';
+export { createOnJobStalledFC } from './onJobStalled';
 export { createOnJobWaitingFC } from './onJobWaiting';
+export { createOnQueuePausedFC } from './onQueuePaused';
+export { createOnQueueResumedFC } from './onQueueResumed';

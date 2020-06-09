@@ -35,7 +35,7 @@ function createAsyncIterator<T = any>(
   prefix: string,
   queueName: string,
   eventName: string
-): AsyncIterator<T> {
+): Required<AsyncIterator<T>> {
   let pullSeries: any = [];
   let pushSeries: any = [];
   let listening = true;
@@ -78,22 +78,20 @@ function createAsyncIterator<T = any>(
     }
   }
 
-  const returnProp = () => {
-    release();
-    return Promise.resolve({ value: undefined, done: true });
-  };
-
   return {
     [Symbol.asyncIterator]() {
       return this;
     },
-    return: returnProp,
+    return() {
+      release();
+      return Promise.resolve({ value: undefined, done: true });
+    },
     next() {
-      return listening ? pullValue() : returnProp();
+      return listening ? pullValue() : this.return();
     },
     throw(error) {
       release();
       return Promise.reject(error);
     },
-  } as AsyncIterator<T>;
+  } as Required<AsyncIterator<T>>;
 }
