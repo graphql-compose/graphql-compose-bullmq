@@ -1,5 +1,6 @@
 import { QueueEvents } from 'bullmq';
 import { Options } from '../definitions';
+import { getBullConnection } from './getBullConnection';
 
 export function getAsyncIterator(
   prefix: string,
@@ -22,7 +23,7 @@ function getQueueEventsSingleton(prefix: string, queueName: string, opts: Option
 
   const queueEvents = new QueueEvents(queueName, {
     prefix,
-    connection: opts?.redisEvents,
+    connection: getBullConnection(opts),
   });
 
   queueEventsMap.set(fullName, queueEvents);
