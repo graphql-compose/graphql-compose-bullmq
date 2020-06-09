@@ -27,7 +27,7 @@ export function createOnJobRemovedFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName, jobId, prev }) => {
+    resolve: async ({ jobId, prev }, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
       const job = await queue.getJob(jobId);
       return {
