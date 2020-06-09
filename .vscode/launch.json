@@ -12,6 +12,19 @@
       "skipFiles": ["<node_internals>/**"]
     },
     {
+      "name": "debug_example",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "PORT": "5000"
+      },
+      "args": ["src/index.ts"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}/example",
+      "protocol": "inspector"
+    },
+    {
       "name": "Jest Current File",
       "type": "node",
       "request": "launch",
