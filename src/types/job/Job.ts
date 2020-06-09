@@ -17,7 +17,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
       timestamp: 'Date',
       attemptsMade: 'Int',
       failedReason: 'JSON',
-      stacktrace: '[String!]',
+      stacktrace: '[String]',
       returnvalue: 'JSON',
       finishedOn: 'Date',
       processedOn: 'Date',
