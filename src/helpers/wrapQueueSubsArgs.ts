@@ -20,10 +20,19 @@ export function wrapQueueSubsArgs(
     if (opts?.queue?.name) predifinedArgs.queueName = opts.queue?.name;
     if (opts?.queue?.prefix) predifinedArgs.prefix = opts.queue?.prefix;
 
-    const subSubscribe = fieldConfig.resolve || (() => ({}));
-    fieldConfig.subscribe = async (source, args, context, info) => {
-      return subSubscribe(source, { ...predifinedArgs, ...args }, context, info);
-    };
+    const subSubscribe = fieldConfig.subscribe;
+    if (subSubscribe) {
+      fieldConfig.subscribe = async (source, args, context, info) => {
+        return subSubscribe(source, { ...predifinedArgs, ...args }, context, info);
+      };
+    }
+
+    const subResolve = fieldConfig.resolve;
+    if (subResolve) {
+      fieldConfig.resolve = async (source, args, context, info) => {
+        return subResolve(source, { ...predifinedArgs, ...args }, context, info);
+      };
+    }
   }
 
   return fieldConfig;

@@ -1,1 +1,1 @@
-export { createJobAddSubFC } from './jobAddSub';
+export { createOnJobWaitingFC } from './onJobWaiting';

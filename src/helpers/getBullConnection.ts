@@ -3,7 +3,7 @@ import Redis from 'ioredis';
 
 const connectionMap = new Map<Options['redis'], Redis.Redis>();
 
-export function getBullConnection(opts: Options): Redis.Redis {
+export function getBullConnection(opts?: Options): Redis.Redis {
   const optsRedis = opts?.redis;
   let connection = connectionMap.get(optsRedis);
   if (connection) {

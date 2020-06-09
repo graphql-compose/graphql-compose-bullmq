@@ -11,6 +11,7 @@ const { queryFields, mutationFields, subscriptionFields } = composeBull({
     prefix: 'bull.demo',
   },
   redis: createBullConnection('queue'),
+  redisEvents: createBullConnection('events'),
 });
 
 schemaComposer.Query.addFields({
@@ -21,8 +22,10 @@ schemaComposer.Mutation.addFields({
   ...mutationFields,
 });
 
-schemaComposer.Subscription.addFields({
-  ...subscriptionFields,
-});
+if (subscriptionFields) {
+  schemaComposer.Subscription.addFields({
+    ...subscriptionFields,
+  });
+}
 
 export default schemaComposer.buildSchema();
