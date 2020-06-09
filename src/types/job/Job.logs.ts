@@ -12,7 +12,7 @@ export function createLogsFC(
       name: `${typePrefix}JobLogs`,
       fields: {
         count: 'Int',
-        items: '[String!]',
+        items: '[String]',
       },
       // args: {}, // TODO: start end
     }),
