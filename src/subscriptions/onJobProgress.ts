@@ -5,18 +5,19 @@ import { Options } from '../definitions';
 import { getAsyncIterator } from '../helpers';
 import { getQueueTC } from '../types/queue/Queue';
 
-export function createOnJobWaitingFC(
+export function createOnJobProgressFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobWaitingPayload',
+      name: 'OnJobProgressPayload',
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,
         jobId: 'String!',
         queueName: 'String!',
+        progress: 'Int',
       },
     }),
     args: {
@@ -26,7 +27,7 @@ export function createOnJobWaitingFC(
       },
       queueName: 'String!',
     },
-    resolve: async ({ prefix, queueName, jobId }) => {
+    resolve: async ({ prefix, queueName, jobId, data }) => {
       const queue = getQueue(prefix, queueName, opts);
       const job = await queue.getJob(jobId);
       return {
@@ -34,10 +35,11 @@ export function createOnJobWaitingFC(
         queue,
         jobId,
         queueName,
+        progress: parseInt(data),
       };
     },
     subscribe: (_, { prefix, queueName }) => {
-      return getAsyncIterator(prefix, queueName, 'waiting', opts);
+      return getAsyncIterator(prefix, queueName, 'progress', opts);
     },
   };
 }

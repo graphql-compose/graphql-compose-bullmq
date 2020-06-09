@@ -5,13 +5,13 @@ import { Options } from '../definitions';
 import { getAsyncIterator } from '../helpers';
 import { getQueueTC } from '../types/queue/Queue';
 
-export function createOnJobWaitingFC(
+export function createOnJobFailedFC(
   sc: SchemaComposer<any>,
   opts: Options
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobWaitingPayload',
+      name: 'OnJobFailedPayload',
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,
@@ -37,7 +37,7 @@ export function createOnJobWaitingFC(
       };
     },
     subscribe: (_, { prefix, queueName }) => {
-      return getAsyncIterator(prefix, queueName, 'waiting', opts);
+      return getAsyncIterator(prefix, queueName, 'failed', opts);
     },
   };
 }

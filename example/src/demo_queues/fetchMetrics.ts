@@ -33,10 +33,15 @@ metricsQueue.add(
 const metricsWorker = new Worker(
   queueSettings.name,
   async (job) => {
+    // for (let i = 0; i < 5; i++) {
+    //   job.updateProgress(i * 20);
+    //   await new Promise((resolve) => setTimeout(resolve, 1000));
+    // }
+    // console.log(`----> execution of job ${job.id} with data ${JSON.stringify(job.data)}`);
+
     //https://github.com/taskforcesh/bullmq/issues/69
     console.log(new Date().toISOString(), 'Starting name: ' + job.name + ', job: ' + job.id);
     return new Promise((resolve, reject) => {
-      //throw new Error('Ошибка обработки данных...');
       //setTimeout(() => reject('Здесь какая то причина ...'), 0);
       setTimeout(
         () =>
@@ -44,11 +49,14 @@ const metricsWorker = new Worker(
             status: 'job completed',
             result: new Date().toISOString(),
           }),
-        0
+        100000
       );
     });
   },
   {
+    settings: {
+      stalledInterval: 300,
+    },
     prefix,
     connection: createBullConnection('worker'), // BULL_REDIS_URI,
   }
