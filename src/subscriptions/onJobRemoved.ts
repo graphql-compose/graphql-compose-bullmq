@@ -1,5 +1,4 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { getJobTC } from '../types/job/Job';
 import { getQueue } from '../helpers';
 import { Options } from '../definitions';
 import { getAsyncIterator } from '../helpers';
@@ -13,7 +12,6 @@ export function createOnJobRemovedFC(
     type: sc.createObjectTC({
       name: 'OnJobRemovedPayload',
       fields: {
-        job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,
         jobId: 'String!',
         queueName: 'String!',
@@ -29,9 +27,7 @@ export function createOnJobRemovedFC(
     },
     resolve: async ({ jobId, prev }, { prefix, queueName }) => {
       const queue = getQueue(prefix, queueName, opts);
-      const job = await queue.getJob(jobId);
       return {
-        job,
         queue,
         jobId,
         queueName,
