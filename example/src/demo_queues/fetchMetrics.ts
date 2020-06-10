@@ -11,7 +11,6 @@ const prefix = queueSettings.prefix;
 const metricsScheduler = new QueueScheduler(queueSettings.name, {
   prefix,
   connection: createBullConnection('scheduler'), // BULL_REDIS_URI,
-  stalledInterval: 900000,
 });
 
 export const metricsQueue = new Queue(queueSettings.name, {
@@ -51,7 +50,6 @@ const metricsWorker = new Worker(
     // });
   },
   {
-    lockDuration: 900000,
     prefix,
     connection: createBullConnection('worker'), // BULL_REDIS_URI,
   }
