@@ -1,6 +1,5 @@
 import { Queue } from 'bullmq';
 import { createIsPausedFC } from './Queue.isPaused';
-import { createIdFC } from './Queue.id';
 import { createJobCountFC } from './Queue.jobCounts';
 import { createRepeatablesFC } from './Queue.repeatables';
 import { createJobsFC } from './Queue.jobs';
