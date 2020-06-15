@@ -1,11 +1,11 @@
-import { isObject, SchemaComposer } from 'graphql-compose';
+import { SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
 export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
   const { typePrefix } = opts;
 
-  const RepeatOptionsInterfaceTC = sc.createInterfaceTC({
-    name: `${typePrefix}RepeatOptionsInterface`,
+  const RepeatOptionsTC = sc.createObjectTC({
+    name: `${typePrefix}RepeatOptions`,
     fields: {
       tz: 'String',
       endDate: 'Date',
@@ -13,45 +13,11 @@ export function createRepeatOptionsTC(sc: SchemaComposer<any>, opts: Options) {
       count: 'Int',
       prevMillis: 'Int',
       jobId: 'String',
-    },
-  });
-
-  const RepeatOptionsCronTC = sc.createObjectTC({
-    name: `${typePrefix}RepeatOptionsCron`,
-    interfaces: [RepeatOptionsInterfaceTC],
-    fields: {
-      tz: 'String',
-      endDate: 'Date',
-      limit: 'Int',
       cron: 'String',
       startDate: 'Date',
-      count: 'Int',
-      prevMillis: 'Int',
-      jobId: 'String',
-    },
-  });
-
-  const RepeatOptionsEveryTC = sc.createObjectTC({
-    name: `${typePrefix}RepeatOptionsEvery`,
-    interfaces: [RepeatOptionsInterfaceTC],
-    fields: {
-      tz: 'String',
-      endDate: 'Date',
-      limit: 'Int',
       every: 'String',
-      count: 'Int',
-      prevMillis: 'Int',
-      jobId: 'String',
     },
   });
 
-  RepeatOptionsInterfaceTC.addTypeResolver(RepeatOptionsEveryTC, (value) => {
-    return isObject(value) && value.hasOwnProperty('every');
-  });
-
-  RepeatOptionsInterfaceTC.addTypeResolver(RepeatOptionsCronTC, (value) => {
-    return isObject(value) && value.hasOwnProperty('cron');
-  });
-
-  return RepeatOptionsInterfaceTC;
+  return RepeatOptionsTC;
 }
