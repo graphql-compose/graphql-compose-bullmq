@@ -1,3 +1,4 @@
+import { Queue } from 'bullmq';
 import { createIsPausedFC } from './Queue.isPaused';
 import { createIdFC } from './Queue.id';
 import { createJobCountFC } from './Queue.jobCounts';
@@ -19,7 +20,10 @@ export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
 
   return sc.getOrCreateOTC(`${typePrefix}Queue`, (etc) => {
     etc.addFields({
-      id: createIdFC(),
+      id: {
+        type: 'String!',
+        resolve: async (queue: Queue) => queue.name,
+      },
       name: 'String!',
       isPaused: createIsPausedFC(),
       jobCounts: createJobCountFC(sc, opts),
