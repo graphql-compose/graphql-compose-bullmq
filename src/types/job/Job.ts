@@ -3,6 +3,7 @@ import { createStateFC } from './Job.state';
 import { createRepeatOptionsTC } from './Job.opts.repeat';
 import { SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
+import { Job } from 'bullmq';
 
 export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
   const { typePrefix, jobDataTC = 'JSON!' } = opts;
@@ -14,7 +15,10 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
       data: jobDataTC,
       progress: 'Int',
       delay: 'Int',
-      timestamp: 'Date',
+      timestamp: {
+        type: 'Date',
+        resolve: async (job: Job) => (job.timestamp ? job.timestamp : null),
+      },
       attemptsMade: 'Int',
       failedReason: 'JSON',
       stacktrace: '[String]',
