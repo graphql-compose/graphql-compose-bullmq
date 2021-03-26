@@ -14,7 +14,7 @@ local bytesAmount = 0
 
 if (#jobs > 0) then
   for _, jobId in ipairs(jobs) do
-    bytesAmount = bytesAmount + redis.call('memory', 'usage', ARGV[1]..jobId)
+    bytesAmount = bytesAmount + (redis.call('memory', 'usage', ARGV[1]..jobId) or 0)
   end  
 end
 
