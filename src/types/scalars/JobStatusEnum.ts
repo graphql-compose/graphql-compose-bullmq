@@ -1,4 +1,4 @@
-import { SchemaComposer } from 'graphql-compose';
+import { EnumTypeComposer, SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
 export enum JobStatusEnum {
@@ -11,7 +11,7 @@ export enum JobStatusEnum {
   UNKNOWN = 'unknown',
 }
 
-export function getJobStatusEnumTC(sc: SchemaComposer<any>, opts: Options) {
+export function getJobStatusEnumTC(sc: SchemaComposer<any>, opts: Options): EnumTypeComposer {
   const { typePrefix } = opts;
   return sc.getOrCreateETC(`${typePrefix}JobStatusEnum`, (etc) => {
     etc.addFields({

@@ -1,4 +1,4 @@
-import { SchemaComposer } from 'graphql-compose';
+import { EnumTypeComposer, SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
 export enum OrderEnum {
@@ -6,7 +6,7 @@ export enum OrderEnum {
   DESC = 'desc',
 }
 
-export function getOrderEnumTC(sc: SchemaComposer<any>, opts: Options) {
+export function getOrderEnumTC(sc: SchemaComposer<any>, opts: Options): EnumTypeComposer {
   const { typePrefix } = opts;
   return sc.getOrCreateETC(`${typePrefix}OrderEnum`, (etc) => {
     etc.addFields({

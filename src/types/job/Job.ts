@@ -1,11 +1,11 @@
 import { createLogsFC } from './Job.logs';
 import { createStateFC } from './Job.state';
 import { createRepeatOptionsTC } from './Job.opts.repeat';
-import { SchemaComposer } from 'graphql-compose';
+import { ObjectTypeComposer, SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 import { Job } from 'bullmq';
 
-export function getJobTC(sc: SchemaComposer<any>, opts: Options) {
+export function getJobTC(sc: SchemaComposer<any>, opts: Options): ObjectTypeComposer {
   const { typePrefix, jobDataTC = 'JSON!' } = opts;
 
   return sc.getOrCreateOTC(`${typePrefix}Job`, (etc) => {

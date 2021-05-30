@@ -11,10 +11,10 @@ import { createFailedJobsFC } from './Queue.failedJobs';
 import { createWorkersTC } from './Queue.workers';
 import { createDurationAvgFC } from './Queue.durationAvg';
 import { createJobsMemoryUsageAvgFC } from './Queue.jobsMemoryUsageAvg';
-import { SchemaComposer } from 'graphql-compose';
+import { ObjectTypeComposer, SchemaComposer } from 'graphql-compose';
 import { Options } from '../../definitions';
 
-export function getQueueTC(sc: SchemaComposer<any>, opts: Options) {
+export function getQueueTC(sc: SchemaComposer<any>, opts: Options): ObjectTypeComposer {
   const { typePrefix } = opts;
 
   return sc.getOrCreateOTC(`${typePrefix}Queue`, (etc) => {

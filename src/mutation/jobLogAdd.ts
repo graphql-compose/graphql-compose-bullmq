@@ -31,6 +31,8 @@ export function createJobLogAddFC(
       const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.getJob(id);
       if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const logRes = await job.log(row);
       //TODO: в logRes похоже тупо количество записей в логе, подумать что с этим сотворить...
 

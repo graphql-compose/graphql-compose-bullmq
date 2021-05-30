@@ -7,7 +7,7 @@ export function getAsyncIterator(
   queueName: string,
   eventName: string,
   opts: Options
-) {
+): Required<AsyncIterator<any>> {
   const queueEvents = getQueueEventsSingleton(prefix, queueName, opts);
   return createAsyncIterator(queueEvents, eventName);
 }
