@@ -14,7 +14,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options): ObjectTypeComp
       name: 'String',
       data: jobDataTC,
       progress: 'Int',
-      delay: 'Int',
+      delay: 'String',
       timestamp: {
         type: 'Date',
         resolve: async (job: Job) => (job.timestamp ? job.timestamp : null),
@@ -29,7 +29,7 @@ export function getJobTC(sc: SchemaComposer<any>, opts: Options): ObjectTypeComp
         name: `${typePrefix}JobOptionsOutput`,
         fields: {
           priority: 'Int',
-          delay: 'Int',
+          delay: 'String',
           attempts: 'Int',
           repeat: createRepeatOptionsTC(sc, opts),
           backoff: 'JSON', // | TODO: BackoffOptions
