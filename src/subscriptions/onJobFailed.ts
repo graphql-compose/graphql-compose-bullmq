@@ -11,7 +11,7 @@ export function createOnJobFailedFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobFailedPayload',
+      name: `${opts.typePrefix}OnJobFailedPayload`,
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,

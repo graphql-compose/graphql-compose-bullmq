@@ -11,7 +11,7 @@ export function createOnJobWaitingFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobWaitingPayload',
+      name: `${opts.typePrefix}OnJobWaitingPayload`,
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,

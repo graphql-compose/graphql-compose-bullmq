@@ -10,7 +10,7 @@ export function createOnQueuePausedFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnQueuePausedPayload',
+      name: `${opts.typePrefix}OnQueuePausedPayload`,
       fields: {
         queue: getQueueTC(sc, opts).NonNull,
         queueName: 'String!',

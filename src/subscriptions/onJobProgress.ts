@@ -11,7 +11,7 @@ export function createOnJobProgressFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobProgressPayload',
+      name: `${opts.typePrefix}OnJobProgressPayload`,
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,

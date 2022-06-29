@@ -11,7 +11,7 @@ export function createOnJobDelayedFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobDelayedPayload',
+      name: `${opts.typePrefix}OnJobDelayedPayload`,
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,

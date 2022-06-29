@@ -10,7 +10,7 @@ export function createOnJobRemovedFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobRemovedPayload',
+      name: `${opts.typePrefix}OnJobRemovedPayload`,
       fields: {
         queue: getQueueTC(sc, opts).NonNull,
         jobId: 'String!',

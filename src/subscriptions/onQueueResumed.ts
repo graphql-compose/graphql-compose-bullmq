@@ -10,7 +10,7 @@ export function createOnQueueResumedFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnQueueResumedPayload',
+      name: `${opts.typePrefix}OnQueueResumedPayload`,
       fields: {
         queue: getQueueTC(sc, opts).NonNull,
         queueName: 'String!',

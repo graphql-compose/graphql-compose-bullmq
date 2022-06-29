@@ -12,7 +12,7 @@ export function createJobsMemoryUsageAvgFC(
     args: {
       keySetName: {
         type: sc.createEnumTC({
-          name: 'keySetNamesEnum',
+          name: `${opts?.typePrefix}KeySetNamesEnum`,
           values: {
             COMPLETED: { value: 'completed' },
             FAILED: { value: 'failed' },

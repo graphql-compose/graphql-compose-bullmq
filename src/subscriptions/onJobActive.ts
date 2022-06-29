@@ -11,7 +11,7 @@ export function createOnJobActiveFC(
 ): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: sc.createObjectTC({
-      name: 'OnJobActivePayload',
+      name: `${opts.typePrefix}OnJobActivePayload`,
       fields: {
         job: getJobTC(sc, opts),
         queue: getQueueTC(sc, opts).NonNull,
