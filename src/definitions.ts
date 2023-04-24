@@ -1,5 +1,5 @@
 import { ObjectTypeComposer } from 'graphql-compose';
-import IORedis, { RedisOptions } from 'ioredis';
+import Redis, { RedisOptions } from 'ioredis';
 
 export type Options = {
   typePrefix: string;
@@ -8,5 +8,5 @@ export type Options = {
     name?: string;
     prefix?: string;
   };
-  redis?: RedisOptions | IORedis.Redis;
+  redis?: RedisOptions | Redis;
 };

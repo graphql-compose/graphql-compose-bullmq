@@ -33,8 +33,8 @@ export async function addFixRecordToDelayStream(
 
   const streamName = fullQueueName + ':delay';
 
-  const first = await redis.xrange(streamName, '-', '+', 'count', 1);
-  const last = await redis.xrevrange(streamName, '+', '-', 'count', 1);
+  const first = await redis.xrange(streamName, '-', '+', 'COUNT', 1);
+  const last = await redis.xrevrange(streamName, '+', '-', 'COUNT', 1);
   const defaultRec = {
     id: '0-0',
     nextTimestamp: '',
@@ -51,6 +51,10 @@ export async function addFixRecordToDelayStream(
     } else {
       return defaultRec;
     }
+  }
+
+  if (!fixLastId) {
+    throw new Error(`The command <xadd ${streamName}> returns a Null reply.`);
   }
 
   return {

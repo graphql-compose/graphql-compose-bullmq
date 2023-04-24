@@ -7,7 +7,7 @@ import fs from 'fs';
 
 let commandDefined = false;
 
-async function defineCommand(redis: Redis.Redis) {
+async function defineCommand(redis: Redis) {
   const readFile = util.promisify(fs.readFile);
   const lua = await readFile(path.join(__dirname, 'zsetKeysMemoryUsage.lua'));
 

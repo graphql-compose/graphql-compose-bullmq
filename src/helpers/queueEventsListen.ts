@@ -63,7 +63,7 @@ function createAsyncIterator<T = any>(
     pushValue(event);
   };
 
-  queueEvents.on(eventName, handler);
+  queueEvents.on(eventName as any, handler);
 
   function release() {
     if (listening) {
