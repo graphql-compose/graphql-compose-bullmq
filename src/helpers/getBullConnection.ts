@@ -1,9 +1,9 @@
 import { Options } from './../definitions';
 import Redis from 'ioredis';
 
-const connectionMap = new Map<Options['redis'], Redis.Redis>();
+const connectionMap = new Map<Options['redis'], Redis>();
 
-export function getBullConnection(opts?: Options): Redis.Redis {
+export function getBullConnection(opts?: Options): Redis {
   const optsRedis = opts?.redis;
   let connection = connectionMap.get(optsRedis);
   if (connection) {
@@ -11,7 +11,7 @@ export function getBullConnection(opts?: Options): Redis.Redis {
   }
 
   if (optsRedis instanceof Redis || optsRedis?.constructor?.name === 'Redis') {
-    connection = optsRedis as Redis.Redis;
+    connection = optsRedis as Redis;
   } else if (optsRedis) {
     connection = new Redis(optsRedis);
   } else {
