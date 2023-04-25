@@ -9,4 +9,5 @@ export type Options = {
     prefix?: string;
   };
   redis?: RedisOptions | Redis;
+  redisEvents?: RedisOptions | Redis;
 };

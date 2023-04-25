@@ -7,7 +7,7 @@
     "apollo-server": "2.14.3"
   },
   "devDependencies": {
-    "ts-node-dev": "^1.0.0-pre.44"
+    "ts-node-dev": "1.1.8"
   },
   "resolutions": {
     "graphql": "link:../node_modules/graphql"

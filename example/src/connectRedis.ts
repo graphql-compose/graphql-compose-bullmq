@@ -3,7 +3,7 @@ import Redis, { RedisOptions } from 'ioredis';
 // TODO: remove get from OPTIONS
 const BULL_REDIS_URI = process.env.BULL_REDIS_URI || 'redis://127.0.0.1:6379';
 
-const redisInstances = new Map<string, Redis.Redis>();
+const redisInstances = new Map<string, Redis>();
 
 export function createBullConnection(type: 'queue' | 'worker' | 'scheduler' | 'events' | 'custom') {
   const existedClient = redisInstances.get(type);
@@ -33,9 +33,10 @@ export function createBullConnection(type: 'queue' | 'worker' | 'scheduler' | 'e
  * rediss://localhost/0
  * redis-sentinel://:pass@localhost:26379,otherhost:26479/0?name=mymaster
  */
-export function connectRedis(uri: string, opts?: RedisOptions): Redis.Redis {
+export function connectRedis(uri: string, opts?: RedisOptions): Redis {
   // TODO: UnhandledPromiseRejectionWarning: MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
   let cfg = {
+    maxRetriesPerRequest: null,
     retryStrategy: (times: number) => Math.min(times * 500, 10000),
     reconnectOnError: (err: Error) => {
       const targetError = 'READONLY';
@@ -170,12 +171,12 @@ export function connectionStringSerialize(connectionStringObject: ConnectionStri
 export function connectionStringParse(uri: string): ConnectionStringParameters {
   const connectionStringParser = new RegExp(
     '^\\s*' + // Optional whitespace padding at the beginning of the line
-    '([^:]+):\\/\\/' + // Scheme (Group 1)
-    '(?:([^:@,/?=&]*)' + // User (Group 2)
-    '(?::([^:@,/?=&]*))?@)?' + // Password (Group 3)
-    '([^@/?=&]+)' + // Host address(es) (Group 4)
-    '(?:\\/([^:@,?=&]+)?)?' + // Endpoint (Group 5)
-    '(?:\\?([^:@,/?]+)?)?' + // Options (Group 6)
+      '([^:]+):\\/\\/' + // Scheme (Group 1)
+      '(?:([^:@,/?=&]*)' + // User (Group 2)
+      '(?::([^:@,/?=&]*))?@)?' + // Password (Group 3)
+      '([^@/?=&]+)' + // Host address(es) (Group 4)
+      '(?:\\/([^:@,?=&]+)?)?' + // Endpoint (Group 5)
+      '(?:\\?([^:@,/?]+)?)?' + // Options (Group 6)
       '\\s*$', // Optional whitespace padding at the end of the line
     'gi'
   );
@@ -222,9 +223,11 @@ function _parseAddress(addresses: string): ConnectionStringHost[] {
   return addresses.split(',').map((address) => {
     const i = address.indexOf(':');
 
-    return (i >= 0
-      ? { host: decodeURIComponent(address.substring(0, i)), port: +address.substring(i + 1) }
-      : { host: decodeURIComponent(address) }) as ConnectionStringHost;
+    return (
+      i >= 0
+        ? { host: decodeURIComponent(address.substring(0, i)), port: +address.substring(i + 1) }
+        : { host: decodeURIComponent(address) }
+    ) as ConnectionStringHost;
   });
 }
 
