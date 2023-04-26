@@ -13,6 +13,7 @@ export { createjobPromoteFC } from './jobPromote';
 export { createJobRremoveFC } from './jobRemove';
 export { createJobRremoveBulkFC } from './jobRemoveBulk';
 export { createJobRetryFC } from './jobRetry';
+export { createJobsRetryFC } from './jobsRetry';
 export { createJobUpdateFC } from './jobUpdate';
 export { createJobLogAddFC } from './jobLogAdd';
 export { createJobMoveToDelayedFC } from './jobMoveToDelayed';

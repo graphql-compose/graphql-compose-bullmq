@@ -43,7 +43,8 @@ export function createJobsRetryFC(
       for (const _id of ids) {
         promises.push(
           queue.getJob(_id).then((job) => {
-            if (!job) throw new MutationError('Job not found!', ErrorCodeEnum.JOB_NOT_FOUND, _id);
+            if (!job)
+              throw new MutationError(`Job ${_id} not found!`, ErrorCodeEnum.JOB_NOT_FOUND, _id);
             return job.retry();
           })
         );
