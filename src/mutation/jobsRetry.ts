@@ -15,7 +15,7 @@ export function createJobsRetryFC(
     type: sc.createObjectTC({
       name: `${typePrefix}JobsRetryPayload`,
       fields: {
-        id: '[String]',
+        ids: '[String]',
         state: getJobStatusEnumTC(sc, opts),
       },
     }),
@@ -25,13 +25,13 @@ export function createJobsRetryFC(
         defaultValue: 'bull',
       },
       queueName: 'String!',
-      id: '[String!]!',
+      ids: '[String!]!',
     },
-    resolve: async (_, { prefix, queueName, id }) => {
+    resolve: async (_, { prefix, queueName, ids }) => {
       const queue = await findQueue(prefix, queueName, opts);
-      const ids = getAsArray(id);
+      const _ids = getAsArray(ids);
 
-      if (ids.length > 100) {
+      if (_ids.length > 100) {
         throw new MutationError(
           'Arg. <id> constraint: send less than 100 IDs.',
           ErrorCodeEnum.OTHER_ERROR
@@ -40,7 +40,7 @@ export function createJobsRetryFC(
 
       const promises: Promise<void>[] = [];
 
-      for (const _id of ids) {
+      for (const _id of _ids) {
         promises.push(
           queue.getJob(_id).then((job) => {
             if (!job)
