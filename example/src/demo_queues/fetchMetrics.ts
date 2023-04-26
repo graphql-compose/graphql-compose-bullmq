@@ -19,16 +19,22 @@ export const metricsQueue = new Queue(queueSettings.name, {
 });
 
 metricsQueue.add(
-  'fetch_metrics_every_5m',
-  { field1: 'asdasdadas' },
-  { repeat: { cron: '*/1 * * * *' } }
+  'fetch_metrics_every_2m',
+  { field1: 'some data' },
+  { repeat: { cron: '*/2 * * * *' } }
 );
 
-metricsQueue.add('fetch_metrics_every_5000', { field1: 'asdasdadas' }, { repeat: { every: 5000 } });
+metricsQueue.add(
+  'fetch_metrics_every_30000',
+  { field1: 'some data' },
+  { repeat: { every: 30000 } }
+);
 
 const metricsWorker = new Worker(
   queueSettings.name,
   async (job) => {
+    if (Math.random() > 0.8) throw new Error('Bull worker random error');
+
     for (let i = 0; i < 5; i++) {
       job.updateProgress(i * 20);
       await new Promise((resolve) => setTimeout(resolve, 1000));
