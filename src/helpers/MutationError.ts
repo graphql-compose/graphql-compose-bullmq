@@ -1,5 +1,5 @@
 export class MutationError extends Error {
-  constructor(message: string, public code: ErrorCodeEnum) {
+  constructor(message: string, public code: ErrorCodeEnum, public id?: string) {
     super(message);
     Object.setPrototypeOf(this, MutationError.prototype);
   }
