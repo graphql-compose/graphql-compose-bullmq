@@ -1,6 +1,6 @@
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getQueueTC } from '../types/queue/Queue';
-import { fetchQueueTitles, getQueues } from '../helpers';
+import { scanQueueTitles, getQueues } from '../helpers';
 import { Options } from '../definitions';
 
 export function createQueuesFC(
@@ -16,7 +16,7 @@ export function createQueuesFC(
       },
     },
     resolve: async (_, { prefix }) => {
-      const titles = await fetchQueueTitles(prefix, opts);
+      const titles = await scanQueueTitles(prefix, opts);
       return getQueues(titles, opts);
     },
   };
