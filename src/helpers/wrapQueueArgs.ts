@@ -10,14 +10,18 @@ export function wrapQueueArgs(
   if (opts?.queue?.name && fieldConfig.args?.queueName) {
     delete fieldConfig.args.queueName;
   }
+  if (opts?.queue?.names && fieldConfig.args?.queueNames) {
+    delete fieldConfig.args.queueNames;
+  }
   if (opts?.queue?.prefix && fieldConfig.args?.prefix) {
     delete fieldConfig.args.prefix;
   }
 
   // pass config props to sub resolve issue
-  if (opts?.queue?.name || opts?.queue?.prefix) {
+  if (opts?.queue?.name || opts?.queue?.names || opts?.queue?.prefix) {
     const predifinedArgs = {} as Record<string, any>;
     if (opts?.queue?.name) predifinedArgs.queueName = opts.queue?.name;
+    if (opts?.queue?.names) predifinedArgs.queueNames = opts.queue?.names;
     if (opts?.queue?.prefix) predifinedArgs.prefix = opts.queue?.prefix;
 
     const subResolve = fieldConfig.resolve || (() => ({}));
