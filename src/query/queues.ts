@@ -14,9 +14,15 @@ export function createQueuesFC(
         type: 'String',
         defaultValue: 'bull',
       },
+      names: {
+        type: '[String!]',
+      },
     },
-    resolve: async (_, { prefix }) => {
-      const titles = await scanQueueTitles(prefix, opts);
+    resolve: async (_, { prefix, names }) => {
+      //Если передали имена, значит они согласованы с префиксом (bull.[имя проекта]).
+      const titles = names
+        ? names.map((name: string) => ({ prefix, queueName: name }))
+        : await scanQueueTitles(prefix, opts);
       return getQueues(titles, opts);
     },
   };
