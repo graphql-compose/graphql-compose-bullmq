@@ -6,6 +6,7 @@ export type Options = {
   jobDataTC?: string | ObjectTypeComposer<any, any>;
   queue?: {
     name?: string;
+    names?: string[];
     prefix?: string;
   };
   redis?: RedisOptions | Redis;
