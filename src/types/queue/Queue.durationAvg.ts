@@ -8,7 +8,7 @@ export function createDurationAvgFC(
   opts: Options
 ): ObjectTypeComposerFieldConfigDefinition<any, any> {
   return {
-    type: 'Int!',
+    type: 'String!',
     args: {
       limit: {
         type: 'Int',
@@ -20,7 +20,7 @@ export function createDurationAvgFC(
       let amount = 0;
       let counter = 0;
       if (jobs.length === 0) {
-        return 0;
+        return '0';
       } else {
         for (const job of jobs) {
           if (job?.finishedOn && job?.processedOn) {
@@ -28,7 +28,7 @@ export function createDurationAvgFC(
             counter++;
           }
         }
-        return (amount / (counter || 1)).toFixed(0);
+        return String((amount / (counter || 1)).toFixed(0));
       }
     },
   };
