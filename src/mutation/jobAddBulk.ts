@@ -2,6 +2,7 @@ import { findQueue } from '../helpers';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
+import { checkJobDataSize } from '../helpers/roughSizeOfObject';
 
 export function createJobAddBulkFC(
   sc: SchemaComposer<any>,
@@ -46,6 +47,14 @@ export function createJobAddBulkFC(
       }).List,
     },
     resolve: async (_, { prefix, queueName, jobs }) => {
+      if (Array.isArray(jobs)) {
+        for (const job of jobs) {
+          checkJobDataSize(opts, job);
+        }
+      } else {
+        throw new Error('jobAddBulk: jobs argument must be an array');
+      }
+
       const queue = await findQueue(prefix, queueName, opts);
       const jobsRes = await queue.addBulk(jobs);
       return {

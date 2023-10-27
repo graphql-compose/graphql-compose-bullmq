@@ -11,4 +11,5 @@ export type Options = {
   };
   redis?: RedisOptions | Redis;
   redisEvents?: RedisOptions | Redis;
+  maxSizeOfJobData?: number /** in bytes */;
 };

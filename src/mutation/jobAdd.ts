@@ -3,6 +3,7 @@ import { getJobTC } from '../types/job/Job';
 import { findQueue } from '../helpers';
 import { Options } from '../definitions';
 import { createJobDataITC } from '../types/job/JobInput';
+import { checkJobDataSize } from '../helpers/roughSizeOfObject';
 
 export function createJobAddFC(
   sc: SchemaComposer<any>,
@@ -44,6 +45,7 @@ export function createJobAddFC(
       }),
     },
     resolve: async (_, { prefix, queueName, jobName, data, options }) => {
+      checkJobDataSize(opts, data);
       const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.add(jobName, data, options);
       return {
