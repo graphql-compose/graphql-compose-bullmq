@@ -2,6 +2,7 @@ import { findQueue } from '../helpers';
 import { SchemaComposer, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { getJobTC } from '../types/job/Job';
 import { Options } from '../definitions';
+import { checkJobDataSize } from '../helpers/roughSizeOfObject';
 
 export function createJobAddCronFC(
   sc: SchemaComposer<any>,
@@ -54,6 +55,7 @@ export function createJobAddCronFC(
       }),
     },
     resolve: async (_, { prefix, queueName, jobName, data, options }) => {
+      checkJobDataSize(opts, data);
       const queue = await findQueue(prefix, queueName, opts);
       const job = await queue.add(jobName, data, options);
       return {
